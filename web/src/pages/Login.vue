@@ -60,8 +60,15 @@ async function onSubmit() {
 <template>
   <BaseLayout>
     <div
-      class="bg-gray-100 dark:bg-gray-custom flex items-center justify-center"
-      style="height: calc(100vh - 4rem)"
+      class="
+        bg-gray-100
+        dark:bg-gray-custom
+        flex
+        items-center
+        justify-center
+        my-4
+        md:my-40
+      "
     >
       <div
         class="
@@ -76,8 +83,8 @@ async function onSubmit() {
           md:w-4/12
         "
       >
-        <img src="../assets/logo.png" alt="Logo DREA" class="w-1/4 mx-auto" />
-        <h4 class="text-center my-12">Ingresar para continuar</h4>
+        <!-- <img src="../assets/logo.png" alt="Logo DREA" class="w-1/4 mx-auto" /> -->
+        <h4 class="text-center mb-12">Ingresar para continuar</h4>
         <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
           <template v-if="message"
             ><div
