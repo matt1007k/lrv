@@ -2,6 +2,7 @@
 import { useHead } from "@vueuse/head";
 
 import BaseLayout from "../components/layouts/BaseLayout.vue";
+import Form from "../components/claims/Form.vue";
 
 useHead({
   title: "LRV - Registrar reclamo o queja",
@@ -44,6 +45,7 @@ useHead({
           </p>
         </div>
       </div>
+      <Form />
     </div>
   </BaseLayout>
 </template>
