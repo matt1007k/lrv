@@ -1,0 +1,9 @@
+.btn {
+  @apply px-5 py-3 text-center font-medium bg-gray-200 rounded-md hover:bg-gray-300 cursor-pointer;
+}
+.btn-primary {
+  @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+.btn-primary:disabled {
+  @apply bg-blue-400 text-gray-100 cursor-not-allowed;
+}

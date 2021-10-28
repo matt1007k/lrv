@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String?
+  claims   Claim[]
+}
+
+model Claim {
+  id           Int      @id @default(autoincrement())
+  trackingCode String?  @unique
+  fullName     String
+  email        String
+  address      String
+  reference    String
+  department   String
+  province     String
+  district     String
+  phone        String
+  type         Type     @default(COMPLAIN)
+  detail       String
+  order        String
+  file         String?
+  status       Status   @default(PENDING)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  authorId     Int?
+  author       User?    @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "Claim_authorId_fkey")
+}
+
+enum Type {
+  COMPLAIN
+  CLAIM
+}
+
+enum Status {
+  PENDING
+  SUCCESSFUL
+}

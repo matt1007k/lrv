@@ -1,0 +1,24 @@
+.form__group {
+  @apply flex flex-col mb-4;
+}
+.form__label {
+  @apply pb-2 text-gray-700 font-medium;
+}
+.form__input {
+  @apply px-3 py-3 rounded-md border-2 border-gray-300;
+}
+.form__input--invalid {
+  @apply border-red-500;
+}
+.form__message--invalid {
+  @apply text-red-500 font-medium;
+}
+.form__actions {
+  @apply flex space-x-2;
+}
+.form__actions--right {
+  @apply justify-end;
+}
+.form__actions--between {
+  @apply justify-between;
+}

@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-size: 15px;
+}
+@layer utilities {
+  .clamp-one-line {
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box !important;
+    white-space: unset;
+    word-break: break-all;
+    overflow: hidden;
+  }
+}
+@layer base {
+  .wrapper {
+    @apply w-full mx-0 px-5 sm:w-4/5 sm:px-0 sm:mx-auto md:w-wrap md:mx-auto;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl font-bold text-black dark:text-white;
+  }
+}

@@ -1,0 +1,8 @@
+.clamp-one-line {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box !important;
+  white-space: unset;
+  word-break: break-all;
+  overflow: hidden;
+}
