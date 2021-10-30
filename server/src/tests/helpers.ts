@@ -1,4 +1,6 @@
 import supertest from "supertest";
+import path from "path";
+import fs from "fs-extra";
 
 import prisma from "../helpers/prisma";
 
@@ -21,4 +23,14 @@ export const cleanUserDB = async () => {
 
   await prisma.$transaction([deleteUser]);
   await prisma.$disconnect();
+};
+
+export const testExistsFile = (filePath: string): boolean => {
+  const pathLocal = path.resolve(`src/${filePath}`);
+  try {
+    if (fs.existsSync(pathLocal)) return true;
+    else return false;
+  } catch (e) {
+    return false;
+  }
 };
