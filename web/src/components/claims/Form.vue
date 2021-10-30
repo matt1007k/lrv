@@ -2,7 +2,7 @@
 import { reactive, ref } from "vue";
 
 import { Claim } from "../../store/modules/claim/state";
-import { post } from "../../utils/request";
+import { deleteFetch, post } from "../../utils/request";
 
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
@@ -28,6 +28,7 @@ const errors = reactive<{ values: Record<string, string> }>({
 });
 
 const file = ref<HTMLInputElement>();
+const fileLocalPathApi = ref<string>("");
 const messageUploadFile = reactive<{ value: string }>({
   value: "",
 });
@@ -39,15 +40,22 @@ const openFile = () => {
 };
 
 const typesValid = ["image/png", "image/jpeg", "image/jpg"];
+const maxSize = 1024 * 1024 * 1;
+const changeFile = (ev: Event) => {
+  console.log("change", ev);
 
-const changeFile = async (ev: Event) => {
-  ev.preventDefault();
   if (file?.value?.files && file?.value?.files?.length > 0) {
     const fileValue = file.value?.files[0];
     const url = `${config.API_URL}/uploads`;
 
-    if (!typesValid.includes(fileValue.type)) {
-      messageUploadFile.value = "El archivo no es una imagen.";
+    const toolLarge = fileValue.size > maxSize;
+
+    if (!typesValid.includes(fileValue.type) && !toolLarge) {
+      messageUploadFile.value = toolLarge
+        ? `La archivo es muy grande, el tamaño máximo permitido: ${Math.ceil(
+            maxSize / 1000
+          )}Kb`
+        : "El archivo no es una imagen.";
       isError.value = true;
       percentaje.value = 0;
       return;
@@ -65,10 +73,16 @@ const changeFile = async (ev: Event) => {
         const status = res.status;
         if (status === 0 || (status >= 200 && status < 400)) {
           messageUploadFile.value = "Archivo subido con éxito.";
-          const { filePath }: { filePath: string } = JSON.parse(
-            res.responseText
-          );
-          form.file = filePath;
+          const { filePath, fullPath }: { filePath: string; fullPath: string } =
+            JSON.parse(res.responseText);
+          form.file = fullPath;
+          fileLocalPathApi.value = filePath;
+        } else if (status === 422) {
+          const { error }: { error: string } = JSON.parse(res.responseText);
+          messageUploadFile.value = error;
+          isError.value = true;
+          percentaje.value = 0;
+          return;
         }
       }
     };
@@ -80,6 +94,21 @@ const changeFile = async (ev: Event) => {
 
     res.send(formData);
   }
+};
+
+const deleteFileUpload = async () => {
+  const url = "/uploads";
+  try {
+    const { data } = await deleteFetch(url, {
+      path: fileLocalPathApi.value,
+    });
+
+    messageUploadFile.value = data.message;
+    isError.value = true;
+    form.file = "";
+    file.value = undefined;
+    console.log(form.file);
+  } catch (error) {}
 };
 
 const register = async () => {
@@ -924,12 +953,13 @@ const register = async () => {
                   "
                   @change="changeFile"
                 />
-                <MessageError :show="isError" :text="messageUploadFile.value" />
                 <Button
                   type="button"
                   color="danger"
                   @click="openFile"
-                  :disabled="!!file?.files && file?.files?.length > 0"
+                  :disabled="
+                    !isError && !!file?.files && file?.files?.length > 0
+                  "
                 >
                   <svg
                     class="w-6 h-6"
@@ -947,6 +977,7 @@ const register = async () => {
                   </svg>
                   <span class="ml-2">Subir archivo</span>
                 </Button>
+                <MessageError :show="isError" :text="messageUploadFile.value" />
                 <template v-if="percentaje > 1">
                   <div class="w-full sm:max-w-xs mt-3">
                     <div class="font-medium text-base text-center">
@@ -958,7 +989,9 @@ const register = async () => {
                     ></div>
                   </div>
                 </template>
-                <template v-if="!!file?.files && file?.files?.length > 0">
+                <template
+                  v-if="!isError && !!file?.files && file?.files?.length > 0"
+                >
                   <div
                     class="
                       w-full
@@ -977,6 +1010,7 @@ const register = async () => {
                       {{ file?.files[0].name }}
                     </p>
                     <svg
+                      @click="deleteFileUpload"
                       class="w-6 h-6 cursor-pointer text-red-500"
                       fill="none"
                       stroke="currentColor"

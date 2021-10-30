@@ -28,3 +28,5 @@ const request = (url: string, params = {}, method: string) => {
 };
 export const get = (url = "", params = {}) => request(url, params, "GET");
 export const post = (url = "", params = {}) => request(url, params, "POST");
+export const deleteFetch = (url = "", params = {}) =>
+  request(url, params, "DELETE");
