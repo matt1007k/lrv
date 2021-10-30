@@ -16,6 +16,8 @@ withDefaults(defineProps<Props>(), {
       rounded-md
       cursor-pointer
       disabled:cursor-not-allowed
+      flex
+      items-center
     "
     :class="[
       {
@@ -23,7 +25,11 @@ withDefaults(defineProps<Props>(), {
           color === 'primary',
       },
       {
-        'bg-gray-200 hover:bg-gray-300 text-black disabled:bg-gray-400 disabled:text-gray-500':
+        'bg-red-500 text-white hover:bg-red-600 disabled:bg-red-400 disabled:text-gray-100':
+          color === 'danger',
+      },
+      {
+        'bg-gray-200 hover:bg-gray-300 dark:bg-gray-custom dark:bg-opacity-50 dark:hover:bg-opacity-40 dark:text-white text-black disabled:bg-gray-400 disabled:text-gray-500':
           color === 'default',
       },
     ]"

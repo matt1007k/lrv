@@ -15,9 +15,9 @@ export interface Claim {
   detail: string;
   order: string;
   file?: string;
-  status: "PENDING" | "SUCCESSFUL";
-  createdAt: string;
-  updatedAt: string;
+  status?: "PENDING" | "SUCCESSFUL";
+  createdAt?: string;
+  updatedAt?: string;
   authorId?: number;
   author?: User;
 }

@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useStore } from "../../store";
 import { UserGettersTypes } from "../../store/modules/user/userGetter";
-import { UserMutationType } from "../../store/modules/user/userMutation";
-import { get } from "../../utils/request";
 
 import Link from "../navigations/Link.vue";
 
@@ -11,20 +9,6 @@ const store = useStore();
 const isAuthenticated = computed(
   () => store.getters[UserGettersTypes.IS_AUTHENTICATED]
 );
-
-const getFirstName = (fullName: string) => fullName.split(" ")[0];
-
-const getUserAuth = async () => {
-  const url = "/users/detail";
-  try {
-    const { data: user } = await get(url);
-    store.commit(UserMutationType.CreateUser, user);
-  } catch (error) {
-    console.log(error);
-  }
-};
-onMounted(() => getUserAuth());
-const user = computed(() => store.getters[UserGettersTypes.GET_USER]);
 </script>
 
 <template>
@@ -34,7 +18,7 @@ const user = computed(() => store.getters[UserGettersTypes.GET_USER]);
         <img
           src="../../assets/logo.png"
           alt="Logo Drea"
-          class="w-10 md:w-14 mr-10"
+          class="w-10 md:w-12 mr-10"
         />
       </router-link>
       <div class="hidden md:flex items-center space-x-5">

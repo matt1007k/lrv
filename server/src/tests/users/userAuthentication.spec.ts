@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe("User Authentication", () => {
   it("can register an user", async () => {
-    await api.post("/users/register").send(user).expect(201);
+    await api.post("/api/users/register").send(user).expect(201);
 
     const containEmails = await (
       await prisma.user.findMany()
@@ -24,9 +24,9 @@ describe("User Authentication", () => {
   });
 
   it("can log in an user", async () => {
-    await api.post("/users/register").send(user);
+    await api.post("/api/users/register").send(user);
     const { body } = await api
-      .post("/users/login")
+      .post("/api/users/login")
       .send({
         email: "max123@gmail.com",
         password: "password",
@@ -38,8 +38,8 @@ describe("User Authentication", () => {
   });
 
   it("should show the detail of an authenticated user", async () => {
-    await api.post("/users/register").send(user);
-    const response = await api.post("/users/login").send({
+    await api.post("/api/users/register").send(user);
+    const response = await api.post("/api/users/login").send({
       email: "max123@gmail.com",
       password: "password",
     });
@@ -47,7 +47,7 @@ describe("User Authentication", () => {
     const { token } = response.body.token;
 
     const { body } = await api
-      .get("/users/detail")
+      .get("/api/users/detail")
       .set("Authorization", "Bearer " + token)
       .expect(200);
 
@@ -57,10 +57,12 @@ describe("User Authentication", () => {
 
   it("should show the detail of an user", async () => {
     await api
-      .post("/users/register")
+      .post("/api/users/register")
       .send(Object.assign(user, { email: "mx32@gmail.com" }));
 
-    const { body } = await api.get(`/users/detail/${user.email}`).expect(200);
+    const { body } = await api
+      .get(`/api/users/detail/${user.email}`)
+      .expect(200);
 
     expect(body.name).toBe(user.name);
     expect(body.email).toBe(user.email);

@@ -7,7 +7,10 @@ export const claimErrors = {
     isEmail: "El correo eletrónico no es validó",
   },
   address: {
-    required: "La dirección es obligatorio",
+    required: "La dirección es obligatoria",
+  },
+  reference: {
+    required: "La referencia es obligatoria",
   },
   department: {
     required: "El departamento es obligatorio",
@@ -19,7 +22,9 @@ export const claimErrors = {
     required: "El distrito es obligatorio",
   },
   phone: {
-    required: "El celular o teléfono es obligatorio",
+    required: "El celular es obligatorio",
+    isNumeric: "El celular debe ser un número",
+    isPhone: "El celular no es validó",
   },
   type: {
     required: "El tipo es obligatorio",

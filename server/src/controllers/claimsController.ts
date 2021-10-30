@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
 import { randomInt } from "crypto";
 
@@ -19,6 +19,8 @@ export const create = async (req: Request, res: Response) => {
         ...body,
       },
     });
+    // console.log("class: ", claim);
+
     res.status(201).json(claim);
   } catch (error) {}
 };

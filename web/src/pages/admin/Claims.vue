@@ -44,6 +44,9 @@ const getAll = async () => {
     const { data } = await get(url, {
       ...queryParams,
       search: search.value,
+      orderBy: "desc",
+      perPage: 10,
+      // type: "CLAIM",
     });
     store.dispatch(ClaimActionType.SET_ALL, data);
   } catch (error) {

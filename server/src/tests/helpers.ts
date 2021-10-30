@@ -6,6 +6,8 @@ import app from "../index";
 
 export const api = supertest(app);
 
+export const URL_API = "http://localhost:5000/api";
+
 // export const closeServer = () => server.close();
 
 export const cleanClaimDB = async () => {

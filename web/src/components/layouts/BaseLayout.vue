@@ -4,7 +4,7 @@ import NavbarPage from "./NavbarPage.vue";
 const year = new Date().getFullYear();
 </script>
 <template>
-  <div class="bg-gray-100 dark:bg-gray-custom h-screen">
+  <div class="bg-gray-100 dark:bg-gray-custom">
     <NavbarPage />
     <header>
       <slot name="header"></slot>

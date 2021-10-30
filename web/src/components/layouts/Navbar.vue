@@ -31,7 +31,7 @@ const user = computed(() => store.getters[UserGettersTypes.GET_USER]);
       <img
         src="../../assets/logo.png"
         alt="Logo Drea"
-        class="w-10 md:w-14 mr-10"
+        class="w-10 md:w-12 mr-10"
       />
       <div class="hidden md:flex items-center space-x-5">
         <template v-if="isAuthenticated">

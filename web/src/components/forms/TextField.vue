@@ -75,9 +75,10 @@
 </template>
 
 <script lang="ts">
-export default {
-  inheritAttrs: false,
-};
+// export default {
+//   inheritAttrs: false,
+// };
+//
 </script>
 
 <script lang="ts" setup>
