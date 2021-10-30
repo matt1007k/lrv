@@ -86,13 +86,13 @@ describe("claims", () => {
     const data = body.data as Prisma.ClaimCreateInput[];
     const links = body.links as PaginationLinkTypes;
 
-    // expect(links).toMatchObject({
-    //   perPage: 1,
-    //   page: 1,
-    //   lastPage: 2,
-    //   total: 2,
-    // });
-    console.log(data);
+    expect(links).toMatchObject({
+      perPage: 1,
+      page: 1,
+      lastPage: 2,
+      total: 2,
+    });
+    // console.log(data);
 
     expect(data[0].fullName).toBe(claims[0].fullName);
     expect(data[0].email).toBe(claims[0].email);

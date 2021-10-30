@@ -5,6 +5,8 @@ const app: Application = express();
 
 import claimsRoute from "./routes/claimsRoute";
 import usersRoute from "./routes/usersRoute";
+import uploadsRoute from "./routes/uploadsRoute";
+import { PORT } from "./helpers/config";
 
 app.use(express.json());
 app.use(
@@ -15,8 +17,7 @@ app.use(
 
 app.use("/api/users", usersRoute);
 app.use("/api/claims", claimsRoute);
-
-const PORT = process.env.PORT || 4500;
+app.use("/api/uploads", uploadsRoute);
 
 if (process.env.NODE_ENV !== "test") {
   const server = app.listen(PORT, () =>

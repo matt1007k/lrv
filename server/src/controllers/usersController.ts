@@ -3,7 +3,7 @@ import { hash, verify } from "argon2";
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 
-import config from "../helpers/config";
+import { SECRET_KEY } from "../helpers/config";
 import prisma from "../helpers/prisma";
 import { MyRequest } from "../types/MyRequestTypes";
 import { userErrors } from "../validators/messagesValidation";
@@ -39,7 +39,7 @@ export const logIn = async (req: Request, res: Response) => {
 
     if (user) {
       const { password, ...others } = user;
-      const token = sign(user, config.SECRET_KEY);
+      const token = sign(user, SECRET_KEY);
       res.status(200).json({ user: others, token });
     }
   } catch (error) {

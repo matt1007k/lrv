@@ -6,6 +6,7 @@ import { post } from "../../utils/request";
 
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
+import config from "../../utils/config";
 
 const form = reactive<Claim>({
   fullName: "",
@@ -27,9 +28,58 @@ const errors = reactive<{ values: Record<string, string> }>({
 });
 
 const file = ref<HTMLInputElement>();
+const messageUploadFile = reactive<{ value: string }>({
+  value: "",
+});
+const isError = ref<boolean>(false);
+const percentaje = ref<number>(0);
 
 const openFile = () => {
   file.value?.click();
+};
+
+const typesValid = ["image/png", "image/jpeg", "image/jpg"];
+
+const changeFile = async (ev: Event) => {
+  ev.preventDefault();
+  if (file?.value?.files && file?.value?.files?.length > 0) {
+    const fileValue = file.value?.files[0];
+    const url = `${config.API_URL}/uploads`;
+
+    if (!typesValid.includes(fileValue.type)) {
+      messageUploadFile.value = "El archivo no es una imagen.";
+      isError.value = true;
+      percentaje.value = 0;
+      return;
+    }
+    isError.value = false;
+
+    const formData = new FormData();
+    formData.append("file", fileValue);
+
+    const res = new XMLHttpRequest();
+    res.open("POST", url);
+
+    res.onreadystatechange = () => {
+      if (res.readyState === XMLHttpRequest.DONE) {
+        const status = res.status;
+        if (status === 0 || (status >= 200 && status < 400)) {
+          messageUploadFile.value = "Archivo subido con éxito.";
+          const { filePath }: { filePath: string } = JSON.parse(
+            res.responseText
+          );
+          form.file = filePath;
+        }
+      }
+    };
+
+    res.upload.addEventListener("progress", ({ loaded, total }) => {
+      percentaje.value = Math.floor(loaded / total) * 100;
+      setTimeout(() => (percentaje.value = 0), 3000);
+    });
+
+    res.send(formData);
+  }
 };
 
 const register = async () => {
@@ -853,13 +903,13 @@ const register = async () => {
               </div>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
-                  ref="input"
+                  ref="file"
                   type="file"
                   name="file"
                   id="file"
                   class="
                     max-w-lg
-                    block
+                    hidden
                     w-full
                     shadow-sm
                     focus:ring-indigo-500 focus:border-indigo-500
@@ -872,8 +922,15 @@ const register = async () => {
                     dark:bg-opacity-50
                     dark:text-white
                   "
+                  @change="changeFile"
                 />
-                <Button color="danger" @click="openFile">
+                <MessageError :show="isError" :text="messageUploadFile.value" />
+                <Button
+                  type="button"
+                  color="danger"
+                  @click="openFile"
+                  :disabled="!!file?.files && file?.files?.length > 0"
+                >
                   <svg
                     class="w-6 h-6"
                     fill="none"
@@ -890,6 +947,51 @@ const register = async () => {
                   </svg>
                   <span class="ml-2">Subir archivo</span>
                 </Button>
+                <template v-if="percentaje > 1">
+                  <div class="w-full sm:max-w-xs mt-3">
+                    <div class="font-medium text-base text-center">
+                      {{ percentaje }}%
+                    </div>
+                    <div
+                      :style="{ width: `${percentaje}%` }"
+                      class="bg-indigo-500 h-1"
+                    ></div>
+                  </div>
+                </template>
+                <template v-if="!!file?.files && file?.files?.length > 0">
+                  <div
+                    class="
+                      w-full
+                      sm:max-w-xs
+                      bg-gray-100
+                      dark:bg-gray-custom dark:bg-opacity-50
+                      p-4
+                      rounded-md
+                      flex
+                      items-center
+                      justify-between
+                      mt-3
+                    "
+                  >
+                    <p class="text-base font-medium flex-shrink mr-2">
+                      {{ file?.files[0].name }}
+                    </p>
+                    <svg
+                      class="w-6 h-6 cursor-pointer text-red-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      ></path>
+                    </svg>
+                  </div>
+                </template>
               </div>
             </div>
           </div>

@@ -57,12 +57,14 @@ onMounted(async () => await getAll());
 const claims = computed(() => store.getters[ClaimGetterType.GET_ALL]);
 const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
 
-const getStatusHumanize = (status: string) => {
-  if (status === "SUCCESSFUL") return "Atendido";
-  else return "Pendiente";
+const getStatusHumanize = (status: string | undefined): string => {
+  if (!!status) {
+    if (status === "SUCCESSFUL") return "Atendido";
+    else return "Pendiente";
+  } else return "";
 };
 
-const getAddressInline = (claim: Claim) => {
+const getAddressInline = (claim: Claim): string => {
   return `${claim.department}, ${claim.district}, ${claim.address}`;
 };
 </script>
@@ -345,130 +347,132 @@ const getAddressInline = (claim: Claim) => {
               </div>
             </div>
 
-            <div
-              class="
-                w-full
-                grid grid-cols-3
-                sm:grid-cols-3
-                md:grid-cols-9
-                gap-4
-                items-center
-                justify-between
-                hover:bg-transparent
-                md:hover:bg-gray-100
-                md:dark:hover:bg-gray-secondary
-                md:dark:hover:bg-opacity-50
-                px-0
-                py-3
-                sm:px-4 sm:py-4
-                rounded-lg
-                cursor-default
-                group
-              "
-              v-for="claim of claims"
-              :key="claim.id"
-            >
-              <div class="flex flex-col col-span-2">
-                <h6 class="text-black dark:text-white clamp-one-line">
-                  {{ claim.fullName }}
-                </h6>
-                <p
+            <template v-if="claims.length > 0">
+              <div
+                class="
+                  w-full
+                  grid grid-cols-3
+                  sm:grid-cols-3
+                  md:grid-cols-9
+                  gap-4
+                  items-center
+                  justify-between
+                  hover:bg-transparent
+                  md:hover:bg-gray-100
+                  md:dark:hover:bg-gray-secondary
+                  md:dark:hover:bg-opacity-50
+                  px-0
+                  py-3
+                  sm:px-4 sm:py-4
+                  rounded-lg
+                  cursor-default
+                  group
+                "
+                v-for="claim of claims"
+                :key="claim.id"
+              >
+                <div class="flex flex-col col-span-2">
+                  <h6 class="text-black dark:text-white clamp-one-line">
+                    {{ claim.fullName }}
+                  </h6>
+                  <p
+                    class="
+                      text-gray-500
+                      dark:text-gray-400 dark:group-hover:text-white
+                      text-thead
+                      clamp-one-line
+                    "
+                  >
+                    {{ claim.email }}
+                  </p>
+                </div>
+                <div
                   class="
+                    hidden
+                    sm:flex
                     text-gray-500
                     dark:text-gray-400 dark:group-hover:text-white
-                    text-thead
-                    clamp-one-line
+                    text-sm
+                    md:col-span-2
                   "
                 >
-                  {{ claim.email }}
-                </p>
-              </div>
-              <div
-                class="
-                  hidden
-                  sm:flex
-                  text-gray-500
-                  dark:text-gray-400 dark:group-hover:text-white
-                  text-sm
-                  md:col-span-2
-                "
-              >
-                <span class="clamp-one-line">
-                  {{ claim.trackingCode }}
-                </span>
-              </div>
-              <div
-                class="
-                  hidden
-                  md:flex
-                  text-gray-500
-                  dark:text-gray-400 dark:group-hover:text-white
-                  text-sm
-                  md:col-span-1
-                "
-              >
-                {{ claim.phone }}
-              </div>
-              <div
-                class="
-                  hidden
-                  md:flex
-                  text-gray-500
-                  dark:text-gray-400 dark:group-hover:text-white
-                  text-sm
-                  md:col-span-2
-                "
-              >
-                <span class="clamp-one-line">
-                  {{ getAddressInline(claim) }}
-                </span>
-              </div>
-              <div
-                class="hidden md:flex text-sm col-span-1"
-                :class="[
-                  claim.status === 'PENDING'
-                    ? 'text-yellow-500 dark:text-yellow-300'
-                    : 'text-green-500 dark:text-green-300',
-                ]"
-              >
-                <span>{{ getStatusHumanize(claim.status) }}</span>
-              </div>
-              <div
-                class="
-                  flex
-                  justify-end
-                  md:justify-start
-                  dark:text-gray-200
-                  text-sm
-                  col-span-1
-                "
-              >
-                <span class="hidden md:block">
-                  {{ getDateInline(claim.createdAt) }}
-                </span>
-                <svg
+                  <span class="clamp-one-line">
+                    {{ claim.trackingCode }}
+                  </span>
+                </div>
+                <div
                   class="
-                    w-6
-                    h-6
-                    ml-4
-                    opacity-100
-                    md:opacity-0
-                    group-hover:opacity-100
+                    hidden
+                    md:flex
+                    text-gray-500
+                    dark:text-gray-400 dark:group-hover:text-white
+                    text-sm
+                    md:col-span-1
                   "
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                  ></path>
-                </svg>
+                  {{ claim.phone }}
+                </div>
+                <div
+                  class="
+                    hidden
+                    md:flex
+                    text-gray-500
+                    dark:text-gray-400 dark:group-hover:text-white
+                    text-sm
+                    md:col-span-2
+                  "
+                >
+                  <span class="clamp-one-line">
+                    {{ getAddressInline(claim) }}
+                  </span>
+                </div>
+                <div
+                  class="hidden md:flex text-sm col-span-1"
+                  :class="[
+                    claim.status === 'PENDING'
+                      ? 'text-yellow-500 dark:text-yellow-300'
+                      : 'text-green-500 dark:text-green-300',
+                  ]"
+                >
+                  <span>{{ getStatusHumanize(claim.status) }}</span>
+                </div>
+                <div
+                  class="
+                    flex
+                    justify-end
+                    md:justify-start
+                    dark:text-gray-200
+                    text-sm
+                    col-span-1
+                  "
+                >
+                  <span class="hidden md:block">
+                    {{ getDateInline(claim.createdAt) }}
+                  </span>
+                  <svg
+                    class="
+                      w-6
+                      h-6
+                      ml-4
+                      opacity-100
+                      md:opacity-0
+                      group-hover:opacity-100
+                    "
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                    ></path>
+                  </svg>
+                </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </div>
