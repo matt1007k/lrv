@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
 import { Claim } from "../../store/modules/claim/state";
 import { deleteFetch, post } from "../../utils/request";
@@ -7,6 +8,8 @@ import { deleteFetch, post } from "../../utils/request";
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
 import config from "../../utils/config";
+
+const router = useRouter();
 
 const form = reactive<Claim>({
   fullName: "",
@@ -40,17 +43,58 @@ const openFile = () => {
 };
 
 const typesValid = ["image/png", "image/jpeg", "image/jpg"];
-const maxSize = 1024 * 1024 * 1;
+const maxSize = 1024 * 1024 * 5;
 const changeFile = (ev: Event) => {
-  console.log("change", ev);
-
   if (file?.value?.files && file?.value?.files?.length > 0) {
     const fileValue = file.value?.files[0];
     const url = `${config.API_URL}/uploads`;
 
     const toolLarge = fileValue.size > maxSize;
 
-    if (!typesValid.includes(fileValue.type) && !toolLarge) {
+    if (typesValid.includes(fileValue.type) && !toolLarge) {
+      isError.value = false;
+
+      const formData = new FormData();
+      formData.append("file", fileValue);
+
+      const res = new XMLHttpRequest();
+      res.open("POST", url);
+
+      res.onreadystatechange = () => {
+        if (res.readyState === XMLHttpRequest.DONE) {
+          const status = res.status;
+          if (status === 0 || (status >= 200 && status < 400)) {
+            messageUploadFile.value = "Archivo subido con éxito.";
+            const {
+              filePath,
+              fullPath,
+            }: { filePath: string; fullPath: string } = JSON.parse(
+              res.responseText
+            );
+            form.file = fullPath;
+            fileLocalPathApi.value = filePath;
+          } else if (status === 422) {
+            const { error }: { error: string } = JSON.parse(res.responseText);
+            messageUploadFile.value = error;
+            isError.value = true;
+            percentaje.value = 0;
+            return;
+          }
+        }
+      };
+
+      res.upload.addEventListener("progress", ({ loaded, total }) => {
+        let percentajeUpload = Math.floor(loaded / total) * 100;
+        percentaje.value = percentajeUpload;
+        setTimeout(() => {
+          if (percentaje.value === 100) {
+            percentaje.value = 0;
+          }
+        }, 1000);
+      });
+
+      res.send(formData);
+    } else {
       messageUploadFile.value = toolLarge
         ? `La archivo es muy grande, el tamaño máximo permitido: ${Math.ceil(
             maxSize / 1000
@@ -58,41 +102,7 @@ const changeFile = (ev: Event) => {
         : "El archivo no es una imagen.";
       isError.value = true;
       percentaje.value = 0;
-      return;
     }
-    isError.value = false;
-
-    const formData = new FormData();
-    formData.append("file", fileValue);
-
-    const res = new XMLHttpRequest();
-    res.open("POST", url);
-
-    res.onreadystatechange = () => {
-      if (res.readyState === XMLHttpRequest.DONE) {
-        const status = res.status;
-        if (status === 0 || (status >= 200 && status < 400)) {
-          messageUploadFile.value = "Archivo subido con éxito.";
-          const { filePath, fullPath }: { filePath: string; fullPath: string } =
-            JSON.parse(res.responseText);
-          form.file = fullPath;
-          fileLocalPathApi.value = filePath;
-        } else if (status === 422) {
-          const { error }: { error: string } = JSON.parse(res.responseText);
-          messageUploadFile.value = error;
-          isError.value = true;
-          percentaje.value = 0;
-          return;
-        }
-      }
-    };
-
-    res.upload.addEventListener("progress", ({ loaded, total }) => {
-      percentaje.value = Math.floor(loaded / total) * 100;
-      setTimeout(() => (percentaje.value = 0), 3000);
-    });
-
-    res.send(formData);
   }
 };
 
@@ -106,7 +116,6 @@ const deleteFileUpload = async () => {
     messageUploadFile.value = data.message;
     isError.value = true;
     form.file = "";
-    file.value = undefined;
     console.log(form.file);
   } catch (error) {}
 };
@@ -117,6 +126,8 @@ const register = async () => {
     const { data, status } = await post(url, form);
     if (status == 422) {
       errors.values = data.errors;
+    } else if (status === 201) {
+      router.push("/message-success");
     } else {
       errors.values = {};
     }
@@ -927,10 +938,10 @@ const register = async () => {
                   Archivo adjunto
                 </h6>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">
-                  El archivo no debe exceder los 10MB.
+                  El archivo no debe exceder los 5MB.
                 </p>
               </div>
-              <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <div class="mt-4 sm:mt-0 sm:col-span-2">
                 <input
                   ref="file"
                   type="file"
@@ -978,17 +989,6 @@ const register = async () => {
                   <span class="ml-2">Subir archivo</span>
                 </Button>
                 <MessageError :show="isError" :text="messageUploadFile.value" />
-                <template v-if="percentaje > 1">
-                  <div class="w-full sm:max-w-xs mt-3">
-                    <div class="font-medium text-base text-center">
-                      {{ percentaje }}%
-                    </div>
-                    <div
-                      :style="{ width: `${percentaje}%` }"
-                      class="bg-indigo-500 h-1"
-                    ></div>
-                  </div>
-                </template>
                 <template
                   v-if="!isError && !!file?.files && file?.files?.length > 0"
                 >
@@ -1004,12 +1004,37 @@ const register = async () => {
                       items-center
                       justify-between
                       mt-3
+                      relative
+                      overflow-hidden
                     "
                   >
+                    <template v-if="percentaje > 1">
+                      <div class="w-full sm:max-w-xs absolute inset-0">
+                        <div
+                          :style="{ width: `${percentaje}%` }"
+                          class="
+                            bg-indigo-500
+                            text-white
+                            h-full
+                            font-medium
+                            text-base text-center
+                            flex
+                            items-center
+                            justify-center
+                            transition-all
+                            duration-200
+                            ease-linear
+                          "
+                        >
+                          {{ percentaje }}%
+                        </div>
+                      </div>
+                    </template>
                     <p class="text-base font-medium flex-shrink mr-2">
                       {{ file?.files[0].name }}
                     </p>
                     <svg
+                      v-show="form.file"
                       @click="deleteFileUpload"
                       class="w-6 h-6 cursor-pointer text-red-500"
                       fill="none"
@@ -1034,7 +1059,7 @@ const register = async () => {
 
       <div class="pt-5">
         <div class="flex justify-end space-x-4">
-          <Button>Cancelar</Button>
+          <Button type="button" @click="resetForm">Cancelar</Button>
           <Button type="submit" color="primary">Registrar</Button>
         </div>
       </div>
