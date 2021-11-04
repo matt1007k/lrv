@@ -1,3 +1,7 @@
-export type RootState = {};
+export type RootState = {
+  isDark: boolean;
+};
 
-export const state: RootState = {};
+export const state: RootState = {
+  isDark: false,
+};

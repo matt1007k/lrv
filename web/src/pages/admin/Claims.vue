@@ -1,30 +1,20 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
 
-import { useHead } from "@vueuse/head";
-
 import AdminLayout from "../../components/layouts/AdminLayout.vue";
 import SearchAdvanced from "../../components/claims/SearchAdvanced.vue";
-
-import { get } from "../../utils/request";
+import Dropdown from "../../components/overlays/Dropdown.vue";
+import DropdownItem from "../../components/overlays/DropdownItem.vue";
+import DropdownItemLink from "../../components/overlays/DropdownItemLink.vue";
 
 import { useStore } from "../../store";
-
 import { ClaimActionType } from "../../store/modules/claim/actions";
 import { ClaimGetterType } from "../../store/modules/claim/getters";
 import { Claim } from "../../store/modules/claim/state";
 
+import { get } from "../../utils/request";
 import { getDateInline } from "../../utils/dateFormat";
-
-useHead({
-  title: "LRV - Libro de reclamos",
-  meta: [
-    {
-      name: "description",
-      content: "Mira todas los quejas y reclamos de los personas.",
-    },
-  ],
-});
+import { getStatusHumanize, getAddressInline } from "../../utils/claim";
 
 const store = useStore();
 
@@ -56,94 +46,97 @@ const getAll = async () => {
 onMounted(async () => await getAll());
 const claims = computed(() => store.getters[ClaimGetterType.GET_ALL]);
 const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
-
-const getStatusHumanize = (status: string | undefined): string => {
-  if (!!status) {
-    if (status === "SUCCESSFUL") return "Atendido";
-    else return "Pendiente";
-  } else return "";
-};
-
-const getAddressInline = (claim: Claim): string => {
-  return `${claim.department}, ${claim.district}, ${claim.address}`;
-};
 </script>
 <template>
-  <AdminLayout>
+  <AdminLayout
+    title="LRV - Libro de reclamos"
+    description="Mira todas los quejas y reclamos de los personas."
+  >
     <template v-slot:header>
       <div class="wrapper mt-0 md:mt-6">
         <div class="flex justify-between">
           <div>
-            <h4>Reclamos</h4>
+            <h4>Libro</h4>
             <p class="text-gray-500 dark:text-gray-400 text-base">
-              {{ links.total }} registros
+              de reclamaciones
             </p>
           </div>
-          <div
-            class="
-              p-3
-              flex
-              md:hidden
-              items-center
-              justify-center
-              bg-white
-              text-black
-              dark:bg-gray-secondary dark:text-white
-              rounded-full
-              cursor-pointer
-            "
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M7 16a4 4 0 0 1-.88-7.903A5 5 0 1 1 15.9 6h.1a5 5 0 0 1 1 9.9M9 19l3 3m0 0 3-3m-3 3V10"
-              />
-            </svg>
-          </div>
-          <div
-            class="
-              hidden
-              md:flex
-              items-center
-              justify-center
-              px-5
-              py-2
-              rounded-full
-              bg-white
-              hover:bg-gray-50
-              dark:bg-gray-secondary dark:hover:bg-opacity-80
-              ml-0
-              md:ml-4
-              cursor-pointer
-            "
-          >
-            <span class="font-semibold text-gray-600 dark:text-gray-200 mr-2"
-              >Exportar</span
-            >
 
-            <svg
-              class="w-6 h-6 text-gray-500 dark:text-gray-200"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m19 9-7 7-7-7"
-              />
-            </svg>
-          </div>
+          <Dropdown>
+            <template v-slot:trigger>
+              <div
+                class="
+                  p-3
+                  flex
+                  md:hidden
+                  items-center
+                  justify-center
+                  bg-white
+                  text-black
+                  dark:bg-gray-secondary dark:text-white
+                  rounded-full
+                  cursor-pointer
+                  shadow-lg
+                "
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16a4 4 0 0 1-.88-7.903A5 5 0 1 1 15.9 6h.1a5 5 0 0 1 1 9.9M9 19l3 3m0 0 3-3m-3 3V10"
+                  />
+                </svg>
+              </div>
+              <div
+                class="
+                  hidden
+                  md:flex
+                  items-center
+                  justify-center
+                  px-5
+                  py-3
+                  rounded-full
+                  bg-white
+                  hover:bg-gray-50
+                  dark:bg-gray-secondary dark:hover:bg-opacity-80
+                  ml-0
+                  md:ml-4
+                  cursor-pointer
+                  shadow-lg
+                "
+              >
+                <span
+                  class="font-semibold text-gray-600 dark:text-gray-200 mr-2"
+                  >Exportar</span
+                >
+
+                <svg
+                  class="w-6 h-6 text-gray-500 dark:text-gray-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 9-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </template>
+            <template v-slot:content>
+              <DropdownItem>Excel</DropdownItem>
+            </template>
+          </Dropdown>
         </div>
         <SearchAdvanced v-model="search" />
       </div>
@@ -159,12 +152,44 @@ const getAddressInline = (claim: Claim): string => {
             justify-stretch
             items-start
             sm:items-center
+            overflow-x-auto
           "
         >
           <div class="flex items-center my-6 space-x-8 font-semibold">
             <div class="flex items-center space-x-2 group cursor-pointer">
-              <span class="text-black dark:text-white">Reclamos</span>
-              <div class="py-1 px-2 bg-blue-200 text-blue-500 rounded-lg">
+              <span class="text-black dark:text-white">Todos</span>
+              <div
+                class="
+                  py-1
+                  px-2
+                  bg-blue-200
+                  text-blue-500
+                  dark:text-blue-700
+                  rounded-lg
+                "
+              >
+                {{ links.total }}
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 group cursor-pointer">
+              <span
+                class="
+                  text-gray-400
+                  group-hover:text-black
+                  dark:text-gray-400 dark:group-hover:text-white
+                "
+                >Reclamos</span
+              >
+              <div
+                class="
+                  py-1
+                  px-2
+                  bg-gray-200
+                  dark:bg-gray-secondary
+                  text-gray-400
+                  rounded-lg
+                "
+              >
                 12
               </div>
             </div>
@@ -191,72 +216,81 @@ const getAddressInline = (claim: Claim): string => {
               </div>
             </div>
           </div>
-
-          <div
-            class="
-              mb-4
-              flex
-              justify-between
-              md:justify-end
-              items-center
-              w-full
-              sm:w-auto
-            "
-          >
-            <span class="font-semibold text-gray-400 mr-3">Ordernar por:</span>
-            <div
-              class="
-                flex
-                items-center
-                cursor-pointer
-                py-3
-                px-3
-                sm:py-3 sm:px-5
-                bg-gray-100
-                hover:bg-gray-200
-                dark:bg-gray-secondary
-                dark:hover:bg-gray-secondary
-                dark:hover:bg-opacity-80
-                shadow-md
-                rounded-lg
-                md:rounded-full
-              "
-            >
-              <svg
-                class="w-6 h-6 text-black dark:text-white block md:hidden"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+          <Dropdown class="w-full md:w-auto">
+            <template v-slot:trigger>
+              <div
+                class="
+                  mb-4
+                  flex
+                  justify-between
+                  md:justify-end
+                  items-center
+                  w-full
+                  sm:w-auto
+                "
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 4h13M3 8h9m-9 4h6m4 0 4-4m0 0 4 4m-4-4v12"
-                />
-              </svg>
-              <span class="hidden md:flex items-center">
-                <span class="font-semibold mr-3 text-black dark:text-white"
-                  >Correo electrónico</span
+                <span class="font-semibold text-gray-400 mr-3"
+                  >Ordernar por:</span
                 >
-                <svg
-                  class="w-6 h-6 text-gray-500 dark:text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="
+                    flex
+                    items-center
+                    cursor-pointer
+                    py-3
+                    px-3
+                    sm:py-3 sm:px-5
+                    bg-white
+                    hover:bg-gray-50
+                    dark:bg-gray-secondary
+                    dark:hover:bg-gray-secondary
+                    dark:hover:bg-opacity-80
+                    shadow-md
+                    rounded-lg
+                    md:rounded-full
+                  "
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m19 9-7 7-7-7"
-                  />
-                </svg>
-              </span>
-            </div>
-          </div>
+                  <svg
+                    class="w-6 h-6 text-black dark:text-white block md:hidden"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 4h13M3 8h9m-9 4h6m4 0 4-4m0 0 4 4m-4-4v12"
+                    />
+                  </svg>
+                  <span class="hidden md:flex items-center">
+                    <span class="font-medium mr-3 text-black dark:text-white"
+                      >Recientes</span
+                    >
+                    <svg
+                      class="w-6 h-6 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m19 9-7 7-7-7"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </template>
+            <template v-slot:content>
+              <DropdownItem>Recientes</DropdownItem>
+              <DropdownItem>Antiguos</DropdownItem>
+            </template>
+          </Dropdown>
         </div>
 
         <div class="mb-10" style="min-height: 500px">
@@ -292,10 +326,10 @@ const getAddressInline = (claim: Claim): string => {
                   text-gray-400
                   uppercase
                   text-thead
-                  col-span-2
+                  col-span-1
                 "
               >
-                Código de seguimiento
+                # seguimiento
               </div>
               <div
                 class="
@@ -316,7 +350,7 @@ const getAddressInline = (claim: Claim): string => {
                   text-gray-400
                   uppercase
                   text-thead
-                  col-span-2
+                  col-span-3
                 "
               >
                 Dirección
@@ -393,7 +427,7 @@ const getAddressInline = (claim: Claim): string => {
                     text-gray-500
                     dark:text-gray-400 dark:group-hover:text-white
                     text-sm
-                    md:col-span-2
+                    md:col-span-1
                   "
                 >
                   <span class="clamp-one-line">
@@ -419,7 +453,7 @@ const getAddressInline = (claim: Claim): string => {
                     text-gray-500
                     dark:text-gray-400 dark:group-hover:text-white
                     text-sm
-                    md:col-span-2
+                    md:col-span-3
                   "
                 >
                   <span class="clamp-one-line">
@@ -449,27 +483,40 @@ const getAddressInline = (claim: Claim): string => {
                   <span class="hidden md:block">
                     {{ getDateInline(claim.createdAt) }}
                   </span>
-                  <svg
-                    class="
-                      w-6
-                      h-6
-                      ml-4
-                      opacity-100
-                      md:opacity-0
-                      group-hover:opacity-100
-                    "
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                    ></path>
-                  </svg>
+                  <Dropdown>
+                    <template v-slot:trigger>
+                      <svg
+                        class="
+                          w-6
+                          h-6
+                          ml-4
+                          opacity-100
+                          md:opacity-0
+                          text-gray-500
+                          dark:text-gray-100
+                          hover:text-black
+                          dark:hover:text-white
+                          group-hover:opacity-100
+                        "
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                        ></path>
+                      </svg>
+                    </template>
+                    <template v-slot:content>
+                      <DropdownItemLink href="/admin"
+                        >Ver detalle</DropdownItemLink
+                      >
+                    </template>
+                  </Dropdown>
                 </div>
               </div>
             </template>

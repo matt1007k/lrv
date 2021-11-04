@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+
+import ToggleDark from "../theme/ToggleDark.vue";
 
 import { useStore } from "../../store";
 import { UserActionTypes } from "../../store/modules/user/userAction";
@@ -109,40 +111,7 @@ function logOut() {
               py-4
             "
           >
-            <div class="flex items-center space-x-3">
-              <span
-                class="text-md text-gray-500 dark:text-gray-300 font-semibold"
-                >Modo oscuro</span
-              >
-              <div
-                class="
-                  flex
-                  items-center
-                  justify-center
-                  p-3
-                  rounded-full
-                  bg-gray-50
-                  text-black
-                  dark:bg-gray-secondary dark:text-white
-                  shadow-md
-                "
-              >
-                <svg
-                  class="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646z"
-                  />
-                </svg>
-              </div>
-            </div>
+            <ToggleDark />
           </div>
           <button
             @click="close"

@@ -1,11 +1,21 @@
 <script lang="ts" setup>
 import Navbar from "./Navbar.vue";
 import BottomNav from "./BottomNav.vue";
+import { Head } from "@vueuse/head";
+
+withDefaults(defineProps<{ title: string; description: string }>(), {
+  title: "LRV - Dashboard",
+  description: "Bienvenidos al resumen del sistema",
+});
 </script>
 
 <template>
   <div class="h-screen bg-white dark:bg-gray-custom">
-    <div
+    <Head>
+      <title>{{ title }}</title>
+      <meta name="description" :content="description" />
+    </Head>
+    <!-- <div
       class="absolute top-0 left-0 w-full overflow-hidden"
       style="height: 300px"
     >
@@ -28,10 +38,10 @@ import BottomNav from "./BottomNav.vue";
         alt="Cube 2"
         class="absolute top-0 right-0 w-full h-full"
       />
-    </div>
+    </div> -->
     <Navbar />
     <BottomNav />
-    <div class="relative z-10">
+    <div class="">
       <header>
         <slot name="header"></slot>
       </header>

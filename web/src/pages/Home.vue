@@ -3,20 +3,12 @@ import { useHead } from "@vueuse/head";
 
 import BaseLayout from "../components/layouts/BaseLayout.vue";
 import Form from "../components/claims/Form.vue";
-
-useHead({
-  title: "LRV - Registrar reclamo o queja",
-  meta: [
-    {
-      name: `description`,
-      content:
-        "Registra tus reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho",
-    },
-  ],
-});
 </script>
 <template>
-  <BaseLayout>
+  <BaseLayout
+    title="LRV - Registrar reclamo o queja"
+    description="Registra tus reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
+  >
     <div class="wrapper my-8">
       <div class="bg-blue-500 text-white p-6 rounded-lg flex">
         <div class="flex-shrink-0">

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useHead } from "@vueuse/head";
 
 import BaseLayout from "../components/layouts/BaseLayout.vue";
 import PasswordField from "../components/forms/PasswordField.vue";
@@ -14,12 +13,6 @@ import { post } from "../utils/request";
 import { useStore } from "../store";
 import { UserActionTypes } from "../store/modules/user/userAction";
 
-const siteData = reactive({
-  title: "LRV - Ingresar para continuar",
-  description:
-    "Ingresar para realiza administratar los reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho",
-});
-
 const router = useRouter();
 
 const store = useStore();
@@ -28,16 +21,6 @@ const state = reactive({
   password: "",
 });
 const message = ref<string>("");
-
-useHead({
-  title: siteData.title,
-  meta: [
-    {
-      name: `description`,
-      content: computed(() => siteData.description),
-    },
-  ],
-});
 
 async function onSubmit() {
   localStorage.removeItem("token");
@@ -58,7 +41,10 @@ async function onSubmit() {
 </script>
 
 <template>
-  <BaseLayout>
+  <BaseLayout
+    title="LRV - Ingresar para continuar"
+    description="Ingresar para realiza administratar los reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
+  >
     <div
       class="
         bg-gray-100
@@ -83,7 +69,11 @@ async function onSubmit() {
           md:w-4/12
         "
       >
-        <!-- <img src="../assets/logo.png" alt="Logo DREA" class="w-1/4 mx-auto" /> -->
+        <img
+          src="../assets/logo.png"
+          alt="Logo DREA"
+          class="w-1/6 mx-auto mb-4"
+        />
         <h4 class="text-center mb-12">Ingresar para continuar</h4>
         <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
           <template v-if="message"

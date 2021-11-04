@@ -1059,7 +1059,6 @@ const register = async () => {
 
       <div class="pt-5">
         <div class="flex justify-end space-x-4">
-          <Button type="button" @click="resetForm">Cancelar</Button>
           <Button type="submit" color="primary">Registrar</Button>
         </div>
       </div>

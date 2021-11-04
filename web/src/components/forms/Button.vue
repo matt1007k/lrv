@@ -18,6 +18,7 @@ withDefaults(defineProps<Props>(), {
       disabled:cursor-not-allowed
       flex
       items-center
+      justify-center
     "
     :class="[
       {

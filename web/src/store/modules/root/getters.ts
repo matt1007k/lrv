@@ -1,16 +1,21 @@
 import { GetterTree } from "vuex";
 import { RootState } from "./state";
 
-export enum RootActions {
+export enum RootGetterType {
   GET_ROOT = "GET_ROOT",
+  IS_DARK = "IS_DARK",
 }
 
 export type RootGettersTypes = {
-  [RootActions.GET_ROOT](state: RootState): RootState;
+  [RootGetterType.GET_ROOT](state: RootState): RootState;
+  [RootGetterType.IS_DARK](state: RootState): boolean;
 };
 
 export const getters: GetterTree<RootState, RootState> & RootGettersTypes = {
-  [RootActions.GET_ROOT]: (state: RootState) => {
+  [RootGetterType.GET_ROOT]: (state: RootState) => {
     return state;
+  },
+  [RootGetterType.IS_DARK]: (state: RootState) => {
+    return state.isDark;
   },
 };

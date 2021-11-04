@@ -1,5 +1,5 @@
 <template>
-  <div class="form__group mb-6">
+  <div class="form__group mb-6 p-0 border-none bg-transparent">
     <template v-if="label">
       <label :for="forName" class="form__label">{{ label }}</label>
     </template>

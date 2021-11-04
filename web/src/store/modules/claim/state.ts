@@ -26,6 +26,21 @@ export type ClaimState = {
   links: PaginationLinksType;
 };
 
+export const initialClaim = {
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
+  reference: "",
+  department: "",
+  province: "",
+  district: "",
+  type: "CLAIM",
+  detail: "",
+  order: "",
+  file: "",
+};
+
 export const state: ClaimState = {
   claims: [],
   links: initialPaginationLinks,
