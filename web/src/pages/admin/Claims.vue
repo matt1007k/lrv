@@ -3,6 +3,8 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 
 import AdminLayout from "../../components/layouts/AdminLayout.vue";
 import SearchAdvanced from "../../components/claims/SearchAdvanced.vue";
+import HeaderList from "../../components/claims/HeaderList.vue";
+
 import Dropdown from "../../components/overlays/Dropdown.vue";
 import DropdownItem from "../../components/overlays/DropdownItem.vue";
 import DropdownItemLink from "../../components/overlays/DropdownItemLink.vue";
@@ -20,6 +22,8 @@ const store = useStore();
 
 const queryParams = reactive({
   page: 1,
+  type: "",
+  orderBy: "desc",
 });
 
 const search = ref<string>("");
@@ -30,18 +34,28 @@ watch(search, (search, prevSearch) => {
 
 const getAll = async () => {
   try {
+    const orType = queryParams.type != "" ? { type: queryParams.type } : {};
+
     const url = "/claims";
     const { data } = await get(url, {
-      ...queryParams,
+      page: queryParams.page,
       search: search.value,
-      orderBy: "desc",
+      orderBy: queryParams.orderBy,
       perPage: 10,
-      // type: "CLAIM",
+      ...orType,
     });
     store.dispatch(ClaimActionType.SET_ALL, data);
   } catch (error) {
     console.log(error);
   }
+};
+const onFilter = (byType: string) => {
+  queryParams.type = byType;
+  getAll();
+};
+const onSort = (sort: string) => {
+  queryParams.orderBy = sort;
+  getAll();
 };
 onMounted(async () => await getAll());
 const claims = computed(() => store.getters[ClaimGetterType.GET_ALL]);
@@ -143,157 +157,9 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
     </template>
     <template v-slot:default>
       <div class="wrapper mt-6">
-        <div
-          class="
-            my-0
-            md:my-8
-            flex flex-col
-            sm:flex-row sm:justify-between
-            justify-stretch
-            items-start
-            sm:items-center
-            overflow-x-auto
-          "
-        >
-          <div class="flex items-center my-6 space-x-8 font-semibold">
-            <div class="flex items-center space-x-2 group cursor-pointer">
-              <span class="text-black dark:text-white">Todos</span>
-              <div
-                class="
-                  py-1
-                  px-2
-                  bg-blue-200
-                  text-blue-500
-                  dark:text-blue-700
-                  rounded-lg
-                "
-              >
-                {{ links.total }}
-              </div>
-            </div>
-            <div class="flex items-center space-x-2 group cursor-pointer">
-              <span
-                class="
-                  text-gray-400
-                  group-hover:text-black
-                  dark:text-gray-400 dark:group-hover:text-white
-                "
-                >Reclamos</span
-              >
-              <div
-                class="
-                  py-1
-                  px-2
-                  bg-gray-200
-                  dark:bg-gray-secondary
-                  text-gray-400
-                  rounded-lg
-                "
-              >
-                12
-              </div>
-            </div>
-            <div class="flex items-center space-x-2 group cursor-pointer">
-              <span
-                class="
-                  text-gray-400
-                  group-hover:text-black
-                  dark:text-gray-400 dark:group-hover:text-white
-                "
-                >Quejas</span
-              >
-              <div
-                class="
-                  py-1
-                  px-2
-                  bg-gray-200
-                  dark:bg-gray-secondary
-                  text-gray-400
-                  rounded-lg
-                "
-              >
-                20
-              </div>
-            </div>
-          </div>
-          <Dropdown class="w-full md:w-auto">
-            <template v-slot:trigger>
-              <div
-                class="
-                  mb-4
-                  flex
-                  justify-between
-                  md:justify-end
-                  items-center
-                  w-full
-                  sm:w-auto
-                "
-              >
-                <span class="font-semibold text-gray-400 mr-3"
-                  >Ordernar por:</span
-                >
-                <div
-                  class="
-                    flex
-                    items-center
-                    cursor-pointer
-                    py-3
-                    px-3
-                    sm:py-3 sm:px-5
-                    bg-white
-                    hover:bg-gray-50
-                    dark:bg-gray-secondary
-                    dark:hover:bg-gray-secondary
-                    dark:hover:bg-opacity-80
-                    shadow-md
-                    rounded-lg
-                    md:rounded-full
-                  "
-                >
-                  <svg
-                    class="w-6 h-6 text-black dark:text-white block md:hidden"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 4h13M3 8h9m-9 4h6m4 0 4-4m0 0 4 4m-4-4v12"
-                    />
-                  </svg>
-                  <span class="hidden md:flex items-center">
-                    <span class="font-medium mr-3 text-black dark:text-white"
-                      >Recientes</span
-                    >
-                    <svg
-                      class="w-6 h-6 text-gray-500 dark:text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="m19 9-7 7-7-7"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </template>
-            <template v-slot:content>
-              <DropdownItem>Recientes</DropdownItem>
-              <DropdownItem>Antiguos</DropdownItem>
-            </template>
-          </Dropdown>
-        </div>
+        <HeaderList @onFilter="onFilter" @onSort="onSort" />
 
-        <div class="mb-10" style="min-height: 500px">
+        <div class="mb-10 z-10" style="min-height: 500px">
           <div class="w-full mt-6">
             <div
               class="
@@ -381,7 +247,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
               </div>
             </div>
 
-            <template v-if="claims.length > 0">
+            <template v-if="!!claims && claims.length > 0">
               <div
                 class="
                   w-full

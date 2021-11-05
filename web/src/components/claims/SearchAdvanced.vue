@@ -44,14 +44,7 @@
           />
         </svg>
       </div>
-      <!-- <transition
-        enter-active-class="transform-gpu"
-        enter-class="opacity-0 -translate-x-full"
-        enter-to-class="opacity-100 translate-x-0"
-        leave-active-class="absolute transform-gpu"
-        leave-class="opacity-100 translate-x-0"
-        leave-to-class="opacity-0 -translate-x-full"
-      > -->
+
       <div class="w-auto">
         <div
           class="
@@ -86,165 +79,178 @@
             >Filtrar</span
           >
         </div>
-        <div
-          class="
-            fixed
-            inset-0
-            bg-black bg-opacity-20
-            flex
-            items-stretch
-            justify-end
-            z-90
-          "
-          v-show="isContentShow"
+        <transition
+          enter-active-class="transition ease-out duration-200"
+          enter-from-class="transform opacity-0 scale-95"
+          enter-to-class="transform opacity-100 scale-100"
+          leave-active-class="transition ease-in duration-75"
+          leave-from-class="transform opacity-100 scale-100"
+          leave-to-class="transform opacity-0 scale-95"
         >
           <div
             class="
-              bg-white
-              dark:bg-gray-custom
-              w-full
-              sm:w-4/6
-              md:w-3/12
-              h-screen
-              overflow-y-auto
-              p-6
+              fixed
+              z-10
+              inset-0
+              bg-black bg-opacity-20
+              flex
+              items-stretch
+              justify-end
             "
-            v-on:blur="close"
+            v-show="isContentShow"
+            @click="isContentShow = false"
           >
-            <div class="flex justify-between items-center">
-              <h4>Filtro avanzado</h4>
-              <svg
-                class="
-                  w-6
-                  h-6
-                  text-gray-400
-                  hover:text-gray-500
-                  dark:hover:text-gray-300
-                  cursor-pointer
-                "
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                @click="close"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            </div>
-            <div class="mt-8">
-              <form @submit.prevent="onFilter">
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="col-span-1">
-                    <div class="flex flex-col">
-                      <label
-                        for="date_from"
-                        class="
-                          font-semibold
-                          text-gray-600
-                          dark:text-gray-400
-                          mb-1
-                        "
-                        >Fecha de</label
-                      >
-                      <input
-                        type="date"
-                        class="
-                          py-2
-                          px-3
-                          rounded-lg
-                          border-2 border-gray-300
-                          dark:bg-gray-secondary
-                          dark:bg-opacity-50
-                          dark:placeholder-gray-400
-                          dark:text-white
-                          dark:border-gray-secondary
-                          text-sm
-                        "
-                      />
+            <div
+              class="
+                bg-white
+                dark:bg-gray-custom
+                w-full
+                sm:w-4/6
+                md:w-3/12
+                h-screen
+                overflow-y-auto
+                p-6
+              "
+              v-on:blur="close"
+            >
+              <div class="flex justify-between items-center">
+                <h5 class="text-black dark:text-white text-lg font-semibold">
+                  Filtro avanzado
+                </h5>
+                <svg
+                  class="
+                    w-6
+                    h-6
+                    text-gray-400
+                    hover:text-gray-500
+                    dark:hover:text-gray-300
+                    cursor-pointer
+                  "
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  @click="close"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
+              <div class="mt-8">
+                <form @submit.prevent="onFilter">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-1">
+                      <div class="flex flex-col">
+                        <label
+                          for="date_from"
+                          class="
+                            font-semibold
+                            text-gray-600
+                            dark:text-gray-400
+                            mb-1
+                          "
+                          >Fecha de</label
+                        >
+                        <input
+                          type="date"
+                          class="
+                            py-2
+                            px-3
+                            rounded-lg
+                            border-2 border-gray-300
+                            dark:bg-gray-secondary
+                            dark:bg-opacity-50
+                            dark:placeholder-gray-400
+                            dark:text-white
+                            dark:border-gray-secondary
+                            text-sm
+                          "
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-span-1">
+                      <div class="flex flex-col">
+                        <label
+                          for="date_from"
+                          class="
+                            font-semibold
+                            text-gray-600
+                            dark:text-gray-400
+                            mb-1
+                          "
+                          >Fecha a</label
+                        >
+                        <input
+                          type="date"
+                          class="
+                            py-2
+                            px-3
+                            rounded-lg
+                            border-2 border-gray-300
+                            dark:bg-gray-secondary
+                            dark:bg-opacity-50
+                            dark:placeholder-gray-400
+                            dark:text-white
+                            dark:border-gray-secondary
+                            text-sm
+                          "
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <div class="col-span-1">
-                    <div class="flex flex-col">
-                      <label
-                        for="date_from"
-                        class="
-                          font-semibold
-                          text-gray-600
-                          dark:text-gray-400
-                          mb-1
-                        "
-                        >Fecha a</label
-                      >
-                      <input
-                        type="date"
-                        class="
-                          py-2
-                          px-3
-                          rounded-lg
-                          border-2 border-gray-300
-                          dark:bg-gray-secondary
-                          dark:bg-opacity-50
-                          dark:placeholder-gray-400
-                          dark:text-white
-                          dark:border-gray-secondary
-                          text-sm
-                        "
-                      />
-                    </div>
+                  <div
+                    class="flex items-center justify-between mt-12 space-x-4"
+                  >
+                    <button
+                      class="
+                        py-3
+                        px-4
+                        font-semibold
+                        bg-gray-100
+                        hover:bg-gray-200
+                        dark:bg-gray-secondary
+                        dark:hover:bg-opacity-80
+                        dark:text-gray-300
+                        dark:hover:text-white
+                        transition-all
+                        duration-300
+                        w-full
+                        rounded-lg
+                      "
+                      type="button"
+                    >
+                      Limpiar
+                    </button>
+                    <button
+                      class="
+                        py-3
+                        px-4
+                        font-semibold
+                        bg-blue-500
+                        hover:bg-blue-600
+                        text-blue-50
+                        disabled:bg-blue-300 disabled:cursor-pointer
+                        w-full
+                        rounded-lg
+                      "
+                      type="submit"
+                      :disabled="disabled"
+                    >
+                      Aplicar
+                    </button>
                   </div>
-                </div>
-
-                <div class="flex items-center justify-between mt-12 space-x-4">
-                  <button
-                    class="
-                      py-3
-                      px-4
-                      font-semibold
-                      bg-gray-100
-                      hover:bg-gray-200
-                      dark:bg-gray-secondary
-                      dark:hover:bg-opacity-80
-                      dark:text-gray-300
-                      dark:hover:text-white
-                      transition-all
-                      duration-300
-                      w-full
-                      rounded-lg
-                    "
-                    type="button"
-                  >
-                    Limpiar
-                  </button>
-                  <button
-                    class="
-                      py-3
-                      px-4
-                      font-semibold
-                      bg-blue-500
-                      hover:bg-blue-600
-                      text-blue-50
-                      disabled:bg-blue-300 disabled:cursor-pointer
-                      w-full
-                      rounded-lg
-                    "
-                    type="submit"
-                    :disabled="disabled"
-                  >
-                    Aplicar
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
-      <!-- </transition> -->
     </div>
   </div>
 </template>

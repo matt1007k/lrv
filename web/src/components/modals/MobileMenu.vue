@@ -44,7 +44,7 @@ function logOut() {
 </script>
 
 <template>
-  <div class="fixed z-50 left-0 right-0 bottom-0" v-show="isOpen">
+  <div class="fixed left-0 right-0 bottom-0" v-show="isOpen">
     <div class="bg-white dark:bg-gray-custom w-full h-screen">
       <div class="flex flex-col items-center justify-between p-20 h-full">
         <div class="flex flex-col items-center">

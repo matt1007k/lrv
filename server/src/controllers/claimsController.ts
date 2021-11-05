@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Prisma } from "@prisma/client";
+import { Prisma, Type } from "@prisma/client";
 import { randomInt } from "crypto";
 
 import { QueryRequestTypes } from "../types/QueryRequestTypes";
@@ -73,5 +73,25 @@ export const getAll = async (req: MyRequest, res: Response) => {
     });
   } catch (error) {
     res.status(400).json(error);
+  }
+};
+
+export const detailCount = async (req: MyRequest, res: Response) => {
+  try {
+    const total = await prisma.claim.count();
+    const claims: any[] = await prisma.$queryRaw(
+      Prisma.sql`SELECT count(*) as total FROM Claim WHERE type=${Type.CLAIM}`
+    );
+    const complains: any[] = await prisma.$queryRaw(
+      Prisma.sql`SELECT count(*) as total FROM Claim WHERE type=${Type.COMPLAIN}`
+    );
+
+    res.status(200).json({
+      total,
+      totalClaims: claims[0].total,
+      totalComplains: complains[0].total,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

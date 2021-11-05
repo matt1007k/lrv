@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
-import { useStore } from "../store";
+import store from "../store";
 import { UserGettersTypes } from "../store/modules/user/userGetter";
 
 const routes: Array<RouteRecordRaw> = [
@@ -35,7 +35,6 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const store = useStore();
   if (
     to.matched.some((record) => record.meta.requireLogin) &&
     !store.getters[UserGettersTypes.IS_AUTHENTICATED]

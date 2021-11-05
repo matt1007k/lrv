@@ -1,4 +1,4 @@
-import { createStore } from "vuex";
+import { createStore, useStore as VuexStore } from "vuex";
 
 import root from "./modules/root";
 
@@ -20,6 +20,6 @@ export type Store = UserStoreModuleTypes<Pick<StoreModules, "userModule">> &
   ClaimStoreModuleTypes<Pick<StoreModules, "claimModule">>;
 
 export function useStore(): Store {
-  return store as Store;
+  return VuexStore() as Store;
 }
 export default store;

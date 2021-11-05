@@ -2,7 +2,7 @@ import { verify } from "jsonwebtoken";
 import { NextFunction, Response } from "express";
 import { User } from "@prisma/client";
 import { MyRequest } from "../types/MyRequestTypes";
-import config from "../helpers/config";
+import { SECRET_KEY } from "../helpers/config";
 
 export const isAuthenticated = async (
   req: MyRequest,
@@ -11,7 +11,7 @@ export const isAuthenticated = async (
 ) => {
   const token = req.get("Authorization")?.split(" ")[1] || "";
   try {
-    const decoded = await verify(token, config.SECRET_KEY);
+    const decoded = await verify(token, SECRET_KEY);
     req.userId = (decoded as User).id;
     next();
   } catch (error) {

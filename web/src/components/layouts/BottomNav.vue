@@ -14,11 +14,12 @@ const onClose = () => {
 </script>
 
 <template>
-  <nav
+  <div
     class="
       block
       md:hidden
-      fixed
+      absolute
+      z-50
       bottom-5
       right-5
       left-5
@@ -28,7 +29,6 @@ const onClose = () => {
       p-3
       rounded-full
     "
-    style="z-index: 15"
   >
     <div class="flex items-center justify-between w-full">
       <router-link
@@ -134,5 +134,5 @@ const onClose = () => {
       </button>
     </div>
     <MobileMenu :isOpen="isOpen" @onClose="onClose" />
-  </nav>
+  </div>
 </template>
