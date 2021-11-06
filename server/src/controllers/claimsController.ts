@@ -95,3 +95,18 @@ export const detailCount = async (req: MyRequest, res: Response) => {
     console.log(error);
   }
 };
+
+export const detail = async (req: MyRequest, res: Response) => {
+  try {
+    const id = req.params.id;
+    const claim = await prisma.claim.findFirst({
+      where: { id: parseInt(id) },
+    });
+
+    if (!claim) return res.status(404).json({ message: "No claim found" });
+
+    res.status(200).json({ ...claim });
+  } catch (error) {
+    console.log(error);
+  }
+};

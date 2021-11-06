@@ -938,7 +938,7 @@ const register = async () => {
                   Archivo adjunto
                 </h6>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">
-                  El archivo no debe exceder los 5MB.
+                  Si desea subir un archivo, no debe exceder los 5MB.
                 </p>
               </div>
               <div class="mt-4 sm:mt-0 sm:col-span-2">

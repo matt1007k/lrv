@@ -166,7 +166,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
       <div class="wrapper mt-6">
         <HeaderList @onFilter="onFilter" @onSort="onSort" />
 
-        <div class="mb-10 z-10" style="min-height: 500px">
+        <div class="mb-10 z-10 h-full">
           <div class="w-full mt-6">
             <div
               class="

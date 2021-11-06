@@ -18,7 +18,7 @@ const onClose = () => {
     class="
       block
       md:hidden
-      absolute
+      fixed
       z-50
       bottom-5
       right-5
@@ -75,8 +75,8 @@ const onClose = () => {
         @endif -->
       </router-link>
 
-      <a
-        href="#"
+      <router-link
+        to="/"
         class="
           p-3
           flex
@@ -101,7 +101,7 @@ const onClose = () => {
             clip-rule="evenodd"
           />
         </svg>
-      </a>
+      </router-link>
 
       <button
         class="

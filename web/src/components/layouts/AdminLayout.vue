@@ -41,7 +41,7 @@ withDefaults(defineProps<{ title: string; description: string }>(), {
     </div> -->
     <Navbar />
     <BottomNav />
-    <div class="">
+    <div>
       <header>
         <slot name="header"></slot>
       </header>

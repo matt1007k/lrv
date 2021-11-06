@@ -10,3 +10,7 @@ export const getStatusHumanize = (status: string | undefined): string => {
 export const getAddressInline = (claim: Claim): string => {
   return `${claim.department}, ${claim.district}, ${claim.address}`;
 };
+
+export const getFileName = (claim: Claim): string => {
+  return (!!claim.file && claim.file.split("/")[4]) || "";
+};

@@ -51,4 +51,13 @@ describe("claim detail", () => {
     expect(body.totalClaims).toBeDefined();
     expect(body.totalComplains).toBeDefined();
   });
+  it("should get detail of claim", async () => {
+    const firstClaim = await prisma.claim.findFirst({});
+
+    const { body } = await api
+      .get("/api/claims/detail/" + firstClaim?.id)
+      .expect(200);
+
+    expect(body.fullName).toBe(claims[0].fullName);
+  });
 });
