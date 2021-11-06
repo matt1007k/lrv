@@ -3,11 +3,16 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import AdminLayout from "../../../components/layouts/AdminLayout.vue";
+
 import { Claim } from "../../../store/modules/claim/state";
 
 const route = useRoute();
 const type = route.params.type;
 const id = route.params.id;
+
+const title = type === "claim" ? "del reclamo" : "de la queja";
+const subtitle =
+  type === "claim" ? "del reclamo regitrado." : "de la queja registrada.";
 
 const claim = ref<Claim>();
 
@@ -23,10 +28,8 @@ onMounted(() => getDetail());
 </script>
 <template>
   <AdminLayout
-    :title="`LRV - Detalle ${type === 'claim' ? 'del reclamo' : 'de la queja'}`"
-    :description="`Mira los detalle ${
-      type === 'claim' ? 'del reclamo regitrado.' : 'de la queja registrada.'
-    }`"
+    :title="`LRV - Detalle ${title}`"
+    :description="`Mira los detalle ${subtitle}`"
   >
     <template v-slot:header>
       <div class="wrapper mt-0 md:mt-6">
@@ -61,14 +64,14 @@ onMounted(() => getDetail());
           <div>
             <h4>Detalle</h4>
             <p class="text-gray-500 dark:text-gray-400 text-base">
-              {{ type === "claim" ? "del reclamo" : "de la queja" }}
+              {{ title }}
             </p>
           </div>
         </div>
       </div>
     </template>
     <template v-slot:content>
-      <h4>{{ claim.fullName }}</h4>
+      <h4>{{ claim?.fullName }}</h4>
     </template>
   </AdminLayout>
 </template>

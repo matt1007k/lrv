@@ -10,6 +10,8 @@ import usersRoute from "./routes/usersRoute";
 import uploadsRoute from "./routes/uploadsRoute";
 import storagesRoute from "./routes/storagesRoute";
 
+import { errorHandler, notFound } from "./middlewares/apiErrors";
+
 app.use(express.json());
 app.use(
   cors({
@@ -22,6 +24,9 @@ app.use("/api/claims", claimsRoute);
 app.use("/api/uploads", uploadsRoute);
 
 app.use("/storage", storagesRoute);
+
+app.use(notFound);
+app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "test") {
   const server = app.listen(PORT, () =>
