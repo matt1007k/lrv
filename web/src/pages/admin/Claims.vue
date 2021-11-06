@@ -4,6 +4,7 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import AdminLayout from "../../components/layouts/AdminLayout.vue";
 import SearchAdvanced from "../../components/claims/SearchAdvanced.vue";
 import HeaderList from "../../components/claims/HeaderList.vue";
+import Pagination from "../../components/navigations/Pagination.vue";
 
 import Dropdown from "../../components/overlays/Dropdown.vue";
 import DropdownItem from "../../components/overlays/DropdownItem.vue";
@@ -41,7 +42,7 @@ const getAll = async () => {
       page: queryParams.page,
       search: search.value,
       orderBy: queryParams.orderBy,
-      perPage: 10,
+      perPage: 15,
       ...orType,
     });
     store.dispatch(ClaimActionType.SET_ALL, data);
@@ -57,14 +58,20 @@ const onSort = (sort: string) => {
   queryParams.orderBy = sort;
   getAll();
 };
-onMounted(async () => await getAll());
+const onPage = (page: number) => {
+  queryParams.page = page;
+  getAll();
+};
+onMounted(async () => {
+  await getAll();
+});
 const claims = computed(() => store.getters[ClaimGetterType.GET_ALL]);
 const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
 </script>
 <template>
   <AdminLayout
     title="LRV - Libro de reclamos"
-    description="Mira todas los quejas y reclamos de los personas."
+    description="Mira todas los quejas y reclamos registrados."
   >
     <template v-slot:header>
       <div class="wrapper mt-0 md:mt-6">
@@ -378,13 +385,21 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                       </svg>
                     </template>
                     <template v-slot:content>
-                      <DropdownItemLink href="/admin"
+                      <DropdownItemLink
+                        :href="`/detail/${claim.type.toLocaleLowerCase()}/${
+                          claim.id
+                        }`"
                         >Ver detalle</DropdownItemLink
                       >
                     </template>
                   </Dropdown>
                 </div>
               </div>
+              <Pagination
+                v-if="!!links.lastPage && links.lastPage > 1"
+                :links="links"
+                @onPage="onPage"
+              />
             </template>
           </div>
         </div>

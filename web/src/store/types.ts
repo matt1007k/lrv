@@ -1,5 +1,5 @@
 export type PaginationLinksType = {
-  page: number | null;
+  page: number;
   perPage: number | null;
   lastPage: number | null;
   total: number;

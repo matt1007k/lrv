@@ -27,6 +27,14 @@ const routes: Array<RouteRecordRaw> = [
       requireLogin: true,
     },
   },
+  {
+    path: "/detail/:type/:id",
+    name: "Detail",
+    component: () => import("../pages/admin/claims/Show.vue"),
+    meta: {
+      requireLogin: true,
+    },
+  },
 ];
 
 const router = createRouter({

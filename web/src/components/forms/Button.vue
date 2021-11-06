@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 interface Props {
-  color?: string | "default" | "primary" | "danger";
+  color?: string | "default" | "primary" | "danger" | "secondary";
+  size?: string | "sm" | "lg" | "md";
 }
 withDefaults(defineProps<Props>(), {
   color: "default",
+  size: "md",
 });
 </script>
 <template>
@@ -32,6 +34,10 @@ withDefaults(defineProps<Props>(), {
       {
         'bg-gray-200 hover:bg-gray-300 dark:bg-gray-custom dark:bg-opacity-50 dark:hover:bg-opacity-40 dark:text-white text-black disabled:bg-gray-400 disabled:text-gray-500':
           color === 'default',
+      },
+      {
+        'bg-gray-100 hover:bg-gray-200 dark:bg-gray-secondary dark:bg-opacity-50 dark:hover:bg-opacity-40 dark:text-white text-black disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-light dark:disabled:text-gray-300 dark:disabled:hover:bg-gray-secondary':
+          color === 'secondary',
       },
     ]"
   >
