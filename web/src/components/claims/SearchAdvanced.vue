@@ -205,6 +205,10 @@
                             text-sm
                           "
                         />
+                        <MessageError
+                          :show="!!errors.dateTo"
+                          :text="errors.dateTo"
+                        />
                       </div>
                     </div>
                   </div>
@@ -294,10 +298,10 @@ const isFormEmpty = computed(() => {
   if (!form.dateFrom) return true;
   if (!form.dateTo) return true;
   if (form.dateFrom > form.dateTo) {
-    errors.value = { dateFrom: "La (fecha de) es mayor a la (fecha a)" };
-    console.log(errors.value);
+    errors.value = { dateTo: "La (fecha a) debe ser mayor a la (fecha de)" };
     return true;
   }
+  errors.value = {};
   return false;
 });
 

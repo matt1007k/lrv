@@ -408,6 +408,45 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                 @onPage="onPage"
               />
             </template>
+            <template v-else>
+              <div class="py-8 flex items-center justify-center">
+                <div class="flex flex-col items-center justify-center">
+                  <img
+                    src="../../assets/empty.png"
+                    class="bg-transparent dark:bg-gray-100 rounded-full p-4"
+                  />
+                  <template v-if="search != '' && links.total == 0">
+                    <h4
+                      class="font-medium text-gray-400 dark:text-gray-300 mt-5"
+                    >
+                      Lo sentimos, sin resultados de búsqueda con:
+                    </h4>
+                    <h4 class="font-semibold text-gray-700 dark:text-white">
+                      {{ search }}
+                    </h4>
+                  </template>
+                  <template v-else>
+                    <h4
+                      class="font-medium text-gray-400 dark:text-gray-300 mt-5"
+                    >
+                      Lo sentimos, no hay ningún registro.
+                    </h4>
+                    <router-link
+                      to="/"
+                      class="
+                        text-blue-500
+                        dark:text-white
+                        font-medium
+                        text-lg
+                        hover:underline
+                        mt-5
+                      "
+                      >Registrar queja</router-link
+                    >
+                  </template>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
