@@ -26,10 +26,18 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: MyRequest, res: Response) => {
-  const { orderBy, type, search } = req.query as QueryRequestTypes;
+  const { orderBy, type, search, filter } = req.query as QueryRequestTypes;
 
   try {
-    const or: Prisma.ClaimWhereInput = search
+    const orRangeDate: Prisma.ClaimWhereInput = filter
+      ? {
+          createdAt: {
+            gte: new Date(filter.rangeDate.split(",")[0]),
+            lt: new Date(filter.rangeDate.split(",")[1]),
+          },
+        }
+      : {};
+    const orSearch: Prisma.ClaimWhereInput = search
       ? {
           OR: [
             { fullName: { contains: search } },
@@ -41,7 +49,8 @@ export const getAll = async (req: MyRequest, res: Response) => {
       : {};
     const whereClaim = {
       type,
-      ...or,
+      ...orSearch,
+      ...orRangeDate,
     };
 
     const total = await prisma.claim.count({

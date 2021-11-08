@@ -25,6 +25,7 @@ const queryParams = reactive({
   page: 1,
   type: "",
   orderBy: "desc",
+  filter: "",
 });
 
 const search = ref<string>("");
@@ -36,13 +37,15 @@ watch(search, (search, prevSearch) => {
 const getAll = async () => {
   try {
     const orType = queryParams.type != "" ? { type: queryParams.type } : {};
+    const filter = queryParams.filter;
 
-    const url = "/claims";
+    const url = `/claims`;
     const { data } = await get(url, {
       page: queryParams.page,
       search: search.value,
       orderBy: queryParams.orderBy,
       perPage: 15,
+      filter,
       ...orType,
     });
     store.dispatch(ClaimActionType.SET_ALL, data);
@@ -60,6 +63,10 @@ const onSort = (sort: string) => {
 };
 const onPage = (page: number) => {
   queryParams.page = page;
+  getAll();
+};
+const onFilterAdvanced = (filter: string) => {
+  queryParams.filter = filter;
   getAll();
 };
 onMounted(async () => {
@@ -159,7 +166,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
             </template>
           </Dropdown>
         </div>
-        <SearchAdvanced v-model="search" />
+        <SearchAdvanced v-model="search" @onFilterAdvanced="onFilterAdvanced" />
       </div>
     </template>
     <template v-slot:default>

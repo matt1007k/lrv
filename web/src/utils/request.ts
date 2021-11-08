@@ -7,14 +7,24 @@ interface OptionsHeaders {
   headers?: Headers;
 }
 
-const request = (url: string, params = {}, method: string) => {
+const request = (
+  url: string,
+  params: Record<string, string> = {},
+  method: string
+) => {
   const options: OptionsHeaders = {
     method,
     headers: headersDefault(),
   };
 
   if (method === "GET") {
-    url += "?" + new URLSearchParams(params).toString();
+    if (params.filter) {
+      const { filter, ...otherParams } = params;
+      url +=
+        "?" + new URLSearchParams(otherParams).toString() + "&" + params.filter;
+    } else {
+      url += "?" + new URLSearchParams(params).toString();
+    }
   } else {
     options.body = JSON.stringify(params);
   }

@@ -174,6 +174,20 @@ describe("claims", () => {
 
     expect(containPhones).toContain("965445231");
   });
+
+  it("can filter clain by range date", async () => {
+    const { body } = await api
+      .get(`/api/claims?filter[rangeDate]=2021-09-23,2021-10-02`)
+      .expect(200);
+
+    const data = body.data as Prisma.ClaimCreateInput[];
+
+    const containPhones = data.map(
+      (claim: Prisma.ClaimCreateInput) => claim.phone
+    );
+
+    expect(containPhones).toContain("976543234");
+  });
 });
 
 // beforeAll(async () => {

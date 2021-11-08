@@ -197,7 +197,7 @@ const register = async () => {
                   type="text"
                   name="first-name"
                   id="first-name"
-                  autocomplete="given-name"
+                  autocomplete="name"
                   class="
                     max-w-lg
                     block

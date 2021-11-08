@@ -6,4 +6,5 @@ export interface QueryRequestTypes {
   page?: number;
   type?: Type;
   search?: string;
+  filter?: Record<string, string>;
 }

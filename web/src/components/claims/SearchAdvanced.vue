@@ -90,15 +90,14 @@
           <div
             class="
               fixed
-              z-10
               inset-0
               bg-black bg-opacity-20
               flex
               items-stretch
               justify-end
             "
+            style="z-index: 50"
             v-show="isContentShow"
-            @click="isContentShow = false"
           >
             <div
               class="
@@ -111,7 +110,7 @@
                 overflow-y-auto
                 p-6
               "
-              v-on:blur="close"
+              @blur="close"
             >
               <div class="flex justify-between items-center">
                 <h5 class="text-black dark:text-white text-lg font-semibold">
@@ -156,6 +155,7 @@
                           >Fecha de</label
                         >
                         <input
+                          v-model="form.dateFrom"
                           type="date"
                           class="
                             py-2
@@ -169,6 +169,10 @@
                             dark:border-gray-secondary
                             text-sm
                           "
+                        />
+                        <MessageError
+                          :show="!!errors.dateFrom"
+                          :text="errors.dateFrom"
                         />
                       </div>
                     </div>
@@ -186,6 +190,7 @@
                           >Fecha a</label
                         >
                         <input
+                          v-model="form.dateTo"
                           type="date"
                           class="
                             py-2
@@ -224,6 +229,7 @@
                         rounded-lg
                       "
                       type="button"
+                      @click="clearForm"
                     >
                       Limpiar
                     </button>
@@ -240,7 +246,7 @@
                         rounded-lg
                       "
                       type="submit"
-                      :disabled="disabled"
+                      :disabled="isFormEmpty"
                     >
                       Aplicar
                     </button>
@@ -256,28 +262,56 @@
 </template>
 
 <script lang="ts" setup>
-// import { useField } from "vee-validate";
-import { ref, watchEffect } from "vue";
+import { ref, reactive, computed } from "vue";
+import MessageError from "../forms/MessageError.vue";
 const isContentShow = ref<boolean>(false);
 defineProps<{ modelValue: string }>();
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits<{
+  (e: "update:modelValue", value: string): void;
+  (e: "onFilterAdvanced", value: string): void;
+}>();
 
 const updateSearch = (e: Event) => {
   emit("update:modelValue", (e.target as HTMLInputElement).value);
 };
 
-// const { value: dateFrom } = useField("date_from");
-
 const open = () => (isContentShow.value = true);
 const close = () => (isContentShow.value = false);
-const onFilter = () => console.log("etsst");
 
-const disabled = ref<boolean>(true);
+type FormState = {
+  dateFrom: string;
+  dateTo: string;
+};
 
-watchEffect(() => {
-  // if (!dateFrom.value) {
-  //   disabled.value = true;
-  // }
-  // disabled.value = false;
+const form = reactive<FormState>({
+  dateFrom: "",
+  dateTo: "",
 });
+
+const errors = ref<Record<string, string>>({});
+
+const isFormEmpty = computed(() => {
+  if (!form.dateFrom) return true;
+  if (!form.dateTo) return true;
+  if (form.dateFrom > form.dateTo) {
+    errors.value = { dateFrom: "La (fecha de) es mayor a la (fecha a)" };
+    console.log(errors.value);
+    return true;
+  }
+  return false;
+});
+
+const clearForm = () => {
+  form.dateFrom = "";
+  form.dateTo = "";
+  errors.value = {};
+  emit("onFilterAdvanced", "");
+  close();
+};
+
+const onFilter = () => {
+  const filterForm = `filter[rangeDate]=${form.dateFrom},${form.dateTo}`;
+  emit("onFilterAdvanced", filterForm);
+  close();
+};
 </script>
