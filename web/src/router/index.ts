@@ -28,6 +28,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../pages/admin/Profile.vue"),
+    meta: {
+      requireLogin: true,
+    },
+  },
+  {
     path: "/detail/:type/:id",
     name: "Detail",
     component: () => import("../pages/admin/claims/Show.vue"),

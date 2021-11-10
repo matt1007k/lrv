@@ -91,7 +91,11 @@ async function onSubmit() {
             inline
             required
           />
-          <PasswordField v-model="state.password" />
+          <PasswordField
+            v-model="state.password"
+            placeholder="Contraseña"
+            class="mb-3"
+          />
           <a
             href="#"
             class="text-blue-500 dark:text-white font-medium underline -mt-8"

@@ -4,7 +4,7 @@ import BottomNav from "./BottomNav.vue";
 import { Head } from "@vueuse/head";
 
 withDefaults(defineProps<{ title: string; description: string }>(), {
-  title: "LRV - Dashboard",
+  title: "Dashboard",
   description: "Bienvenidos al resumen del sistema",
 });
 </script>
@@ -12,7 +12,7 @@ withDefaults(defineProps<{ title: string; description: string }>(), {
 <template>
   <div class="h-screen bg-white dark:bg-gray-custom">
     <Head>
-      <title>{{ title }}</title>
+      <title>LRV - {{ title }}</title>
       <meta name="description" :content="description" />
     </Head>
     <!-- <div
@@ -45,7 +45,7 @@ withDefaults(defineProps<{ title: string; description: string }>(), {
       <header>
         <slot name="header"></slot>
       </header>
-      <main>
+      <main class="bg-white dark:bg-gray-custom pb-10 md:mb-8">
         <slot></slot>
       </main>
     </div>

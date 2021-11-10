@@ -1,7 +1,9 @@
 <template>
   <div class="form__group mb-6 p-0 border-none bg-transparent">
     <template v-if="label">
-      <label :for="forName" class="form__label">{{ label }}</label>
+      <label :for="forId" class="form__label font-medium mb-2">{{
+        label
+      }}</label>
     </template>
     <div class="relative">
       <input
@@ -55,7 +57,15 @@
         </template>
         <template v-if="icon === 'user'">
           <svg
-            class="w-6 h-6 absolute top-3 right-3 text-gray-400"
+            class="
+              w-6
+              h-6
+              absolute
+              top-3
+              right-3
+              text-gray-400
+              dark:text-gray-300
+            "
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -103,5 +113,5 @@ const updateText = (e: Event) => {
 };
 const attrs = useAttrs();
 const iconText = null;
-const forName = attrs.name as string;
+const forId = attrs.id as string;
 </script>

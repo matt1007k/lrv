@@ -42,7 +42,12 @@ export const claimErrors = {
 };
 
 export const userErrors = {
+  name: {
+    required: "El nombre es obligatorio",
+  },
   email: {
+    required: "El correo eletrónico es obligatorio",
+    isEmail: "El correo eletrónico no es validó",
     hasExit: "El correo eletrónico ya ha sido tomado",
     wrongCredentials: "Las credenciales no coinciden con nuestros registros",
   },

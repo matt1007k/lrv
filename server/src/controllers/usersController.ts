@@ -68,3 +68,75 @@ export const detail = async (req: MyRequest, res: Response) => {
     // res.status(400).json(error);
   }
 };
+
+export const changePassword = async (req: MyRequest, res: Response) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body as {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  };
+
+  try {
+    if (newPassword != confirmPassword)
+      return res
+        .status(422)
+        .send({ errors: { confirmPassword: "Las contraseñas no coinciden" } });
+
+    const userExists = await prisma.user.findFirst({
+      where: { id: req.userId },
+    });
+    !userExists && res.status(404).send({ message: "El usuario no existe" });
+
+    const checkPassword = await verify(
+      userExists?.password as string,
+      currentPassword
+    );
+    if (!checkPassword) {
+      return res.status(422).send({
+        errors: { currentPassword: "La contraseña actual no es correcta." },
+      });
+    }
+
+    const passwordHash = await hash(newPassword);
+
+    const user = await prisma.user.update({
+      where: { id: req.userId },
+      data: {
+        password: passwordHash,
+      },
+    });
+
+    if (user) {
+      const { password, ...others } = user;
+      res.status(200).json(others);
+    }
+  } catch (error) {
+    // res.status(400).json(error);
+  }
+};
+
+export const changeInfo = async (req: MyRequest, res: Response) => {
+  const { email, name } = req.body as {
+    email: string;
+    name: string;
+  };
+
+  try {
+    const user = await prisma.user.update({
+      where: { id: req.userId },
+      data: {
+        email,
+        name,
+      },
+    });
+
+    !user && res.status(404).json({ message: "El usuario no existe" });
+
+    if (user) {
+      const { password, ...others } = user;
+      res.status(200).json(others);
+    }
+  } catch (error) {
+    // res.status(400).json(error);
+  }
+};

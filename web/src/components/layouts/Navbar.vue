@@ -164,7 +164,7 @@ const logOut = () => {
           </template>
           <template v-slot:content>
             <DropdownItemLink
-              href="/admin"
+              href="/profile"
               class="
                 py-3
                 px-3

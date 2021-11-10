@@ -1,8 +1,7 @@
 <template>
-  <div class="form__group mb-6 relative">
+  <div class="form__group relative">
     <input
       type="password"
-      placeholder="Contraseña"
       class="
         relative
         py-3
@@ -13,7 +12,7 @@
         placeholder-gray-500
         text-black
         dark:bg-gray-custom
-        dark:bg-opacity-80
+        dark:bg-opacity-60
         dark:border-gray-custom
         dark:border-opacity-80
         dark:placeholder-gray-300
@@ -25,6 +24,7 @@
       ref="passwordInput"
       :value="modelValue"
       @input="updatePassword"
+      v-bind="attrs"
     />
     <template v-if="show">
       <svg
@@ -92,12 +92,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, useAttrs } from "vue";
 
 defineProps<{ modelValue: string }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: string): void;
 }>();
+
+const attrs = useAttrs();
 
 const updatePassword = (e: Event) => {
   emit("update:modelValue", (e.target as HTMLInputElement).value);

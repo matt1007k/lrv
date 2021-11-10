@@ -3,7 +3,7 @@ import NavbarPage from "./NavbarPage.vue";
 import { Head } from "@vueuse/head";
 
 withDefaults(defineProps<{ title: string; description: string }>(), {
-  title: "LRV - Inicio",
+  title: "Inicio",
   description: "Bienvenidos al inicio de libro de reclamaciones",
 });
 
@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
 <template>
   <div class="bg-gray-100 dark:bg-gray-custom">
     <Head>
-      <title>{{ title }}</title>
+      <title>LRV - {{ title }}</title>
       <meta name="description" :content="description" />
     </Head>
     <NavbarPage />

@@ -67,4 +67,45 @@ describe("User Authentication", () => {
     expect(body.name).toBe(user.name);
     expect(body.email).toBe(user.email);
   });
+
+  it("should auth user update your password", async () => {
+    await api
+      .post("/api/users/register")
+      .send(Object.assign(user, { email: "max123@gmail.com" }));
+    const response = await api.post("/api/users/login").send({
+      email: "max123@gmail.com",
+      password: "password",
+    });
+
+    const { body } = await api
+      .post("/api/users/update-password")
+      .set("Authorization", "Bearer " + response.body.token)
+      .send({
+        currentPassword: "password",
+        newPassword: "123456",
+        confirmPassword: "123456",
+      })
+      .expect(200);
+
+    expect(body.email).toBeDefined();
+  });
+  it("should auth user update info", async () => {
+    await api.post("/api/users/register");
+    //   .send(Object.assign(user, { email: "max123@gmail.com" }));
+    // const response = await api.post("/api/users/login").send({
+    //   email: "max123@gmail.com",
+    //   password: "password",
+    // });
+
+    const { body } = await api
+      .post("/api/users/update-info")
+      // .set("Authorization", "Bearer " + response.body.token)
+      .send({
+        email: "mx32@gmail.com",
+        name: "Max update",
+      })
+      .expect(200);
+
+    expect(body.email).toBeDefined();
+  });
 });
