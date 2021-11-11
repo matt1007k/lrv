@@ -9,7 +9,7 @@ import TextField from "../forms/TextField.vue";
 
 import { useStore } from "../../store";
 import { UserMutationType } from "../../store/modules/user/userMutation";
-import { post } from "../../utils/request";
+import { get, post } from "../../utils/request";
 import { UserGettersTypes } from "../../store/modules/user/userGetter";
 
 const router = useRouter();

@@ -51,4 +51,7 @@ export const userErrors = {
     hasExit: "El correo eletrónico ya ha sido tomado",
     wrongCredentials: "Las credenciales no coinciden con nuestros registros",
   },
+  password: {
+    notEquals: "Las contraseñas no coinciden",
+  },
 };

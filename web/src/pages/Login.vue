@@ -96,10 +96,10 @@ async function onSubmit() {
             placeholder="Contraseña"
             class="mb-3"
           />
-          <a
-            href="#"
+          <router-link
+            to="/forgot-password"
             class="text-blue-500 dark:text-white font-medium underline -mt-8"
-            >Restablecer contraseña</a
+            >Restablecer contraseña</router-link
           >
 
           <Button color="primary" class="w-full mt-8">Ingresar</Button>

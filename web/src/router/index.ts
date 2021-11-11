@@ -20,6 +20,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../pages/MessageSuccess.vue"),
   },
   {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("../pages/ForgotPassword.vue"),
+  },
+  {
+    path: "/reset-password/:token",
+    name: "ResetPassword",
+    component: () => import("../pages/ResetPassword.vue"),
+  },
+  {
     path: "/admin",
     name: "Admin",
     component: () => import("../pages/admin/Claims.vue"),

@@ -5,6 +5,8 @@ import {
   detail,
   logIn,
   register,
+  forgotPassword,
+  changeResetPassword,
 } from "../controllers/usersController";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import checkForErrors from "../validators/checkForErrors";
@@ -22,6 +24,8 @@ router.post(
   userInfoValidator,
   changeInfo
 );
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", changeResetPassword);
 
 router.get("/detail/:email?", detail);
 

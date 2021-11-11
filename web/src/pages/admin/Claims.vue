@@ -77,7 +77,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
 </script>
 <template>
   <AdminLayout
-    title="LRV - Libro de reclamos"
+    title="Libro de reclamos"
     description="Mira todas los quejas y reclamos registrados."
   >
     <template v-slot:header>

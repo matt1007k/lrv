@@ -5,7 +5,7 @@ withDefaults(defineProps<{ color: "info" | "success" | "danger" }>(), {
 </script>
 <template>
   <div
-    class="p-6 flex items-center gap-2 border rounded-md font-medium"
+    class="p-4 flex items-center gap-2 border rounded-md font-medium"
     :class="`${
       (color === 'info' &&
         'bg-blue-100 text-blue-700 border-blue-400 dark:border-blue-300') ||

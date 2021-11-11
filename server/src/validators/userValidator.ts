@@ -16,3 +16,13 @@ export const userInfoValidator = [
     .isString()
     .withMessage(userErrors.name.required),
 ];
+
+export const userForgotPasswordValidator = [
+  body("name")
+    .isLength({ min: 1 })
+    .withMessage(userErrors.email.required)
+    .isString()
+    .withMessage(userErrors.email.required)
+    .isEmail()
+    .withMessage(userErrors.email.isEmail),
+];

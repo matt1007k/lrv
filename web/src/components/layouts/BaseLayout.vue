@@ -10,7 +10,7 @@ withDefaults(defineProps<{ title: string; description: string }>(), {
 const year = new Date().getFullYear();
 </script>
 <template>
-  <div class="bg-gray-100 dark:bg-gray-custom">
+  <div class="bg-gray-100 dark:bg-gray-custom h-screen">
     <Head>
       <title>LRV - {{ title }}</title>
       <meta name="description" :content="description" />
