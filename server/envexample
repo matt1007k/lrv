@@ -1,0 +1,8 @@
+DATABASE_URL="mysql://<user>:<password>@127.0.0.1:3306/<name_db>"
+TOKEN_SECRET_KEY=null
+WEB_URL=null
+
+MAIL_HOST=null
+MAIL_PORT=null
+MAIL_USERNAME=null
+MAIL_PASSWORD=null

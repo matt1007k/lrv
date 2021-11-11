@@ -5,7 +5,7 @@ withDefaults(defineProps<{ color: "info" | "success" | "danger" }>(), {
 </script>
 <template>
   <div
-    class="p-4 flex items-center gap-2 border rounded-md font-medium"
+    class="p-4 flex gap-2 border rounded-md font-medium"
     :class="`${
       (color === 'info' &&
         'bg-blue-100 text-blue-700 border-blue-400 dark:border-blue-300') ||
@@ -16,7 +16,7 @@ withDefaults(defineProps<{ color: "info" | "success" | "danger" }>(), {
     }`"
   >
     <svg
-      class="h-5 w-5"
+      class="h-6 w-6"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"

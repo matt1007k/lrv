@@ -226,7 +226,7 @@ const sortBy = (sortStr: string) => {
                 sort === "desc" ? "Recientes" : "Antiguos"
               }}</span>
               <svg
-                class="w-6 h-6 text-gray-500 dark:text-gray-400"
+                class="w-6 h-6 text-gray-500 dark:text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

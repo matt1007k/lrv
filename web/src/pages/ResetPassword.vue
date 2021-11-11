@@ -77,7 +77,7 @@ async function onSubmit() {
           md:w-4/12
         "
       >
-        <h4 class="text-center mb-12">Recuperar mi contraseña</h4>
+        <h4 class="text-center mb-6">Recuperar mi contraseña</h4>
         <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
           <Alert
             v-if="message.value != '' && message.type != ''"

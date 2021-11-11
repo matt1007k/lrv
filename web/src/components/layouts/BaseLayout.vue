@@ -19,7 +19,7 @@ const year = new Date().getFullYear();
     <header>
       <slot name="header"></slot>
     </header>
-    <main>
+    <main class="bg-gray-100 dark:bg-gray-custom pb-6">
       <slot></slot>
     </main>
     <footer

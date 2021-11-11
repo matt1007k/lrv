@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 
-import { PORT } from "./helpers/config";
+import { PORT, WEB_URL } from "./helpers/config";
 
 const app: Application = express();
 
@@ -16,7 +16,7 @@ import { errorHandler, notFound } from "./middlewares/apiErrors";
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: WEB_URL,
   })
 );
 

@@ -57,6 +57,20 @@ const isAuthenticated = computed(
           "
           >Ingresar</router-link
         >
+        <router-link
+          to="/login"
+          class="
+            bg-blue-500
+            py-3
+            px-5
+            rounded-lg
+            font-semibold
+            text-white
+            hover:text-gray-100
+            dark:text-gray-100 dark:hover:text-white
+          "
+          >Registrarse</router-link
+        >
       </template>
     </div>
   </nav>

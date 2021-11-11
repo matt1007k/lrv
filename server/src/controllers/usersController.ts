@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import { v4 } from "uuid";
 
-import { SECRET_KEY } from "../helpers/config";
+import { SECRET_KEY, WEB_URL } from "../helpers/config";
 import redis from "../helpers/connectRedis";
 import { FORGET_PASSWORD_PREFIX } from "../helpers/constants";
 import prisma from "../helpers/prisma";
@@ -167,7 +167,16 @@ export const forgotPassword = async (req: Request, res: Response) => {
     ); // 3 days
     await sendEmail(
       email,
-      `<a href="http://localhost:3000/#/reset-password/${token}">reset password</a>`
+      "Recuperar contraseña",
+      `
+      <style>
+        body{
+          font-family: "Helvetica", sans-serif;
+        }
+      </style>
+      <p>Haga click en el enlace para cambiar su contraseña.</p>
+      <a href="${WEB_URL}/#/reset-password/${token}">Recuperar contraseña</a>
+      `
     );
     res.status(200).json({ send: true });
   } catch (error) {}
