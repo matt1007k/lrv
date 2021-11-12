@@ -1,7 +1,32 @@
-import fs from "fs";
 import path from "path";
 import PDFDocument from "pdfkit";
-
+// const invoice = {
+//   shipping: {
+//     name: "John Doe",
+//     address: "1234 Main Street",
+//     city: "San Francisco",
+//     state: "CA",
+//     country: "US",
+//     postal_code: 94111,
+//   },
+//   items: [
+//     {
+//       item: "TC 100",
+//       description: "Toner Cartridge",
+//       quantity: 2,
+//       amount: 6000,
+//     },
+//     {
+//       item: "USB_EXT",
+//       description: "USB Cable Extender",
+//       quantity: 1,
+//       amount: 2000,
+//     },
+//   ],
+//   subtotal: 8000,
+//   paid: 0,
+//   invoice_nr: 1234,
+// };
 function createInvoice(
   invoice: any,
   path: string,
@@ -24,13 +49,12 @@ function createInvoice(
 
 function generateHeader(doc: any) {
   doc
-    .image(path.resolve("src/helpers/logo.png"), 50, 45, { width: 50 })
+    .image(path.resolve("src/assets/logo.png"), 50, 45, { width: 50 })
     .fillColor("#444444")
     .fontSize(20)
-    .text("ACME Inc.", 110, 57)
+    .text("Reporte de reclamaciones", 110, 57)
     .fontSize(10)
-    .text("123 Main Street", 200, 65, { align: "right" })
-    .text("New York, NY, 10025", 200, 80, { align: "right" })
+    .text(formatDate(new Date()), 200, 65, { align: "right" })
     .moveDown();
 }
 
@@ -76,17 +100,17 @@ function generateCustomerInformation(doc: any, invoice: any) {
 
 function generateInvoiceTable(doc: any, invoice: any) {
   let i;
-  const invoiceTableTop = 330;
+  const invoiceTableTop = 330; // if has header
 
   doc.font("Helvetica-Bold");
   generateTableRow(
     doc,
     invoiceTableTop,
-    "Item",
-    "Description",
-    "Unit Cost",
-    "Quantity",
-    "Line Total"
+    "Nombre completo",
+    "Dirección",
+    "# celular",
+    "tipo",
+    "Estado"
   );
   generateHr(doc, invoiceTableTop + 20);
   doc.font("Helvetica");
@@ -97,11 +121,11 @@ function generateInvoiceTable(doc: any, invoice: any) {
     generateTableRow(
       doc,
       position,
-      item.item,
-      item.description,
-      formatCurrency(item.amount / item.quantity),
-      item.quantity,
-      formatCurrency(item.amount)
+      item.fullName,
+      item.addressComplete,
+      item.phone,
+      item.typeLabel,
+      item.statusLabel
     );
 
     generateHr(doc, position + 20);
@@ -185,6 +209,6 @@ function formatDate(date: Date) {
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
-  return year + "/" + month + "/" + day;
+  return day + "/" + month + "/" + year;
 }
 export default createInvoice;

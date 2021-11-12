@@ -13,11 +13,12 @@ import DropdownItemLink from "../../components/overlays/DropdownItemLink.vue";
 import { useStore } from "../../store";
 import { ClaimActionType } from "../../store/modules/claim/actions";
 import { ClaimGetterType } from "../../store/modules/claim/getters";
-import { Claim } from "../../store/modules/claim/state";
 
 import { get } from "../../utils/request";
 import { getDateInline } from "../../utils/dateFormat";
 import { getStatusHumanize, getAddressInline } from "../../utils/claim";
+import config from "../../utils/config";
+import { listenerCount } from "process";
 
 const store = useStore();
 
@@ -68,6 +69,24 @@ const onPage = (page: number) => {
 const onFilterAdvanced = (filter: string) => {
   queryParams.filter = filter;
   getAll();
+};
+const report = (type: string) => {
+  const orType = queryParams.type != "" ? { type: queryParams.type } : {};
+
+  const params: any = {
+    search: search.value,
+    orderBy: queryParams.orderBy,
+    ...orType,
+  };
+
+  let qParams = new URLSearchParams(params).toString();
+
+  if (queryParams.filter != "") {
+    qParams += `&${queryParams.filter}`;
+  }
+
+  const url = config.API_URL_BASE + `/report/claims-${type}?${qParams}`;
+  window.open(url, "_blank");
 };
 onMounted(async () => {
   await getAll();
@@ -162,7 +181,8 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
               </div>
             </template>
             <template v-slot:content>
-              <DropdownItem>Excel</DropdownItem>
+              <DropdownItem @click="report('excel')">Excel</DropdownItem>
+              <DropdownItem @click="report('pdf')">PDF</DropdownItem>
             </template>
           </Dropdown>
         </div>
