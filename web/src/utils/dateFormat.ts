@@ -1,11 +1,15 @@
-export const getDateInline = (createdAt: string | undefined) => {
+export const getDateInline = (
+  createdAt: string | undefined,
+  separator: string = "/"
+) => {
   if (!!createdAt) {
     const date = new Date(createdAt);
-    let dayZero = date.getDay().toString();
-    let monthZero = date.getMonth().toString();
-    if (date.getDay() < 10) dayZero = `0${dayZero}`;
-    if (date.getMonth() < 10) monthZero = `0${monthZero}`;
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    let dayZero = day < 10 ? `0${day}` : day;
+    let monthZero = month < 10 ? `0${month}` : month;
 
-    return `${dayZero}/${monthZero}/${date.getFullYear()}`;
+    return `${dayZero}${separator}${monthZero}${separator}${year}`;
   } else return "";
 };

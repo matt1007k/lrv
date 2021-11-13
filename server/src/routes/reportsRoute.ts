@@ -1,7 +1,11 @@
 import { Router } from "express";
-import { reportClaimsPDF } from "../controllers/reportsController";
+import {
+  reportClaimsExcel,
+  reportClaimsPDF,
+} from "../controllers/reportsController";
 
 const router = Router();
 router.get("/claims-pdf", reportClaimsPDF);
+router.get("/claims-excel", reportClaimsExcel);
 
 export default router;

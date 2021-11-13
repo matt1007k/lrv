@@ -458,7 +458,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                         dark:text-white
                         font-medium
                         text-lg
-                        hover:underline
+                        underline
                         mt-5
                       "
                       >Registrar queja</router-link

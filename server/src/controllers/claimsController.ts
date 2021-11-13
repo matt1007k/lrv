@@ -37,6 +37,7 @@ export const getAll = async (req: MyRequest, res: Response) => {
           },
         }
       : {};
+
     const orSearch: Prisma.ClaimWhereInput = search
       ? {
           OR: [
