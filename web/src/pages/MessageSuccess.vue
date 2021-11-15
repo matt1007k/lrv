@@ -46,6 +46,10 @@ import BaseLayout from "../components/layouts/BaseLayout.vue";
         <h4 class="mb-12 text-center text-base md:text-lg font-medium">
           Registro completado con éxito
         </h4>
+        <p class="tex-gray-500">
+          Estaremos revisando tu queja o reclamos, y te comunicaremos mediante
+          un correo.
+        </p>
         <router-link
           to="/"
           class="

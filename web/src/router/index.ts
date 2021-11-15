@@ -10,9 +10,24 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../pages/Home.vue"),
   },
   {
+    path: "/options",
+    name: "Options",
+    component: () => import("../pages/Options.vue"),
+  },
+  {
+    path: "/documents/new-claim",
+    name: "NewClaim",
+    component: () => import("../pages/documents/NewClaim.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
-    component: () => import("../pages/Login.vue"),
+    component: () => import("../pages/auth/Login.vue"),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("../pages/auth/Register.vue"),
   },
   {
     path: "/message-success",
@@ -22,12 +37,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/forgot-password",
     name: "ForgotPassword",
-    component: () => import("../pages/ForgotPassword.vue"),
+    component: () => import("../pages/auth/ForgotPassword.vue"),
   },
   {
     path: "/reset-password/:token",
     name: "ResetPassword",
-    component: () => import("../pages/ResetPassword.vue"),
+    component: () => import("../pages/auth/ResetPassword.vue"),
   },
   {
     path: "/admin",

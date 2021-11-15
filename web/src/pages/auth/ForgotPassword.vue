@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 
-import BaseLayout from "../components/layouts/BaseLayout.vue";
-import TextField from "../components/forms/TextField.vue";
-import Button from "../components/forms/Button.vue";
-import Alert from "../components/message/Alert.vue";
+import BaseLayout from "../../components/layouts/BaseLayout.vue";
+import TextField from "../../components/forms/TextField.vue";
+import Button from "../../components/forms/Button.vue";
+import Alert from "../../components/message/Alert.vue";
 
-import { post } from "../utils/request";
+import { post } from "../../utils/request";
 
 const state = reactive({
   email: "",

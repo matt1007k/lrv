@@ -2,13 +2,13 @@
 import { reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import BaseLayout from "../components/layouts/BaseLayout.vue";
-import PasswordField from "../components/forms/PasswordField.vue";
-import Button from "../components/forms/Button.vue";
-import Alert from "../components/message/Alert.vue";
+import BaseLayout from "../../components/layouts/BaseLayout.vue";
+import PasswordField from "../../components/forms/PasswordField.vue";
+import Button from "../../components/forms/Button.vue";
+import Alert from "../../components/message/Alert.vue";
 
-import { post } from "../utils/request";
-import MessageError from "../components/forms/MessageError.vue";
+import { post } from "../../utils/request";
+import MessageError from "../../components/forms/MessageError.vue";
 
 const route = useRoute();
 const router = useRouter();

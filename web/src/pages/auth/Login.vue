@@ -1,0 +1,197 @@
+<script setup lang="ts">
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+
+import SafeLayout from "../../components/layouts/SafeLayout.vue";
+import PasswordField from "../../components/forms/PasswordField.vue";
+import TextField from "../../components/forms/TextField.vue";
+
+import Button from "../../components/forms/Button.vue";
+
+import { post } from "../../utils/request";
+
+import { useStore } from "../../store";
+import { UserActionTypes } from "../../store/modules/user/userAction";
+
+const router = useRouter();
+
+const store = useStore();
+const state = reactive({
+  email: "",
+  password: "",
+});
+const message = ref<string>("");
+
+async function onSubmit() {
+  localStorage.removeItem("token");
+  const url = "/users/login";
+  try {
+    const { data, status } = await post(url, state);
+    if (status === 400) message.value = data.message;
+    else {
+      message.value = "";
+      store.dispatch(UserActionTypes.LOG_IN, data);
+
+      router.push("/admin");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+</script>
+
+<template>
+  <SafeLayout
+    title="LRV - Ingresar para continuar"
+    description="Ingresar para realiza administratar los reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
+  >
+    <div class="w-full grid grid-cols-6 h-screen">
+      <div class="bg-yellow-200 hidden col-span-2 md:flex flex-col px-5">
+        <div class="hidden md:flex items-center w-full mt-5">
+          <router-link
+            to="/"
+            class="
+              p-0
+              md:p-2
+              rounded-lg
+              text-black
+              hover:bg-gray-100
+              dark:text-white dark:hover:bg-gray-secondary
+              mr-1
+              md:mr-2
+              cursor-pointer
+            "
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+          </router-link>
+          <div>
+            <p class="text-gray-500 dark:text-gray-400 text-base">
+              Regresar al
+            </p>
+            <h4>Inicio</h4>
+          </div>
+        </div>
+        <div
+          class="w-full flex items-center justify-center"
+          style="height: calc(100vh - 8em)"
+        >
+          <img src="../../assets/home.svg" alt="Home image" class="w-8/12" />
+        </div>
+      </div>
+      <div
+        class="
+          col-span-6
+          md:col-span-4
+          flex flex-col
+          bg-white
+          dark:bg-gray-custom
+          px-5
+        "
+      >
+        <div class="flex md:hidden items-center w-full mt-5">
+          <router-link
+            to="/"
+            class="
+              p-0
+              md:p-2
+              rounded-lg
+              text-black
+              hover:bg-gray-100
+              dark:text-white dark:hover:bg-gray-secondary
+              mr-1
+              md:mr-2
+              cursor-pointer
+            "
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+          </router-link>
+          <div>
+            <p class="text-gray-500 dark:text-gray-400 text-base">
+              Regresar al
+            </p>
+            <h4>Inicio</h4>
+          </div>
+        </div>
+        <div class="flex justify-center mt-5 md:pt-40">
+          <div class="px-0 md:px-10 py-5 md:py-12 w-full md:w-1/2">
+            <img
+              src="../../assets/logo.png"
+              alt="Logo DREA"
+              class="w-1/6 mx-auto mb-4"
+            />
+            <h4 class="text-center mb-12">Ingresar para continuar</h4>
+            <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
+              <template v-if="message"
+                ><div
+                  class="p-4 mb-3 bg-red-500 text-white rounded-md text-sm"
+                  v-text="message"
+                ></div
+              ></template>
+              <TextField
+                v-model="state.email"
+                type="email"
+                name="email"
+                placeholder="Correo electrónico"
+                icon="email"
+                inline
+                required
+              />
+              <PasswordField
+                v-model="state.password"
+                placeholder="Contraseña"
+                class="mb-3"
+              />
+              <router-link
+                to="/forgot-password"
+                class="
+                  text-blue-500
+                  dark:text-white
+                  font-medium
+                  underline
+                  -mt-8
+                "
+                >Restablecer contraseña</router-link
+              >
+
+              <Button color="primary" class="w-full mt-8">Ingresar</Button>
+            </form>
+            <div class="mt-2 flex items-center justify-center">
+              <p class="mr-2 text-gray-800">¿No tengo una cuenta?</p>
+              <router-link
+                to="/register"
+                class="uppercase text-blue-500 font-medium"
+                >Registrarse</router-link
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </SafeLayout>
+</template>

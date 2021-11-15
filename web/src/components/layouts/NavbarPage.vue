@@ -45,7 +45,7 @@ const isAuthenticated = computed(
       </div>
     </div>
     <div class="hidden md:flex items-center space-x-8">
-      <template v-if="isAuthenticated"> </template>
+      <!-- <template v-if="isAuthenticated"> </template>
       <template v-else>
         <router-link
           to="/login"
@@ -58,7 +58,7 @@ const isAuthenticated = computed(
           >Ingresar</router-link
         >
         <router-link
-          to="/login"
+          to="/register"
           class="
             bg-blue-500
             py-3
@@ -71,7 +71,7 @@ const isAuthenticated = computed(
           "
           >Registrarse</router-link
         >
-      </template>
+      </template> -->
     </div>
   </nav>
 </template>
