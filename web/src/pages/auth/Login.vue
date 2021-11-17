@@ -46,7 +46,19 @@ async function onSubmit() {
     description="Ingresar para realiza administratar los reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
   >
     <div class="w-full grid grid-cols-6 h-screen">
-      <div class="bg-yellow-200 hidden col-span-2 md:flex flex-col px-5">
+      <div
+        class="
+          bg-gradient-to-tr
+          from-blue-500
+          via-green-200
+          to-yellow-200
+          hidden
+          col-span-2
+          md:flex
+          flex-col
+          px-5
+        "
+      >
         <div class="hidden md:flex items-center w-full mt-5">
           <router-link
             to="/"
@@ -88,7 +100,22 @@ async function onSubmit() {
           class="w-full flex items-center justify-center"
           style="height: calc(100vh - 8em)"
         >
-          <img src="../../assets/home.svg" alt="Home image" class="w-8/12" />
+          <div class="px-20">
+            <div class="flex items-center justify-center">
+              <img
+                src="../../assets/img-auth.svg"
+                alt="Auth image"
+                class="w-3/4"
+              />
+            </div>
+            <h3 class="text-4xl font-bold mb-6 mt-16">
+              Ingresa y revisa todos tus reclamos y quejas
+            </h3>
+            <p class="text-xl font-light">
+              Ingresa tus datos para ver todos los reclamos y quejas que
+              realizaste.
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -140,19 +167,13 @@ async function onSubmit() {
         </div>
         <div class="flex justify-center mt-5 md:pt-40">
           <div class="px-0 md:px-10 py-5 md:py-12 w-full md:w-1/2">
-            <img
-              src="../../assets/logo.png"
-              alt="Logo DREA"
-              class="w-1/6 mx-auto mb-4"
-            />
             <h4 class="text-center mb-12">Ingresar para continuar</h4>
             <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
-              <template v-if="message"
-                ><div
-                  class="p-4 mb-3 bg-red-500 text-white rounded-md text-sm"
-                  v-text="message"
-                ></div
-              ></template>
+              <div
+                v-if="message"
+                class="p-4 mb-3 bg-red-500 text-white rounded-md text-sm"
+                v-text="message"
+              ></div>
               <TextField
                 v-model="state.email"
                 type="email"
@@ -176,7 +197,7 @@ async function onSubmit() {
                   underline
                   -mt-8
                 "
-                >Restablecer contraseña</router-link
+                >¿Has olvidado tu contraseña?</router-link
               >
 
               <Button color="primary" class="w-full mt-8">Ingresar</Button>

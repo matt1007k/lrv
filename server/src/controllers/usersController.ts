@@ -14,13 +14,22 @@ import { MyRequest } from "../types/MyRequestTypes";
 import { userErrors } from "../validators/messagesValidation";
 
 export const register = async (req: Request, res: Response) => {
-  const body = req.body;
-
-  const hashedPassword = await hash(body?.password);
-
+  const { confirmPassword, ...params } = req.body as {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
   try {
+    if (req.body.password != confirmPassword)
+      return res
+        .status(422)
+        .send({ errors: { confirmPassword: userErrors.password.notEquals } });
+
+    const hashedPassword = await hash(req.body?.password);
+
     const user = await prisma.user.create({
-      data: Object.assign(body, { password: hashedPassword }),
+      data: Object.assign(params, { password: hashedPassword }),
     });
 
     !user && res.status(404).json({ email: userErrors.email.hasExit });

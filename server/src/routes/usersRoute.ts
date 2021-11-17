@@ -14,7 +14,7 @@ import { userInfoValidator } from "../validators/userValidator";
 
 const router = Router();
 
-router.post("/register", register);
+router.post("/register", checkForErrors, userInfoValidator, register);
 router.post("/login", logIn);
 router.post("/update-password", isAuthenticated, changePassword);
 router.post(

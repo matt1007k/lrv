@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 
-import BaseLayout from "../../components/layouts/BaseLayout.vue";
+import SafeLayout from "../../components/layouts/SafeLayout.vue";
 import TextField from "../../components/forms/TextField.vue";
 import Button from "../../components/forms/Button.vue";
 import Alert from "../../components/message/Alert.vue";
@@ -43,20 +43,21 @@ async function onSubmit() {
 </script>
 
 <template>
-  <BaseLayout
+  <SafeLayout
     title="LRV - Olvide mi contraseña"
     description="Ingresar tu correo para recuperar tu contraseña"
   >
     <div
       class="
-        bg-gray-100
+        bg-gradient-to-tr
+        from-blue-500
+        via-green-200
+        to-yellow-200
         dark:bg-gray-custom
         flex
         items-center
         justify-center
-        my-4
-        md:my-40
-        h-full
+        h-screen
       "
     >
       <div
@@ -102,5 +103,5 @@ async function onSubmit() {
         </form>
       </div>
     </div>
-  </BaseLayout>
+  </SafeLayout>
 </template>
