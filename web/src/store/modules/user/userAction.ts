@@ -54,7 +54,8 @@ export const userActions: ActionTree<UserState, RootState> & UserActions = {
     commit(UserMutationType.SetLogging, true);
     commit(UserMutationType.CreateUser, user);
     commit(UserMutationType.SET_TOKEN, token);
-    if (token) localStorage.setItem("token", token);
+    if (token && !localStorage.getItem("token"))
+      localStorage.setItem("token", token);
     commit(UserMutationType.SetLogging, false);
   },
   [UserActionTypes.LOG_OUT]({ commit }) {

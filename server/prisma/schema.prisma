@@ -12,6 +12,7 @@ model User {
   email    String  @unique
   name     String?
   password String?
+  role     ROLE    @default(USER)
   claims   Claim[]
 }
 
@@ -37,6 +38,11 @@ model Claim {
   author       User?    @relation(fields: [authorId], references: [id])
 
   @@index([authorId], map: "Claim_authorId_fkey")
+}
+
+enum ROLE {
+  ADMIN
+  USER
 }
 
 enum Type {

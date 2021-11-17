@@ -26,8 +26,9 @@ const close = () => {
 const getUserAuth = async () => {
   const url = "/users/detail";
   try {
-    const { data: user } = await get(url);
-    store.commit(UserMutationType.CreateUser, user);
+    const { data, status } = await get(url);
+    if (status === 401) logOut();
+    else store.commit(UserMutationType.CreateUser, data);
   } catch (error) {
     console.log(error);
   }
@@ -82,8 +83,10 @@ function logOut() {
             <p class="text-gray-500 dark:text-gray-400">{{ user.email }}</p>
           </div>
           <div class="mt-12 flex flex-col items-center space-y-6">
-            <a href="" class="text-xl font-semibold text-black dark:text-white"
-              >Perfil</a
+            <router-link
+              to="/profile"
+              class="text-xl font-semibold text-black dark:text-white"
+              >Perfil</router-link
             >
             <div
               @click="logOut"

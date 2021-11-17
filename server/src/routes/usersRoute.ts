@@ -14,19 +14,19 @@ import { userInfoValidator } from "../validators/userValidator";
 
 const router = Router();
 
-router.post("/register", checkForErrors, userInfoValidator, register);
+router.post("/register", [...userInfoValidator, checkForErrors], register);
 router.post("/login", logIn);
 router.post("/update-password", isAuthenticated, changePassword);
 router.post(
   "/update-info",
   isAuthenticated,
-  checkForErrors,
   userInfoValidator,
+  checkForErrors,
   changeInfo
 );
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", changeResetPassword);
 
-router.get("/detail/:email?", detail);
+router.get("/detail/:email?", isAuthenticated, detail);
 
 export default router;

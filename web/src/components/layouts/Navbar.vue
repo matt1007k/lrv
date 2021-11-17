@@ -24,8 +24,9 @@ const isAuthenticated = computed(
 const getUserAuth = async () => {
   const url = "/users/detail";
   try {
-    const { data: user } = await get(url);
-    store.commit(UserMutationType.CreateUser, user);
+    const { data: user, status } = await get(url);
+    if (status === 401) logOut();
+    else store.commit(UserMutationType.CreateUser, user);
   } catch (error) {
     console.log(error);
   }
@@ -35,7 +36,7 @@ const user = computed(() => store.getters[UserGettersTypes.GET_USER]);
 
 const logOut = () => {
   store.dispatch(UserActionTypes.LOG_OUT);
-  router.push("/");
+  router.push("/login");
 };
 </script>
 

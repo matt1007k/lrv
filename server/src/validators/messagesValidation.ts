@@ -42,6 +42,7 @@ export const claimErrors = {
 };
 
 export const userErrors = {
+  notFound: "El usuario no existe",
   name: {
     required: "El nombre es obligatorio",
   },

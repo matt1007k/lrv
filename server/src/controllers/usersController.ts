@@ -21,6 +21,12 @@ export const register = async (req: Request, res: Response) => {
     confirmPassword: string;
   };
   try {
+    const hasUser = await prisma.user.findFirst({
+      where: { email: req.body.email },
+    });
+    if (hasUser)
+      return res.status(400).json({ message: userErrors.email.hasExit });
+
     if (req.body.password != confirmPassword)
       return res
         .status(422)
@@ -32,13 +38,13 @@ export const register = async (req: Request, res: Response) => {
       data: Object.assign(params, { password: hashedPassword }),
     });
 
-    !user && res.status(404).json({ email: userErrors.email.hasExit });
+    !user && res.status(404).json({ message: userErrors.notFound });
     const { password, ...others } = user;
     res.status(201).json(others);
   } catch (error) {}
 };
 
-export const logIn = async (req: Request, res: Response) => {
+export const logIn = async (req: MyRequest, res: Response) => {
   const { email } = req.body as Prisma.UserCreateInput;
   try {
     const user = await prisma.user.findFirst({
@@ -53,7 +59,7 @@ export const logIn = async (req: Request, res: Response) => {
 
     if (user) {
       const { password, ...others } = user;
-      const token = sign(user, SECRET_KEY);
+      const token = sign(user, SECRET_KEY, { expiresIn: "1h" });
       res.status(200).json({ user: others, token });
     }
   } catch (error) {

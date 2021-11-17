@@ -11,10 +11,12 @@ export const isAuthenticated = async (
 ) => {
   const token = req.get("Authorization")?.split(" ")[1] || "";
   try {
-    const decoded = await verify(token, SECRET_KEY);
-    req.userId = (decoded as User).id;
+    const { id } = (await verify(token, SECRET_KEY)) as User & {
+      exp: number;
+    };
+    req.userId = id;
     next();
   } catch (error) {
-    res.status(401).json("Not Authenticated");
+    return res.status(401).json("Not Authenticated");
   }
 };

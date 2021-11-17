@@ -3,17 +3,16 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import SafeLayout from "../../components/layouts/SafeLayout.vue";
+import MessageError from "../../components/forms/MessageError.vue";
+import Alert from "../../components/message/Alert.vue";
+import Button from "../../components/forms/Button.vue";
 import PasswordField from "../../components/forms/PasswordField.vue";
 import TextField from "../../components/forms/TextField.vue";
-
-import Button from "../../components/forms/Button.vue";
 
 import { post } from "../../utils/request";
 
 import { useStore } from "../../store";
-import { UserActionTypes } from "../../store/modules/user/userAction";
-import MessageError from "../../components/forms/MessageError.vue";
-import Alert from "../../components/message/Alert.vue";
+import { RootMutationType } from "../../store/modules/root/mutations";
 
 const router = useRouter();
 
@@ -27,19 +26,29 @@ const state = reactive({
 const errors = reactive<{ values: Record<string, string> }>({
   values: {},
 });
-const message = ref<string>("");
+const message = reactive<{ text: string; type: "success" | "danger" | "info" }>(
+  {
+    text: "",
+    type: "success",
+  }
+);
 
 async function onSubmit() {
   const url = "/users/register";
   try {
     const { data, status } = await post(url, state);
-    if (status === 400) message.value = data.message;
-    else if (status === 422) {
+    if (status === 400 || status === 404) {
+      message.text = data.message;
+      message.type = "danger";
+    } else if (status === 422) {
       errors.values = data.errors;
+      message.text = "";
     } else {
-      message.value = "";
-      store.dispatch(UserActionTypes.LOG_IN, data);
-
+      message.text = "";
+      store.commit(
+        RootMutationType.SET_MESSAGE,
+        "Registro completado con exitó"
+      );
       router.push("/login");
     }
   } catch (error) {
@@ -50,7 +59,7 @@ async function onSubmit() {
 
 <template>
   <SafeLayout
-    title="LRV - Crear una cuenta"
+    title="`Crear una cuenta"
     description="Crear una cuenta para administrar tus reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
   >
     <div class="w-full grid grid-cols-7 h-screen">
@@ -105,7 +114,12 @@ async function onSubmit() {
           <div class="px-0 md:px-8 py-5 md:py-8 w-full md:w-1/2">
             <h4 class="text-center mb-8">Crear una cuenta</h4>
             <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
-              <Alert v-if="message" color="danger">{{ message }}</Alert>
+              <Alert
+                v-if="message.text != ''"
+                :color="message.type"
+                class="mb-3"
+                >{{ message.text }}</Alert
+              >
               <TextField
                 v-model="state.name"
                 type="text"

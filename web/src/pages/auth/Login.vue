@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import SafeLayout from "../../components/layouts/SafeLayout.vue";
@@ -12,6 +12,9 @@ import { post } from "../../utils/request";
 
 import { useStore } from "../../store";
 import { UserActionTypes } from "../../store/modules/user/userAction";
+import { RootGetterType } from "../../store/modules/root/getters";
+import Alert from "../../components/message/Alert.vue";
+import { RootMutationType } from "../../store/modules/root/mutations";
 
 const router = useRouter();
 
@@ -31,18 +34,21 @@ async function onSubmit() {
     else {
       message.value = "";
       store.dispatch(UserActionTypes.LOG_IN, data);
-
       router.push("/admin");
     }
   } catch (error) {
     console.log(error);
   }
 }
+const globalMessage = computed(() => store.getters[RootGetterType.GET_MESSAGE]);
+onMounted(() => {
+  setTimeout(() => store.commit(RootMutationType.SET_MESSAGE, ""), 3000);
+});
 </script>
 
 <template>
   <SafeLayout
-    title="LRV - Ingresar para continuar"
+    title="Ingresar para continuar"
     description="Ingresar para realiza administratar los reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
   >
     <div class="w-full grid grid-cols-6 h-screen">
@@ -112,7 +118,7 @@ async function onSubmit() {
               Ingresa y revisa todos tus reclamos y quejas
             </h3>
             <p class="text-xl font-light">
-              Ingresa tus datos para ver todos los reclamos y quejas que
+              Ingresa tus datos, para ver todos tus reclamos y quejas que
               realizaste.
             </p>
           </div>
@@ -167,8 +173,11 @@ async function onSubmit() {
         </div>
         <div class="flex justify-center mt-5 md:pt-40">
           <div class="px-0 md:px-10 py-5 md:py-12 w-full md:w-1/2">
-            <h4 class="text-center mb-12">Ingresar para continuar</h4>
+            <h4 class="text-center mb-10">Ingresa tus datos para continuar</h4>
             <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
+              <Alert v-if="globalMessage != ''" class="mb-3">{{
+                globalMessage
+              }}</Alert>
               <div
                 v-if="message"
                 class="p-4 mb-3 bg-red-500 text-white rounded-md text-sm"
