@@ -11,7 +11,7 @@ import { claimValidator } from "../validators/claimValidator";
 
 const route = Router();
 
-route.get("", getAll);
+route.get("", isAuthenticated, getAll);
 route.get("/detail/:id", detail);
 route.get("/detail-count", detailCount);
 route.post("", claimValidator, checkForErrors, create);

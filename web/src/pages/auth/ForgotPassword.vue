@@ -44,7 +44,7 @@ async function onSubmit() {
 
 <template>
   <SafeLayout
-    title="LRV - Olvide mi contraseña"
+    title="Olvide mi contraseña"
     description="Ingresar tu correo para recuperar tu contraseña"
   >
     <div
@@ -64,8 +64,8 @@ async function onSubmit() {
         class="
           bg-white
           dark:bg-gray-secondary
-          px-10
-          py-12
+          p-5
+          md:px-10 md:py-12
           rounded-2xl
           shadow-md
           w-full

@@ -59,7 +59,7 @@ async function onSubmit() {
 
 <template>
   <SafeLayout
-    title="`Crear una cuenta"
+    title="Crear una cuenta"
     description="Crear una cuenta para administrar tus reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
   >
     <div class="w-full grid grid-cols-7 h-screen">

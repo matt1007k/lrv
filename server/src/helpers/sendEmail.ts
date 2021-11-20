@@ -1,31 +1,57 @@
+import path from "path";
 import nodemailer from "nodemailer";
+import hbs from "nodemailer-express-handlebars";
 
-// async..await is not allowed in global scope, must use a wrapper
-export const sendEmail = async (to: string, subject: string, html: string) => {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  // let testAccount = await nodemailer.createTestAccount();
+interface SendEmailProps {
+  to: string;
+  subject: string;
+  template: string;
+  context: Record<string, any>;
+}
 
-  // create reusable transporter object using the default SMTP transport
+const hbsConfig = {
+  viewEngine: {
+    extName: ".hbs",
+    partialsDir: path.join(__dirname, "../templates/mail/"),
+    layoutsDir: path.join(__dirname, "../templates/mail/"),
+    defaultLayout: "",
+  },
+  viewPath: path.join(__dirname, "../templates/mail/"),
+  extName: ".hbs",
+};
+
+export const sendEmail = async ({
+  to,
+  subject,
+  template,
+  context,
+}: SendEmailProps) => {
   let transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST || "smtp.ethereal.email",
     port: (process.env.MAIL_PORT && parseInt(process.env.MAIL_PORT)) || 587,
-    secure: false, // true for 465, false for other ports
+    secure:
+      process.env.MAIL_PORT && parseInt(process.env.MAIL_PORT) === 465
+        ? true
+        : false, // true for 465, false for other ports
     auth: {
-      user: process.env.MAIL_USER || "qz2jwaj7vrx5cpf7@ethereal.email", // generated ethereal user
+      user: process.env.MAIL_USERNAME || "qz2jwaj7vrx5cpf7@ethereal.email", // generated ethereal user
       pass: process.env.MAIL_PASSWORD || "SweuugcKUXnJcrPKmh", // generated ethereal password
     },
   });
 
+  transporter.use("compile", hbs(hbsConfig));
+
   // send mail with defined transport object
+  const email = {
+    from: process.env.MAIL_USERNAME || '"Fred Foo 👻" <foo@example.com>', // sender address
+    to, // list of receivers
+    subject, // Subject line
+    // text: "Hello world?", // plain text body
+    template, // html body
+    context,
+  };
   try {
-    let info = await transporter.sendMail({
-      from: process.env.MAIL_USER || '"Fred Foo 👻" <foo@example.com>', // sender address
-      to, // list of receivers
-      subject, // Subject line
-      // text: "Hello world?", // plain text body
-      html, // html body
-    });
+    let info = await transporter.sendMail(email);
 
     console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>

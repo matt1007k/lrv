@@ -180,19 +180,16 @@ export const forgotPassword = async (req: Request, res: Response) => {
       "ex",
       1000 * 60 * 60 * 24 * 3
     ); // 3 days
-    await sendEmail(
-      email,
-      "Recuperar contraseña",
-      `
-      <style>
-        body{
-          font-family: "Helvetica", sans-serif;
-        }
-      </style>
-      <p>Haga click en el enlace para cambiar su contraseña.</p>
-      <a href="${WEB_URL}/#/reset-password/${token}">Recuperar contraseña</a>
-      `
-    );
+    const context = {
+      user,
+      url: `${WEB_URL}/#/reset-password/${token}`,
+    };
+    await sendEmail({
+      to: email,
+      subject: "Recuperar contraseña",
+      template: "forgotPassword",
+      context: context,
+    });
     res.status(200).json({ send: true });
   } catch (error) {}
 };
