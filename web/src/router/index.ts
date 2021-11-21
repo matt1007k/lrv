@@ -15,9 +15,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../pages/Options.vue"),
   },
   {
-    path: "/documents/new-claim",
+    path: "/claims/create",
     name: "NewClaim",
-    component: () => import("../pages/documents/NewClaim.vue"),
+    component: () => import("../pages/claims/NewClaim.vue"),
   },
   {
     path: "/login",

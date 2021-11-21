@@ -4,7 +4,7 @@ import Form from "../../components/claims/Form.vue";
 </script>
 <template>
   <BaseLayout
-    title="LRV - Registrar reclamo o queja"
+    title="Registrar reclamo o queja"
     description="Registra tus reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
   >
     <div class="wrapper my-8">

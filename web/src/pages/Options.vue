@@ -4,7 +4,7 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
 </script>
 <template>
   <BaseLayout
-    title="LRV - Registrar reclamo o queja"
+    title="Elegir un opción para registrar reclamo o pedido"
     description="Registra tus reclamos y quejas en nuestro libro de reclamaciones, de la Dirección Regional de Educación de Ayacucho"
   >
     <div
@@ -18,11 +18,11 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
         Elige una opción para continuar la operación.
       </p>
       <div class="my-8 flex flex-col gap-4 w-full md:w-auto">
-        <ButtonLink href="/documents/new-claim" color="primary" class="px-8"
+        <ButtonLink href="/claims/create" color="primary" class="px-8"
           >Registrar reclamo sin ingresar</ButtonLink
         >
         <ButtonLink
-          href="/admin"
+          href="/login"
           color="white"
           class="
             flex
