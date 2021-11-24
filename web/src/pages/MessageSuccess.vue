@@ -43,30 +43,49 @@ import BaseLayout from "../components/layouts/BaseLayout.vue";
             ></path>
           </svg>
         </div>
-        <h4 class="mb-12 text-center text-base md:text-lg font-medium">
+        <h4 class="text-center text-base md:text-lg font-medium">
           Registro completado con éxito
         </h4>
-        <p class="tex-gray-500">
+        <p class="mt-3 mb-10 text-center px-0 md:px-10">
           Estaremos revisando tu queja o reclamos, y te comunicaremos mediante
           un correo.
         </p>
-        <router-link
-          to="/"
-          class="
-            flex
-            items-center
-            justify-center
-            px-4
-            py-3
-            bg-blue-500
-            hover:bg-blue-600
-            text-white text-base
-            font-medium
-            rounded
-            w-full
-          "
-          >Registrar otro
-        </router-link>
+        <div class="flex items-center gap-1">
+          <router-link
+            to="/"
+            class="
+              flex
+              items-center
+              justify-center
+              px-4
+              py-3
+              bg-blue-500
+              hover:bg-blue-600
+              text-white text-base
+              font-medium
+              rounded
+              w-full
+            "
+            >Registrar otro
+          </router-link>
+          <router-link
+            to="/"
+            class="
+              flex
+              items-center
+              justify-center
+              px-4
+              py-3
+              bg-gray-100
+              hover:bg-gray-200
+              text-black text-base
+              font-medium
+              rounded
+              w-full
+            "
+            >Ver detalle
+          </router-link>
+        </div>
       </div>
     </div>
   </BaseLayout>

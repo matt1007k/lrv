@@ -1,8 +1,8 @@
-import { api, cleanClaimDB, logIn, user } from "../helpers";
 import { Prisma, Type } from "@prisma/client";
+import { api, cleanClaimDB } from "../helpers";
 import prisma from "../../helpers/prisma";
 
-const claims: Prisma.ClaimCreateInput[] = [
+export const claims: Prisma.ClaimCreateInput[] = [
   {
     fullName: "Max",
     email: "max123@prisma.io",
@@ -36,7 +36,7 @@ const claims: Prisma.ClaimCreateInput[] = [
 ];
 
 beforeEach(async () => {
-  await cleanClaimDB();
+  cleanClaimDB();
 
   for (const claim of claims) {
     await prisma.claim.create({ data: claim });
@@ -58,6 +58,6 @@ describe("claim detail", () => {
       .get("/api/claims/detail/" + firstClaim?.id)
       .expect(200);
 
-    expect(body.fullName).toBe(claims[0].fullName);
+    expect(body.fullName).toBe(firstClaim?.fullName);
   });
 });

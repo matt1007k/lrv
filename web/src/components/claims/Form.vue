@@ -42,7 +42,7 @@ const openFile = () => {
   file.value?.click();
 };
 
-const typesValid = ["image/png", "image/jpeg", "image/jpg"];
+const typesValid = ["image/png", "image/jpeg", "image/jpg", "application/pdf"];
 const maxSize = 1024 * 1024 * 5;
 const changeFile = (ev: Event) => {
   if (file?.value?.files && file?.value?.files?.length > 0) {
@@ -939,6 +939,8 @@ const register = async () => {
                 </h6>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">
                   Si desea subir un archivo, no debe exceder los 5MB.
+                  <span class="font-bold">Archivos permitidos:</span> imagenes y
+                  doc.pdf
                 </p>
               </div>
               <div class="mt-4 sm:mt-0 sm:col-span-2">
@@ -1034,7 +1036,7 @@ const register = async () => {
                       {{ file?.files[0].name }}
                     </p>
                     <svg
-                      v-show="form.file"
+                      v-show="form.file && fileLocalPathApi != ''"
                       @click="deleteFileUpload"
                       class="w-6 h-6 cursor-pointer text-red-500"
                       fill="none"

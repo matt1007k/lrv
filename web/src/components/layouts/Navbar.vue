@@ -14,6 +14,7 @@ import { UserActionTypes } from "../../store/modules/user/userAction";
 
 import { get } from "../../utils/request";
 import { getFirstName } from "../../utils/user";
+import ButtonLink from "../navigations/ButtonLink.vue";
 
 const router = useRouter();
 const store = useStore();
@@ -127,6 +128,9 @@ const logOut = () => {
     <div class="hidden md:flex items-center space-x-4">
       <template v-if="isAuthenticated">
         <ToggleDark />
+        <ButtonLink href="/claims/create" color="primary"
+          >Nuevo reclamo</ButtonLink
+        >
         <Dropdown>
           <template v-slot:trigger>
             <div

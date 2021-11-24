@@ -53,6 +53,7 @@ export const userErrors = {
     wrongCredentials: "Las credenciales no coinciden con nuestros registros",
   },
   password: {
+    required: "La contraseña es obligatoria",
     notEquals: "Las contraseñas no coinciden",
   },
 };

@@ -26,3 +26,18 @@ export const userForgotPasswordValidator = [
     .isEmail()
     .withMessage(userErrors.email.isEmail),
 ];
+
+export const userLoginValidator = [
+  body("email")
+    .isLength({ min: 1 })
+    .withMessage(userErrors.email.required)
+    .isString()
+    .withMessage(userErrors.email.required)
+    .isEmail()
+    .withMessage(userErrors.email.isEmail),
+  body("password")
+    .isLength({ min: 1 })
+    .withMessage(userErrors.password.required)
+    .isString()
+    .withMessage(userErrors.password.required),
+];

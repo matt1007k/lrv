@@ -6,7 +6,7 @@ import {
   getAll,
 } from "../controllers/claimsController";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
-import checkForErrors from "../validators/checkForErrors";
+import checkForErrors from "../middlewares/checkForErrors";
 import { claimValidator } from "../validators/claimValidator";
 
 const route = Router();

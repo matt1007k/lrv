@@ -68,7 +68,7 @@ export const logIn = async (req: MyRequest, res: Response) => {
 };
 
 export const detail = async (req: MyRequest, res: Response) => {
-  const { email } = req.body as Prisma.UserCreateInput;
+  const { email } = req.params;
   const whereUser: Prisma.UserWhereInput = email
     ? { email }
     : { id: req.userId };
@@ -78,7 +78,7 @@ export const detail = async (req: MyRequest, res: Response) => {
       where: whereUser,
     });
 
-    !user && res.status(404).send({ message: "El usuario no existe" });
+    !user && res.status(404).send({ message: userErrors.notFound });
 
     if (user) {
       const { password, ...others } = user;
@@ -105,7 +105,7 @@ export const changePassword = async (req: MyRequest, res: Response) => {
     const userExists = await prisma.user.findFirst({
       where: { id: req.userId },
     });
-    !userExists && res.status(404).send({ message: "El usuario no existe" });
+    !userExists && res.status(404).send({ message: userErrors.notFound });
 
     const checkPassword = await verify(
       userExists?.password as string,
@@ -150,7 +150,7 @@ export const changeInfo = async (req: MyRequest, res: Response) => {
       },
     });
 
-    !user && res.status(404).json({ message: "El usuario no existe" });
+    !user && res.status(404).json({ message: userErrors.notFound });
 
     if (user) {
       const { password, ...others } = user;
@@ -171,7 +171,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
       where: { email },
     });
 
-    if (!user) return res.status(404).json({ message: "El usuario no existe" });
+    if (!user) return res.status(404).json({ message: userErrors.notFound });
 
     const token = v4();
     await redis.set(

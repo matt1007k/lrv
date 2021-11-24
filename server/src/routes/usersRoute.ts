@@ -9,13 +9,16 @@ import {
   changeResetPassword,
 } from "../controllers/usersController";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
-import checkForErrors from "../validators/checkForErrors";
-import { userInfoValidator } from "../validators/userValidator";
+import checkForErrors from "../middlewares/checkForErrors";
+import {
+  userInfoValidator,
+  userLoginValidator,
+} from "../validators/userValidator";
 
 const router = Router();
 
 router.post("/register", [...userInfoValidator, checkForErrors], register);
-router.post("/login", logIn);
+router.post("/login", [...userLoginValidator, checkForErrors], logIn);
 router.post("/update-password", isAuthenticated, changePassword);
 router.post(
   "/update-info",

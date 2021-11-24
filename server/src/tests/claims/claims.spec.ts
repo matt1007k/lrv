@@ -1,9 +1,9 @@
-import { api, cleanClaimDB } from "../helpers";
+import { apiAuthGet, cleanClaimDB, cleanUserDB } from "../helpers";
 import { Prisma, Type } from "@prisma/client";
 import prisma from "../../helpers/prisma";
 import { PaginationLinkTypes } from "../../types/PaginationTypes";
 
-const claims: Prisma.ClaimCreateInput[] = [
+export const claims: Prisma.ClaimCreateInput[] = [
   {
     fullName: "Max",
     email: "max123@prisma.io",
@@ -37,7 +37,8 @@ const claims: Prisma.ClaimCreateInput[] = [
 ];
 
 beforeEach(async () => {
-  await cleanClaimDB();
+  cleanClaimDB();
+  // cleanUserDB();
 
   for (const claim of claims) {
     await prisma.claim.create({ data: claim });
@@ -46,11 +47,9 @@ beforeEach(async () => {
 
 describe("claims", () => {
   it("get all claims", async () => {
-    const { body } = await api.get("/api/claims").expect(200);
+    const { body, auth } = await apiAuthGet("/api/claims");
 
     const data = body.data as Prisma.ClaimCreateInput[];
-
-    // expect(data).toHaveLength(claims.length);
 
     const containFullNames = data.map((claim) => claim.fullName);
 
@@ -59,7 +58,7 @@ describe("claims", () => {
   });
 
   it("can order by descending createdAt", async () => {
-    const { body } = await api.get("/api/claims?orderBy=desc").expect(200);
+    const { body } = await apiAuthGet("/api/claims?orderBy=desc");
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -81,7 +80,7 @@ describe("claims", () => {
   });
 
   it("can paginate the claim list", async () => {
-    const { body } = await api.get("/api/claims?perPage=1&page=1").expect(200);
+    const { body } = await apiAuthGet("/api/claims?perPage=1&page=1");
 
     const data = body.data as Prisma.ClaimCreateInput[];
     const links = body.links as PaginationLinkTypes;
@@ -92,7 +91,6 @@ describe("claims", () => {
       lastPage: 2,
       total: 2,
     });
-    // console.log(data);
 
     expect(data[0].fullName).toBe(claims[0].fullName);
     expect(data[0].email).toBe(claims[0].email);
@@ -100,9 +98,7 @@ describe("claims", () => {
   });
 
   it("can filter by type CLAIM a claim", async () => {
-    const { body } = await api
-      .get(`/api/claims?type=${Type.CLAIM}`)
-      .expect(200);
+    const { body } = await apiAuthGet(`/api/claims?type=${Type.CLAIM}`);
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -114,9 +110,7 @@ describe("claims", () => {
   });
 
   it("can filter by type COMPLAIN a claim", async () => {
-    const { body } = await api
-      .get(`/api/claims?type=${Type.COMPLAIN}`)
-      .expect(200);
+    const { body } = await apiAuthGet(`/api/claims?type=${Type.COMPLAIN}`);
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -128,7 +122,7 @@ describe("claims", () => {
   });
 
   it("can search a claim by fullName", async () => {
-    const { body } = await api.get(`/api/claims?search=jua`).expect(200);
+    const { body } = await apiAuthGet(`/api/claims?search=jua`);
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -140,7 +134,7 @@ describe("claims", () => {
   });
 
   it("can search a claim by email", async () => {
-    const { body } = await api.get(`/api/claims?search=ax123`).expect(200);
+    const { body } = await apiAuthGet(`/api/claims?search=ax123`);
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -152,7 +146,7 @@ describe("claims", () => {
   });
 
   it("can search a claim by address", async () => {
-    const { body } = await api.get(`/api/claims?search=lima`).expect(200);
+    const { body } = await apiAuthGet(`/api/claims?search=lima`);
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -164,7 +158,7 @@ describe("claims", () => {
   });
 
   it("can search a claim by phone", async () => {
-    const { body } = await api.get(`/api/claims?search=9654`).expect(200);
+    const { body } = await apiAuthGet(`/api/claims?search=9654`);
 
     const data = body.data as Prisma.ClaimCreateInput[];
 
@@ -176,9 +170,9 @@ describe("claims", () => {
   });
 
   it("can filter clain by range date", async () => {
-    const { body } = await api
-      .get(`/api/claims?filter[rangeDate]=2021-09-23,2021-10-02`)
-      .expect(200);
+    const { body } = await apiAuthGet(
+      `/api/claims?filter[rangeDate]=2021-09-23,2021-10-02`
+    );
 
     const data = body.data as Prisma.ClaimCreateInput[];
 

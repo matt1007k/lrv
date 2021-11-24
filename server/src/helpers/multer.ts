@@ -14,7 +14,12 @@ const fileStorageEngine = multer.diskStorage({
 });
 
 const fileFilter = (req: Request, file: Express.Multer.File, cb: any) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/jpg",
+    "application/pdf",
+  ];
 
   if (!allowedTypes.includes(file.mimetype)) {
     const error = new Error("Error en el tipo de archivo");

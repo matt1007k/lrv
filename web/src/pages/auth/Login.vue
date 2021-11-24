@@ -173,7 +173,7 @@ onMounted(() => {
         </div>
         <div class="flex justify-center mt-5 md:pt-40">
           <div class="px-0 md:px-10 py-5 md:py-12 w-full md:w-1/2">
-            <h4 class="text-center mb-10">Ingresa tus datos para continuar</h4>
+            <h4 class="text-center mb-10">Ingresar para continuar</h4>
             <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
               <Alert v-if="globalMessage != ''" class="mb-3">{{
                 globalMessage

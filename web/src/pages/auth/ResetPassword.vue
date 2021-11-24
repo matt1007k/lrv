@@ -90,7 +90,7 @@ async function onSubmit() {
           <div class="mb-5">
             <PasswordField
               v-model="state.newPassword"
-              placeholder="Contraseña"
+              placeholder="Nueva contraseña"
               :class="{ 'border-red-500': !!errors.values.newPassword }"
             />
             <MessageError
