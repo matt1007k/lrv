@@ -9,6 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     component: () => import("../pages/Home.vue"),
   },
+
   {
     path: "/options",
     name: "Options",
@@ -67,6 +68,11 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requireLogin: true,
     },
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("../pages/errors/NotFound.vue"),
   },
 ];
 

@@ -76,7 +76,7 @@ const onClose = () => {
       </router-link>
 
       <router-link
-        to="/"
+        to="/claims/create"
         class="
           p-3
           flex

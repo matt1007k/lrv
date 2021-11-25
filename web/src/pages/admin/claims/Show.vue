@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import AdminLayout from "../../../components/layouts/AdminLayout.vue";
+import AnswerList from "../../../components/claims/AnswerList.vue";
 
 import { Claim, initialClaim } from "../../../store/modules/claim/state";
 
@@ -48,7 +49,7 @@ onMounted(() => getDetail());
 </script>
 <template>
   <AdminLayout
-    :title="`LRV - Detalle ${title}`"
+    :title="`Detalle ${title}`"
     :description="`Mira los detalle ${subtitle}`"
   >
     <template v-slot:header>
@@ -250,6 +251,7 @@ onMounted(() => getDetail());
             </dl>
           </div>
         </div>
+        <AnswerList />
       </div>
     </template>
   </AdminLayout>

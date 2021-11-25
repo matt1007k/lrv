@@ -127,10 +127,10 @@ const logOut = () => {
     </div>
     <div class="hidden md:flex items-center space-x-4">
       <template v-if="isAuthenticated">
-        <ToggleDark />
         <ButtonLink href="/claims/create" color="primary"
           >Nuevo reclamo</ButtonLink
         >
+        <ToggleDark />
         <Dropdown>
           <template v-slot:trigger>
             <div

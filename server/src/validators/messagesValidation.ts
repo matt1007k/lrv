@@ -57,3 +57,13 @@ export const userErrors = {
     notEquals: "Las contraseñas no coinciden",
   },
 };
+
+export const answerErrors = {
+  notFount: "La respuesta no existe",
+  text: {
+    required: "El texto es obligatorio",
+  },
+  claimId: {
+    required: "El id del reclamo es obligatorio",
+  },
+};

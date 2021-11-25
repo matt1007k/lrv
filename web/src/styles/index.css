@@ -23,4 +23,7 @@ body {
   h4 {
     @apply text-xl md:text-2xl font-bold text-black dark:text-white;
   }
+  h5 {
+    @apply text-base md:text-lg font-bold text-black dark:text-white;
+  }
 }

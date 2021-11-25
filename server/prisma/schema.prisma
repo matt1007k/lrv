@@ -36,8 +36,20 @@ model Claim {
   updatedAt    DateTime @updatedAt
   authorId     Int?
   author       User?    @relation(fields: [authorId], references: [id])
+  answers      Answer[]
 
   @@index([authorId], map: "Claim_authorId_fkey")
+}
+
+model Answer {
+  id        Int      @id @default(autoincrement())
+  text      String
+  claimdId  Int
+  claim     Claim    @relation(fields: [claimdId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([claimdId], map: "Answer_claimdId_fkey")
 }
 
 enum ROLE {

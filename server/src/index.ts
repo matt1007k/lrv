@@ -7,6 +7,7 @@ const app: Application = express();
 
 import claimsRoute from "./routes/claimsRoute";
 import usersRoute from "./routes/usersRoute";
+import answersRoute from "./routes/answersRoute";
 import uploadsRoute from "./routes/uploadsRoute";
 import storagesRoute from "./routes/storagesRoute";
 import reportsRoute from "./routes/reportsRoute";
@@ -22,6 +23,7 @@ app.use(
 
 app.use("/api/users", usersRoute);
 app.use("/api/claims", claimsRoute);
+app.use("/api/answers", answersRoute);
 app.use("/api/uploads", uploadsRoute);
 
 app.use("/storage", storagesRoute);

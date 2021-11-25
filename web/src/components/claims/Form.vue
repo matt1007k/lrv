@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import { useRouter } from "vue-router";
-
-import { Claim } from "../../store/modules/claim/state";
-import { deleteFetch, post } from "../../utils/request";
 
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
 import config from "../../utils/config";
 
+import { useStore } from "../../store";
+import { Claim } from "../../store/modules/claim/state";
+import { deleteFetch, post } from "../../utils/request";
+import { UserGettersTypes } from "../../store/modules/user/userGetter";
+
 const router = useRouter();
+const store = useStore();
+
+const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
 
 const form = reactive<Claim>({
-  fullName: "",
-  email: "",
+  fullName: auth.value != null ? auth.value.name : "",
+  email: auth.value != null ? auth.value.email : "",
   phone: "",
   address: "",
   reference: "",
