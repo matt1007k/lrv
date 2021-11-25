@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+
 import BaseLayout from "../components/layouts/BaseLayout.vue";
+
+const route = useRoute();
 </script>
 
 <template>
-  <BaseLayout>
+  <BaseLayout
+    title="Registro completado con éxito"
+    description="Registro completado con éxito en el libro de reclamaciones de la DREA"
+  >
     <div
       class="
         wrapper
@@ -69,7 +76,7 @@ import BaseLayout from "../components/layouts/BaseLayout.vue";
             >Registrar otro
           </router-link>
           <router-link
-            to="/"
+            :to="`/detail/${route.params.trackingCode}`"
             class="
               flex
               items-center

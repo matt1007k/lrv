@@ -10,6 +10,7 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.3.4",
     "@vueuse/head": "^0.6.0",
+    "tiny-emitter": "^2.1.0",
     "vee-validate": "^4.5.4",
     "vue": "^3.2.16",
     "vue-router": "^4.0.12",

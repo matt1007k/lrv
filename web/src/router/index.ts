@@ -11,9 +11,9 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: "/options",
-    name: "Options",
-    component: () => import("../pages/Options.vue"),
+    path: "/detail/:trackingCode",
+    name: "DetailRegister",
+    component: () => import("../pages/ClaimDetail.vue"),
   },
   {
     path: "/claims/create",
@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../pages/auth/Register.vue"),
   },
   {
-    path: "/message-success",
+    path: "/message-success/:trackingCode?",
     name: "MessageSuccess",
     component: () => import("../pages/MessageSuccess.vue"),
   },
@@ -62,7 +62,7 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/detail/:type/:id",
+    path: "/detail/:type/:trackingCode",
     name: "Detail",
     component: () => import("../pages/admin/claims/Show.vue"),
     meta: {

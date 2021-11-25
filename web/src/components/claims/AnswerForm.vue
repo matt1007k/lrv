@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useStore } from "../../store";
+import { useRoute } from "vue-router";
 
 import Button from "../forms/Button.vue";
 import ClaimSuccess from "./ClaimSuccess.vue";
@@ -8,15 +8,14 @@ import MessageError from "../forms/MessageError.vue";
 import Alert from "../message/Alert.vue";
 
 import { post } from "../../utils/request";
-import { AnswerMutationType } from "../../store/modules/answer/mutations";
-import { useRoute } from "vue-router";
 
-// const props = defineProps<{ claimId: number }>();
-
-const store = useStore();
 const route = useRoute();
 
-const claimId = route.params.id;
+const trackingCode = route.params.trackingCode;
+
+const emit = defineEmits<{
+  (e: "onNewAnswer"): void;
+}>();
 
 const message = reactive<{ text: string; type: "success" | "danger" }>({
   text: "",
@@ -27,18 +26,23 @@ const errors = reactive<{ values: Record<string, string> }>({
   values: {},
 });
 
-const form = reactive<{ text: string; claimId: number; send: boolean }>({
+const form = reactive<{ text: string; trackingCode: string; send: boolean }>({
   text: "",
-  claimId: 0,
+  trackingCode: "",
   send: false,
 });
+const resetForm = () => {
+  form.text = "";
+  form.send = false;
+};
 
 const handleSubmit = async () => {
   try {
     const url = "/answers";
     const { data, status } = await post(url, {
       ...form,
-      claimId: parseInt(claimId),
+      // @ts-ignore
+      trackingCode: trackingCode,
     });
     if (status == 400) {
       message.text = data.message;
@@ -49,7 +53,8 @@ const handleSubmit = async () => {
     } else if (status === 200) {
       message.text = "Respuesta registado con éxito";
       message.type = "success";
-      store.commit(AnswerMutationType.ADD_ANSWER, data);
+      resetForm();
+      emit("onNewAnswer");
     }
   } catch (error) {
     console.log(error);
@@ -69,7 +74,19 @@ const handleSubmit = async () => {
     <div class="mt-5 mb-4">
       <textarea
         v-model="form.text"
-        class="w-full h-24 rounded-md border border-gray-300"
+        class="
+          w-full
+          h-24
+          rounded-md
+          border border-gray-300
+          bg-white
+          text-black
+          placeholder-gray-500
+          dark:border-gray-secondary
+          dark:bg-gray-secondary
+          dark:text-white
+          dark:placeholder-gray-300
+        "
         :class="{ 'border-red-500': !!errors.values.text }"
         placeholder="Ingresar la respuesta"
         required
@@ -96,7 +113,7 @@ const handleSubmit = async () => {
           />
         </div>
         <div class="ml-3 text-sm">
-          <label for="send" class="font-medium text-gray-700"
+          <label for="send" class="font-medium text-gray-700 dark:text-gray-300"
             >Enviar correo</label
           >
         </div>

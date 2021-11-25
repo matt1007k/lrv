@@ -11,6 +11,6 @@ const route = Router();
 
 route.get("/", getAll);
 route.post("/", answerValidator, checkForErrors, create);
-route.get("/:claimId", getAllByClaim);
+route.get("/:trackingCode", getAllByClaim);
 
 export default route;

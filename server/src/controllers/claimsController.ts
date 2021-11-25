@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Prisma, Type } from "@prisma/client";
+import { Prisma, Type, Status } from "@prisma/client";
 import { randomInt } from "crypto";
 
 import { QueryRequestTypes } from "../types/QueryRequestTypes";
@@ -7,19 +7,24 @@ import { getPaginationLinks } from "../helpers/getPaginationLinks";
 
 import prisma from "../helpers/prisma";
 import { MyRequest } from "../types/MyRequestTypes";
+import { verifyToken } from "../helpers/verifyToken";
 
-export const create = async (req: Request, res: Response) => {
+export const create = async (req: MyRequest, res: Response) => {
   const body: Prisma.ClaimCreateInput = req.body;
   const trackingCode = randomInt(999999999).toString();
+
+  const userId = await verifyToken(req);
+  const hasAuthor =
+    userId != null ? { author: { connect: { id: userId } } } : {};
 
   try {
     const claim = await prisma.claim.create({
       data: {
         trackingCode,
         ...body,
+        ...hasAuthor,
       },
     });
-    // console.log("class: ", claim);
 
     res.status(201).json(claim);
   } catch (error) {}
@@ -48,10 +53,20 @@ export const getAll = async (req: MyRequest, res: Response) => {
           ],
         }
       : {};
-    const whereClaim = {
+
+    const user = await prisma.user.findFirst({ where: { id: req.userId } });
+
+    const orWhereAuthor =
+      req.userId && user?.role === "USER"
+        ? {
+            authorId: req.userId,
+          }
+        : {};
+    const whereClaim: Prisma.ClaimWhereInput = {
       type,
       ...orSearch,
       ...orRangeDate,
+      ...orWhereAuthor,
     };
 
     const total = await prisma.claim.count({
@@ -88,18 +103,41 @@ export const getAll = async (req: MyRequest, res: Response) => {
 
 export const detailCount = async (req: MyRequest, res: Response) => {
   try {
-    const total = await prisma.claim.count();
-    const claims: any[] = await prisma.$queryRaw(
-      Prisma.sql`SELECT count(*) as total FROM Claim WHERE type=${Type.CLAIM}`
-    );
-    const complains: any[] = await prisma.$queryRaw(
-      Prisma.sql`SELECT count(*) as total FROM Claim WHERE type=${Type.COMPLAIN}`
-    );
+    const user = await prisma.user.findFirst({ where: { id: req.userId } });
+
+    const orWhereAuthor =
+      req.userId && user?.role === "USER"
+        ? {
+            authorId: req.userId,
+          }
+        : {};
+    const total = await prisma.claim.count({
+      where: { ...orWhereAuthor },
+    });
+    const claims = await prisma.claim.count({
+      where: {
+        type: Type.CLAIM,
+        ...orWhereAuthor,
+      },
+    });
+    const complains = await prisma.claim.count({
+      where: {
+        type: Type.COMPLAIN,
+        ...orWhereAuthor,
+      },
+    });
+
+    // const claims: any[] = await prisma.$queryRaw(
+    //   Prisma.sql`SELECT count(*) as total FROM Claim WHERE type=${Type.CLAIM}`
+    // );
+    // const complains: any[] = await prisma.$queryRaw(
+    //   Prisma.sql`SELECT count(*) as total FROM Claim WHERE type=${Type.COMPLAIN}`
+    // );
 
     res.status(200).json({
       total,
-      totalClaims: claims[0].total,
-      totalComplains: complains[0].total,
+      totalClaims: claims,
+      totalComplains: complains,
     });
   } catch (error) {
     console.log(error);
@@ -108,13 +146,32 @@ export const detailCount = async (req: MyRequest, res: Response) => {
 
 export const detail = async (req: MyRequest, res: Response) => {
   try {
-    const id = req.params.id;
+    const trackingCode = req.params.trackingCode;
     const claim = await prisma.claim.findFirst({
-      where: { id: parseInt(id) },
+      where: {
+        trackingCode,
+      },
     });
 
     if (!claim) return res.status(404).json({ message: "No claim found" });
 
+    res.status(200).json({ ...claim });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changeStatus = async (req: Request, res: Response) => {
+  try {
+    const { trackingCode } = req.params;
+    const claim = await prisma.claim.update({
+      data: {
+        status: req.body.isSuccess ? Status.SUCCESSFUL : Status.PENDING,
+      },
+      where: {
+        trackingCode,
+      },
+    });
     res.status(200).json({ ...claim });
   } catch (error) {
     console.log(error);

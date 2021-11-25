@@ -1,9 +1,39 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+import { post, get } from "../../utils/request";
+import emitter from "../../utils/timy-emitter";
+
+const route = useRoute();
 
 const isSuccess = ref<boolean>(false);
 
-const toggleStatus = () => (isSuccess.value = !isSuccess.value);
+const trackingCode = route.params.trackingCode;
+
+const toggleStatus = async () => {
+  isSuccess.value = !isSuccess.value;
+  try {
+    const url = `/claims/change-status/${trackingCode}`;
+    const { data, status } = await post(url, { isSuccess: isSuccess.value });
+    emitter.$emit("onStatus", data.status);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getDetail = async () => {
+  try {
+    const url = `/claims/detail/${trackingCode}`;
+    const { data, status } = await get(url);
+    if (status === 404) {
+      alert(data.message);
+    }
+    isSuccess.value = data.status === "SUCCESSFUL" ? true : false;
+  } catch (e) {
+    console.log(e);
+  }
+};
+onMounted(() => getDetail());
 </script>
 <template>
   <div class="flex items-center">
@@ -22,12 +52,11 @@ const toggleStatus = () => (isSuccess.value = !isSuccess.value);
         transition-colors
         ease-in-out
         duration-200
-        focus:outline-none
-        focus:ring-2
-        focus:ring-offset-2
-        focus:ring-indigo-500
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
       "
-      :class="`${isSuccess ? ' bg-blue-500' : 'bg-gray-200'}`"
+      :class="`${
+        isSuccess ? ' bg-blue-500' : 'bg-gray-200 dark:bg-gray-secondary'
+      }`"
       role="switch"
       aria-checked="false"
       aria-labelledby="annual-billing-label"
@@ -53,7 +82,9 @@ const toggleStatus = () => (isSuccess.value = !isSuccess.value);
       ></span>
     </button>
     <span class="ml-3" id="annual-billing-label">
-      <span class="text-sm font-medium text-gray-900">Atendido </span>
+      <span class="text-sm font-medium text-gray-900 dark:text-gray-300"
+        >Atendido
+      </span>
     </span>
   </div>
 </template>

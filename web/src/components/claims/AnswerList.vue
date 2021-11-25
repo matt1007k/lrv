@@ -9,6 +9,10 @@ import { AnswerGetterType } from "../../store/modules/answer/getters";
 import { AnswerActionType } from "../../store/modules/answer/actions";
 
 import { get } from "../../utils/request";
+import { AnswerMutationType } from "../../store/modules/answer/mutations";
+import { Answer } from "../../store/modules/answer/state";
+import { getDateAndTimeInline } from "../../utils/dateFormat";
+import { UserGettersTypes } from "../../store/modules/user/userGetter";
 
 const store = useStore();
 const route = useRoute();
@@ -16,11 +20,12 @@ const route = useRoute();
 const claimId = route.params.id;
 
 const getAll = async () => {
+  store.commit(AnswerMutationType.SET_ANSWERS, []);
   try {
     const url = `/answers/${claimId}`;
     const { data, status } = await get(url);
     if (status === 200) {
-      store.dispatch(AnswerActionType.GET_ANSWERS, data.data);
+      store.dispatch(AnswerActionType.GET_ANSWERS, data);
     }
   } catch (error) {
     console.log(error);
@@ -30,23 +35,46 @@ const getAll = async () => {
 onMounted(() => getAll());
 
 const answers = computed(() => store.getters[AnswerGetterType.GET_ANSWERS]);
-console.log(answers.value);
+const answersDesc = computed(() =>
+  answers.value.sort((a, b) =>
+    !!a.createdAt && !!b.createdAt && a.createdAt < b.createdAt ? 1 : -1
+  )
+);
+const onNewAnswer = () => {
+  getAll();
+};
+
+const isAuthenticated = computed(
+  () => store.getters[UserGettersTypes.IS_AUTHENTICATED]
+);
+const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
 </script>
 <template>
-  <div class="w-full mt-5 px-5">
-    <AnswerForm />
+  <div class="w-full mt-5 px-5 mb-16">
+    <template v-if="isAuthenticated && auth.role === 'ADMIN'">
+      <AnswerForm @onNewAnswer="onNewAnswer" />
+    </template>
     <div class="mt-5">
       <h5>Respuestas</h5>
-      <div class="mt-5">
-        {{ JSON.stringify(answers) }}
+      <div class="mt-5 flex flex-col gap-2">
         <template v-if="!!answers && answers.length > 0">
           <div
-            v-for="answer of answers"
+            v-for="answer of answersDesc"
             :key="answer.id"
-            class="border-2 border-gray-300 px-5 py-4 rounded-lg"
+            class="
+              border-2 border-gray-300
+              dark:border-gray-secondary
+              px-5
+              py-4
+              rounded-lg
+            "
           >
-            <h6>{{ answer.text }}</h6>
-            <p>{{ answer.createdAt }}</p>
+            <h6 class="font-semibold text-black dark:text-white">
+              {{ answer.text }}
+            </h6>
+            <p class="text-sm text-gray-500 dark:text-gray-300">
+              {{ getDateAndTimeInline(answer.createdAt) }}
+            </p>
           </div>
         </template>
         <template v-else>

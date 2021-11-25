@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  changeStatus,
   create,
   detail,
   detailCount,
@@ -12,8 +13,9 @@ import { claimValidator } from "../validators/claimValidator";
 const route = Router();
 
 route.get("", isAuthenticated, getAll);
-route.get("/detail/:id", detail);
-route.get("/detail-count", detailCount);
+route.get("/detail/:trackingCode", detail);
+route.get("/detail-count", isAuthenticated, detailCount);
 route.post("", claimValidator, checkForErrors, create);
+route.post("/change-status/:trackingCode", changeStatus);
 
 export default route;

@@ -132,7 +132,7 @@ const register = async () => {
     if (status == 422) {
       errors.values = data.errors;
     } else if (status === 201) {
-      router.push("/message-success");
+      router.push(`/message-success/${data.trackingCode}`);
     } else {
       errors.values = {};
     }

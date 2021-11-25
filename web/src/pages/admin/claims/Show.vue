@@ -5,14 +5,21 @@ import { useRoute } from "vue-router";
 import AdminLayout from "../../../components/layouts/AdminLayout.vue";
 import AnswerList from "../../../components/claims/AnswerList.vue";
 
-import { Claim, initialClaim } from "../../../store/modules/claim/state";
+import { Claim } from "../../../store/modules/claim/state";
 
 import { get } from "../../../utils/request";
-import { getAddressInline, getFileName } from "../../../utils/claim";
+import {
+  getAddressInline,
+  getFileName,
+  getStatusHumanize,
+} from "../../../utils/claim";
+import { getDateAndTimeInline } from "../../../utils/dateFormat";
+import emitter from "../../../utils/timy-emitter";
+import ClaimItem from "../../../components/claims/ClaimItem.vue";
 
 const route = useRoute();
 const type = route.params.type;
-const id = route.params.id;
+const trackingCode = route.params.trackingCode;
 
 const title = type === "claim" ? "del reclamo" : "de la queja";
 const subtitle =
@@ -33,9 +40,13 @@ const claim = ref<Claim>({
   file: "",
 });
 
+emitter.$on("onStatus", (status: "PENDING" | "SUCCESSFUL" | undefined) => {
+  claim.value["status"] = status;
+});
+
 const getDetail = async () => {
   try {
-    const url = `/claims/detail/${id}`;
+    const url = `/claims/detail/${trackingCode}`;
     const { data, status } = await get(url);
     if (status === 404) {
       alert(data.message);
@@ -94,7 +105,7 @@ onMounted(() => getDetail());
       </div>
     </template>
     <template v-slot:default>
-      <div class="wrapper mt-8 mb-10 px-0 md:px-40">
+      <!-- <div class="wrapper mt-8 mb-10 px-0 md:px-40">
         <div
           class="
             bg-white
@@ -177,6 +188,34 @@ onMounted(() => getDetail());
                   {{ claim.order }}
                 </dd>
               </div>
+              <div class="sm:col-span-1">
+                <dt
+                  class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                >
+                  Estado
+                </dt>
+                <dd
+                  class="mt-1 text-sm"
+                  :class="[
+                    claim.status === 'PENDING'
+                      ? 'text-yellow-500 dark:text-yellow-300'
+                      : 'text-green-500 dark:text-green-300',
+                  ]"
+                >
+                  <span>{{ getStatusHumanize(claim.status) }}</span>
+                </dd>
+              </div>
+
+              <div class="sm:col-span-1">
+                <dt
+                  class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                >
+                  Fecha de registro
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 dark:text-white">
+                  {{ getDateAndTimeInline(claim.createdAt) }}
+                </dd>
+              </div>
 
               <div class="sm:col-span-2" v-if="claim.file">
                 <dt
@@ -252,7 +291,8 @@ onMounted(() => getDetail());
           </div>
         </div>
         <AnswerList />
-      </div>
+      </div> -->
+      <ClaimItem :claim="claim" />
     </template>
   </AdminLayout>
 </template>

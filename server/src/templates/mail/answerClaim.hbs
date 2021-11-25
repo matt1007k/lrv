@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respuesta al Reclamo o Queja</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        h1, h2, h3, h4, h5, h6, p{
+            margin: 0;
+        }
+        body{
+            font-size: 15px;
+            background-color:#F3F4F6;
+        }
+        h4{
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        p{
+            margin-bottom: 20px;
+        }
+        .card{
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 3px 6px rgba(0 0 0 / .1);
+        }
+        .btn{
+            background: #3B82F6;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h4>Código de seguimiento: {{ claim.trackingCode }}</h4>
+        <h5>Order: {{ claim.order }}</h5>
+        <h5>Respuesta:</h5>
+        <p>{{ answer.text }}</p>
+        <p>Para ver más detalles, haga click en el enlace.</p>
+        <a href="{{ url }}" class="btn">Ver detalle</a>
+    </div>
+</body>
+</html>

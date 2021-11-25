@@ -2,6 +2,7 @@ export type User = {
   id?: number;
   name: string;
   email: string;
+  role: string | "ADMIN" | "USER";
   password?: string;
   confirm_password?: string;
 };
@@ -9,6 +10,7 @@ export type User = {
 export const initialUser = {
   name: "",
   email: "",
+  role: "USER",
 };
 
 export type UserState = {

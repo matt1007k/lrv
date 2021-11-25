@@ -1,16 +1,27 @@
 import { Prisma } from ".prisma/client";
 import { Request, Response } from "express";
+import { WEB_URL } from "../helpers/config";
 import prisma from "../helpers/prisma";
 import { answerErrors } from "../validators/messagesValidation";
+import { sendEmail } from "../helpers/sendEmail";
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const { text, claimId }: { text: string; claimId: number } = req.body;
-    if (claimId === 0)
-      return res.status(400).json({ message: "El reclamo id es necesario" });
+    const {
+      text,
+      trackingCode,
+      send,
+    }: { text: string; trackingCode: string; send: boolean } = req.body;
+    if (trackingCode === "" || trackingCode === undefined)
+      return res
+        .status(400)
+        .json({ message: "El código de seguimiento es necesario" });
+    const claim = await prisma.claim.findFirst({
+      where: { trackingCode },
+    });
     const answerData: Prisma.AnswerCreateInput = {
       text,
-      claim: { connect: { id: claimId } },
+      claim: { connect: { id: claim?.id } },
     };
     const answer = await prisma.answer.create({
       data: answerData,
@@ -19,7 +30,21 @@ export const create = async (req: Request, res: Response) => {
     if (!answer)
       return res.status(404).json({ message: answerErrors.notFount });
 
-    res.status(200).json({ answer });
+    const context = {
+      answer,
+      claim,
+      url: `${WEB_URL}/#/detail/${trackingCode}`,
+    };
+    if (send && claim) {
+      await sendEmail({
+        to: claim.email,
+        subject: "Respuesta al Reclamo o Queja",
+        template: "answerClaim",
+        context: context,
+      });
+    }
+
+    res.status(200).json({ ...answer });
   } catch (error) {
     console.log(error);
   }
@@ -35,10 +60,20 @@ export const getAll = async (req: Request, res: Response) => {
 };
 
 export const getAllByClaim = async (req: Request, res: Response) => {
+  const { trackingCode } = req.params;
   try {
+    if (trackingCode === "" || trackingCode === undefined)
+      return res
+        .status(400)
+        .json({ message: "El código de seguimiento es necesario" });
+    const claim = await prisma.claim.findFirst({
+      where: { trackingCode },
+    });
     const answers = await prisma.answer.findMany({
       where: {
-        claimdId: parseInt(req.params.claimId),
+        claim: {
+          id: claim?.id,
+        },
       },
     });
     res.status(200).json({ data: answers });

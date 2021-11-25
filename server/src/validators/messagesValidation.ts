@@ -66,4 +66,7 @@ export const answerErrors = {
   claimId: {
     required: "El id del reclamo es obligatorio",
   },
+  trackingCode: {
+    required: "El id del reclamo es obligatorio",
+  },
 };

@@ -414,7 +414,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                     <template v-slot:content>
                       <DropdownItemLink
                         :href="`/detail/${claim.type.toLocaleLowerCase()}/${
-                          claim.id
+                          claim.trackingCode
                         }`"
                         >Ver detalle</DropdownItemLink
                       >

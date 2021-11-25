@@ -7,5 +7,9 @@ export const answerValidator = [
     .withMessage(answerErrors.text.required)
     .isString()
     .withMessage(answerErrors.text.required),
-  body("claimId").isNumeric().withMessage(answerErrors.claimId.required),
+  body("trackingCode")
+    .isLength({ min: 1 })
+    .withMessage(answerErrors.trackingCode.required)
+    .isString()
+    .withMessage(answerErrors.trackingCode.required),
 ];

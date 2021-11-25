@@ -16,6 +16,6 @@ export const mutations: MutationTree<AnswerState> & AnswerMutationsTypes = {
     state.answers = payload;
   },
   [AnswerMutationType.ADD_ANSWER](state, payload) {
-    state.answers = [payload, ...state.answers];
+    state.answers = [...state.answers, payload];
   },
 };
