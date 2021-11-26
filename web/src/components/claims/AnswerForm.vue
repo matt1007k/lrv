@@ -71,7 +71,7 @@ const handleSubmit = async () => {
     <Alert v-if="message.text != ''" :color="message.type">{{
       message.text
     }}</Alert>
-    <div class="mt-5 mb-4">
+    <div class="mt-5 mb-2">
       <textarea
         v-model="form.text"
         class="

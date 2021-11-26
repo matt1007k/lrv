@@ -32,7 +32,7 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
           >Registrar reclamo</ButtonLink
         >
         <router-link
-          to="/login"
+          to="/consult"
           class="
             flex
             items-center
@@ -46,7 +46,7 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
             hover:bg-gray-50
           "
         >
-          <span class="flex-shrink-0 mr-3"> Ingresar y registrar reclamo</span>
+          <span class="flex-shrink-0 mr-3">Consultar mi reclamo</span>
           <svg
             class="w-6 h-6"
             fill="none"

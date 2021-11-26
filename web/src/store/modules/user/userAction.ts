@@ -43,6 +43,7 @@ export const userActions: ActionTree<UserState, RootState> & UserActions = {
     commit(UserMutationType.CreateUser, {
       id: 1,
       name: "ma deza",
+      role: "USER",
       email: "matt1k@gmail.com",
     });
   },

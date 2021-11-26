@@ -45,13 +45,12 @@ const isAuthenticated = computed(
       </div>
     </div>
     <div class="hidden md:flex items-center space-x-8">
-      <!-- <template v-if="isAuthenticated"> </template>
-      <template v-else>
+      <template v-if="!isAuthenticated">
         <router-link
           to="/login"
           class="
             font-semibold
-            text-gray-500
+            text-gray-600
             hover:text-gray-800
             dark:text-gray-300 dark:hover:text-white
           "
@@ -60,18 +59,21 @@ const isAuthenticated = computed(
         <router-link
           to="/register"
           class="
-            bg-blue-500
+            bg-white
             py-3
             px-5
             rounded-lg
             font-semibold
-            text-white
-            hover:text-gray-100
+            text-blue-600
+            hover:text-white hover:bg-blue-600
             dark:text-gray-100 dark:hover:text-white
+            transition
+            duration-150
+            ease-in
           "
           >Registrarse</router-link
         >
-      </template> -->
+      </template>
     </div>
   </nav>
 </template>
