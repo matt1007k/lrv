@@ -25,6 +25,8 @@ const claim = ref<Claim>({
   file: "",
 });
 
+const message = ref<string>("");
+
 const getDetail = async () => {
   const trackingCode = route.params.trackingCode
     ? route.params.trackingCode
@@ -33,7 +35,10 @@ const getDetail = async () => {
     const url = `/claims/detail/${trackingCode}`;
     const { data, status } = await get(url);
     if (status === 200) {
+      message.value = "";
       claim.value = data;
+    } else if (status === 404) {
+      message.value = data.message;
     }
   } catch (e) {
     console.log(e);
@@ -99,7 +104,14 @@ onMounted(() => getDetail());
           bg-white
         "
       >
-        <ClaimItem :claim="claim" />
+        <template v-if="Object.keys(claim).length !== 0 && message == ''">
+          <ClaimItem :claim="claim" />
+        </template>
+        <template v-else>
+          <p class="text-xl font-semibold text-gray-600 p-5">
+            El reclamo o queja no existe
+          </p>
+        </template>
       </div>
     </template>
   </BaseLayout>

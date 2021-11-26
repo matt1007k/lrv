@@ -36,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../pages/MessageSuccess.vue"),
   },
   {
+    path: "/consult",
+    name: "Consult",
+    component: () => import("../pages/Consult.vue"),
+  },
+  {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("../pages/auth/ForgotPassword.vue"),
