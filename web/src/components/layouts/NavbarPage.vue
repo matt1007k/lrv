@@ -21,7 +21,7 @@ const isAuthenticated = computed(
           class="w-10 md:w-12 mr-10"
         />
       </router-link>
-      <div class="hidden md:flex items-center space-x-5">
+      <div class="flex items-center space-x-5">
         <template v-if="isAuthenticated">
           <Link href="/admin">
             <svg
@@ -44,7 +44,7 @@ const isAuthenticated = computed(
         <template v-else> </template>
       </div>
     </div>
-    <div class="hidden md:flex items-center space-x-8">
+    <div class="flex items-center space-x-8">
       <template v-if="!isAuthenticated">
         <router-link
           to="/login"
