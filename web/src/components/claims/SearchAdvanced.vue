@@ -8,7 +8,7 @@
           type="search"
           name="search"
           id="search"
-          placeholder="Qué estas buscando?"
+          :placeholder="t('¿Qué estas buscando?')"
           class="
             py-3
             pl-12
@@ -75,9 +75,9 @@
               d="M12 6V4m0 2a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m-6 8a2 2 0 1 0 0-4m0 4a2 2 0 1 1 0-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 1 0 0-4m0 4a2 2 0 1 1 0-4m0 4v2m0-6V4"
             />
           </svg>
-          <span class="hidden md:block ml-1 text-base font-semibold"
-            >Filtrar</span
-          >
+          <span class="hidden md:block ml-1 text-base font-semibold">{{
+            t("Filtrar")
+          }}</span>
         </div>
         <transition
           enter-active-class="transition ease-out duration-200"
@@ -114,7 +114,7 @@
             >
               <div class="flex justify-between items-center">
                 <h5 class="text-black dark:text-white text-lg font-semibold">
-                  Filtro avanzado
+                  {{ t("Filtro avanzado") }}
                 </h5>
                 <svg
                   class="
@@ -152,7 +152,7 @@
                             dark:text-gray-400
                             mb-1
                           "
-                          >Fecha de</label
+                          >{{ t("Fecha de") }}</label
                         >
                         <input
                           v-model="form.dateFrom"
@@ -187,7 +187,7 @@
                             dark:text-gray-400
                             mb-1
                           "
-                          >Fecha a</label
+                          >{{ t("Fecha a") }}</label
                         >
                         <input
                           v-model="form.dateTo"
@@ -235,7 +235,7 @@
                       type="button"
                       @click="clearForm"
                     >
-                      Limpiar
+                      {{ t("Limpiar") }}
                     </button>
                     <button
                       class="
@@ -252,7 +252,7 @@
                       type="submit"
                       :disabled="isFormEmpty"
                     >
-                      Aplicar
+                      {{ t("Aplicar") }}
                     </button>
                   </div>
                 </form>
@@ -267,7 +267,12 @@
 
 <script lang="ts" setup>
 import { ref, reactive, computed } from "vue";
+import { useI18n } from "vue3-i18n";
+
 import MessageError from "../forms/MessageError.vue";
+
+const { t } = useI18n();
+
 const isContentShow = ref<boolean>(false);
 defineProps<{ modelValue: string }>();
 const emit = defineEmits<{
@@ -298,7 +303,7 @@ const isFormEmpty = computed(() => {
   if (!form.dateFrom) return true;
   if (!form.dateTo) return true;
   if (form.dateFrom > form.dateTo) {
-    errors.value = { dateTo: "La (fecha a) debe ser mayor a la (fecha de)" };
+    errors.value = { dateTo: t("La (fecha a) debe ser mayor a la (fecha de)") };
     return true;
   }
   errors.value = {};

@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { Prisma, Type, Status } from "@prisma/client";
-import { randomInt } from "crypto";
 
 import { QueryRequestTypes } from "../types/QueryRequestTypes";
 import { getPaginationLinks } from "../helpers/getPaginationLinks";
@@ -8,10 +7,11 @@ import { getPaginationLinks } from "../helpers/getPaginationLinks";
 import prisma from "../helpers/prisma";
 import { MyRequest } from "../types/MyRequestTypes";
 import { verifyToken } from "../helpers/verifyToken";
+import { claimErrors } from "../validators/messagesValidation";
 
 export const create = async (req: MyRequest, res: Response) => {
   const body: Prisma.ClaimCreateInput = req.body;
-  const trackingCode = randomInt(999999999).toString();
+  const trackingCode = new Date().getTime().toString();
 
   const userId = await verifyToken(req);
   const hasAuthor =
@@ -50,6 +50,7 @@ export const getAll = async (req: MyRequest, res: Response) => {
             { email: { contains: search } },
             { address: { contains: search } },
             { phone: { contains: search } },
+            { trackingCode: { contains: search } },
           ],
         }
       : {};
@@ -153,7 +154,7 @@ export const detail = async (req: MyRequest, res: Response) => {
       },
     });
 
-    if (!claim) return res.status(404).json({ message: "No claim found" });
+    if (!claim) return res.status(404).json({ message: claimErrors.notFound });
 
     res.status(200).json({ ...claim });
   } catch (error) {

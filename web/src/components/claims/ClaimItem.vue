@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue3-i18n";
 
 import AnswerList from "./AnswerList.vue";
 
@@ -13,6 +14,7 @@ import {
 import { getDateAndTimeInline } from "../../utils/dateFormat";
 
 defineProps<{ claim: Claim }>();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -47,7 +49,7 @@ defineProps<{ claim: Claim }>();
                 uppercase
               "
             >
-              Código de seguimiento
+              {{ t("Código de seguimiento") }}
             </dt>
             <dd
               class="mt-1 text-lg font-semibold text-gray-900 dark:text-white"
@@ -57,7 +59,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Nombre completo
+              {{ t("Nombre completo") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ claim?.fullName }}
@@ -65,7 +67,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Celular
+              {{ t("Número de celular") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ claim?.phone }}
@@ -73,7 +75,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Correo electrónico
+              {{ t("Correo electrónico") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ claim?.email }}
@@ -81,7 +83,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Dirección
+              {{ t("Dirección") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ getAddressInline(claim) }}
@@ -89,7 +91,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Detalle
+              {{ t("Detalle") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ claim?.detail }}
@@ -97,7 +99,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Orden
+              {{ t("Orden") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ claim.order }}
@@ -105,7 +107,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Estado
+              {{ t("Estado") }}
             </dt>
             <dd
               class="mt-1 text-sm"
@@ -115,13 +117,13 @@ defineProps<{ claim: Claim }>();
                   : 'text-green-500 dark:text-green-300',
               ]"
             >
-              <span>{{ getStatusHumanize(claim.status) }}</span>
+              <span>{{ t(getStatusHumanize(claim.status)) }}</span>
             </dd>
           </div>
 
           <div class="sm:col-span-1">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Fecha de registro
+              {{ t("Fecha de registro") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               {{ getDateAndTimeInline(claim.createdAt) }}
@@ -130,7 +132,7 @@ defineProps<{ claim: Claim }>();
 
           <div class="sm:col-span-2" v-if="claim.file">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Archivo adjunto
+              {{ t("Archivo adjunto") }}
             </dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               <ul
@@ -184,7 +186,7 @@ defineProps<{ claim: Claim }>();
                       "
                       target="_blank"
                     >
-                      Ver archivo
+                      {{ t("Ver archivo") }}
                     </a>
                   </div>
                 </li>
@@ -193,7 +195,7 @@ defineProps<{ claim: Claim }>();
           </div>
           <div class="sm:col-span-2" v-else>
             <p class="text-gray-500 dark:text-gray-400">
-              No hay ningún archivo adjunto.
+              {{ t("No hay ningún archivo adjunto") }}.
             </p>
           </div>
         </dl>

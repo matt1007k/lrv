@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import { post, get } from "../../utils/request";
 import emitter from "../../utils/timy-emitter";
 
 const route = useRoute();
+const { t } = useI18n();
 
 const isSuccess = ref<boolean>(false);
 
@@ -15,7 +17,7 @@ const toggleStatus = async () => {
   isSuccess.value = !isSuccess.value;
   try {
     const url = `/claims/change-status/${trackingCode}`;
-    const { data, status } = await post(url, { isSuccess: isSuccess.value });
+    const { data } = await post(url, { isSuccess: isSuccess.value });
     emitter.$emit("onStatus", data.status);
   } catch (error) {
     console.log(error);
@@ -82,8 +84,8 @@ onMounted(() => getDetail());
       ></span>
     </button>
     <span class="ml-3" id="annual-billing-label">
-      <span class="text-sm font-medium text-gray-900 dark:text-gray-300"
-        >Atendido
+      <span class="text-sm font-medium text-gray-900 dark:text-gray-300">
+        {{ t("Atendido") }}
       </span>
     </span>
   </div>

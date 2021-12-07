@@ -1,5 +1,5 @@
 <template>
-  <div class="form__group mb-6 p-0 border-none bg-transparent">
+  <div class="form__group p-0 border-none bg-transparent">
     <template v-if="label">
       <label :for="forId" class="form__label font-medium mb-2">{{
         label
@@ -13,20 +13,20 @@
           py-3
           pl-4
           pr-10
-          border-2 border-gray-400
+          border-2 border-gray-300
           bg-white
           placeholder-gray-500
           text-black
+          dark:border-opacity-30
           dark:bg-gray-custom
           dark:bg-opacity-60
-          dark:border-gray-custom
-          dark:border-opacity-60
           dark:placeholder-gray-300
           dark:text-white
           rounded-lg
           focus:outline-none focus:border-blue-500
           w-full
         "
+        :class="`${!!error ? 'border-red-500 dark:border-opacity-100' : ''}`"
         :value="modelValue"
         @input="updateText"
       />
@@ -105,6 +105,7 @@
         </template>
       </template>
     </div>
+    <MessageError :show="!!error" :text="error && t(error)" />
   </div>
 </template>
 
@@ -117,6 +118,9 @@
 
 <script lang="ts" setup>
 import { useAttrs } from "vue";
+import { useI18n } from "vue3-i18n";
+
+import MessageError from "./MessageError.vue";
 
 withDefaults(
   defineProps<{
@@ -124,6 +128,7 @@ withDefaults(
     icon: string;
     inline: boolean;
     label?: string;
+    error?: string;
   }>(),
   {
     inline: false,
@@ -131,6 +136,7 @@ withDefaults(
   }
 );
 const emit = defineEmits(["update:modelValue"]);
+const { t } = useI18n();
 
 const updateText = (e: Event) => {
   emit("update:modelValue", (e.target as HTMLInputElement).value);

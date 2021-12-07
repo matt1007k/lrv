@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
+import { useI18n } from "vue3-i18n";
 
 import Dropdown from "../overlays/Dropdown.vue";
 import DropdownItem from "../overlays/DropdownItem.vue";
 
 import { get } from "../../utils/request";
+
+const { t } = useI18n();
 
 type ResponseDataType = {
   total: number;
@@ -93,7 +96,7 @@ const sortBy = (sortStr: string) => {
               ? 'text-black dark:text-white'
               : 'text-gray-400 group-hover:text-black dark:text-gray-400 dark:group-hover:text-white'
           }`"
-          >Todos</span
+          >{{ t("Todos") }}</span
         >
         <div
           class="py-1 px-2 rounded-lg"
@@ -127,7 +130,7 @@ const sortBy = (sortStr: string) => {
               ? 'text-black dark:text-white'
               : 'text-gray-400 group-hover:text-black dark:text-gray-400 dark:group-hover:text-white'
           }`"
-          >Reclamos</span
+          >{{ t("Reclamos") }}</span
         >
         <div
           class="py-1 px-2 rounded-lg"
@@ -161,7 +164,7 @@ const sortBy = (sortStr: string) => {
               ? 'text-black dark:text-white'
               : 'text-gray-400 group-hover:text-black dark:text-gray-400 dark:group-hover:text-white'
           }`"
-          >Quejas</span
+          >{{ t("Quejas") }}</span
         >
         <div
           class="py-1 px-2 rounded-lg"
@@ -186,7 +189,9 @@ const sortBy = (sortStr: string) => {
         sm:w-auto
       "
     >
-      <span class="font-semibold text-gray-400 mr-3">Ordernar por:</span>
+      <span class="font-semibold text-gray-400 mr-3"
+        >{{ t("Ordernar por") }}:</span
+      >
       <Dropdown>
         <template v-slot:trigger>
           <div
@@ -223,7 +228,7 @@ const sortBy = (sortStr: string) => {
             </svg>
             <span class="hidden md:flex items-center">
               <span class="font-medium mr-3 text-black dark:text-white">{{
-                sort === "desc" ? "Recientes" : "Antiguos"
+                sort === "desc" ? t("Recientes") : t("Antiguos")
               }}</span>
               <svg
                 class="w-6 h-6 text-gray-500 dark:text-white"
@@ -246,12 +251,12 @@ const sortBy = (sortStr: string) => {
           <DropdownItem
             @click="sortBy('desc')"
             :class="{ 'bg-gray-100 dark:bg-gray-light': sort === 'desc' }"
-            >Recientes</DropdownItem
+            >{{ t("Recientes") }}</DropdownItem
           >
           <DropdownItem
             @click="sortBy('asc')"
             :class="{ 'bg-gray-100 dark:bg-gray-light': sort === 'asc' }"
-            >Antiguos</DropdownItem
+            >{{ t("Antiguos") }}</DropdownItem
           >
         </template>
       </Dropdown>

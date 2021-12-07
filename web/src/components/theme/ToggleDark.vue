@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
+import { useI18n } from "vue3-i18n";
 import { useStore } from "../../store";
 import { RootActionType } from "../../store/modules/root/actions";
 import { RootGetterType } from "../../store/modules/root/getters";
 
 const store = useStore();
+const { t } = useI18n();
 const isDark = computed(() => store.getters[RootGetterType.IS_DARK]);
 const toggleTheme = () => {
   store.dispatch(RootActionType.TOGGLE_DARK);
@@ -13,9 +15,9 @@ onMounted(() => toggleTheme());
 </script>
 <template>
   <div class="flex items-center space-x-3">
-    <span class="text-md text-gray-500 dark:text-gray-300 font-semibold">
-      Modo {{ isDark ? "claro" : "oscuro" }}
-    </span>
+    <!-- <span class="text-md text-gray-500 dark:text-gray-300 font-semibold">
+      {{ t('Modo') }} {{ isDark ? t("claro") : t("oscuro") }}
+    </span> -->
     <div
       @click="toggleTheme"
       class="

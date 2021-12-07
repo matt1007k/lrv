@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
+import { useI18n } from "vue3-i18n";
 
 import AdminLayout from "../../components/layouts/AdminLayout.vue";
 import SearchAdvanced from "../../components/claims/SearchAdvanced.vue";
@@ -18,9 +19,9 @@ import { get } from "../../utils/request";
 import { getDateInline } from "../../utils/dateFormat";
 import { getStatusHumanize, getAddressInline } from "../../utils/claim";
 import config from "../../utils/config";
-import { listenerCount } from "process";
 
 const store = useStore();
+const { t } = useI18n();
 
 const queryParams = reactive({
   page: 1,
@@ -103,9 +104,9 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
       <div class="wrapper mt-0 md:mt-6">
         <div class="flex justify-between">
           <div>
-            <h4>Libro</h4>
+            <h4>{{ t("Libro") }}</h4>
             <p class="text-gray-500 dark:text-gray-400 text-base">
-              de reclamaciones
+              {{ t("de reclamaciones") }}
             </p>
           </div>
 
@@ -161,7 +162,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
               >
                 <span
                   class="font-semibold text-gray-600 dark:text-gray-200 mr-2"
-                  >Exportar</span
+                  >{{ t("Exportar") }}</span
                 >
 
                 <svg
@@ -181,8 +182,10 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
               </div>
             </template>
             <template v-slot:content>
-              <DropdownItem @click="report('excel')">Excel</DropdownItem>
-              <DropdownItem @click="report('pdf')">PDF</DropdownItem>
+              <DropdownItem @click="report('excel')">{{
+                t("Excel")
+              }}</DropdownItem>
+              <DropdownItem @click="report('pdf')">{{ t("PDF") }}</DropdownItem>
             </template>
           </Dropdown>
         </div>
@@ -217,7 +220,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                   col-span-2
                 "
               >
-                Nombre completo
+                {{ t("Nombre completo") }}
               </div>
               <div
                 class="
@@ -229,7 +232,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                   col-span-1
                 "
               >
-                # seguimiento
+                {{ t("# seguimiento") }}
               </div>
               <div
                 class="
@@ -241,7 +244,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                   col-span-1
                 "
               >
-                Num. celular
+                {{ t("Num. celular") }}
               </div>
               <div
                 class="
@@ -253,7 +256,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                   col-span-3
                 "
               >
-                Dirección
+                {{ t("Dirección") }}
               </div>
               <div
                 class="
@@ -265,7 +268,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                   col-span-1
                 "
               >
-                Estado
+                {{ t("Estado") }}
               </div>
               <div
                 class="
@@ -277,7 +280,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                   col-span-1
                 "
               >
-                Fecha
+                {{ t("Fecha") }}
               </div>
             </div>
 
@@ -368,7 +371,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                       : 'text-green-500 dark:text-green-300',
                   ]"
                 >
-                  <span>{{ getStatusHumanize(claim.status) }}</span>
+                  <span>{{ t(getStatusHumanize(claim.status)) }}</span>
                 </div>
                 <div
                   class="
@@ -416,7 +419,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                         :href="`/detail/${claim.type.toLocaleLowerCase()}/${
                           claim.trackingCode
                         }`"
-                        >Ver detalle</DropdownItemLink
+                        >{{ t("Ver detalle") }}</DropdownItemLink
                       >
                     </template>
                   </Dropdown>
@@ -439,7 +442,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                     <h4
                       class="font-medium text-gray-400 dark:text-gray-300 mt-5"
                     >
-                      Lo sentimos, sin resultados de búsqueda con:
+                      {{ t("Lo sentimos, sin resultados de búsqueda con") }}:
                     </h4>
                     <h4 class="font-semibold text-gray-700 dark:text-white">
                       {{ search }}
@@ -449,7 +452,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                     <h4
                       class="font-medium text-gray-400 dark:text-gray-300 mt-5"
                     >
-                      Lo sentimos, no hay ningún registro.
+                      {{ t("Lo sentimos, no hay ningún registro") }}.
                     </h4>
                     <router-link
                       to="/"
@@ -461,7 +464,7 @@ const links = computed(() => store.getters[ClaimGetterType.GET_LINKS]);
                         underline
                         mt-5
                       "
-                      >Registrar queja</router-link
+                      >{{ t("Registrar reclamo") }}</router-link
                     >
                   </template>
                 </div>

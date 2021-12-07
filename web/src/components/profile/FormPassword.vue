@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
@@ -9,7 +9,7 @@ import PasswordField from "../forms/PasswordField.vue";
 
 import { post } from "../../utils/request";
 
-const router = useRouter();
+const { t } = useI18n();
 
 const form = reactive<{
   currentPassword: string;
@@ -42,7 +42,7 @@ const update = async () => {
       errors.values = data.errors;
     } else if (status === 200) {
       errors.values = {};
-      message.value = "Tu contraseña fue cambiado correctamente.";
+      message.value = "Tu contraseña fue cambiado correctamente";
       resetForm();
     }
   } catch (error) {}
@@ -50,7 +50,7 @@ const update = async () => {
 </script>
 <template>
   <div class="bg-white dark:bg-gray-secondary mt-6 p-6 rounded-lg shadow">
-    <Alert v-if="message" color="success">{{ message }}</Alert>
+    <Alert v-if="message" color="success">{{ t(message) }}</Alert>
     <form
       class="space-y-0 divide-y divide-gray-200 dark:divide-gray-custom"
       @submit.prevent="update"
@@ -74,11 +74,14 @@ const update = async () => {
                 dark:text-white
               "
             >
-              Actualizar Contraseña
+              {{ t("Actualizar Contraseña") }}
             </h3>
             <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-              Asegúrese de que su cuenta esté usando una contraseña larga y
-              aleatoria para mantenerse seguro.
+              {{
+                t(
+                  "Asegúrese de que su cuenta esté usando una contraseña larga y aleatoria para mantenerse seguro"
+                )
+              }}.
             </p>
           </div>
           <div class="space-y-6 sm:space-y-5">
@@ -105,18 +108,14 @@ const update = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Contraseña actual
+                {{ t("Contraseña actual") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <PasswordField
                   v-model="form.currentPassword"
                   id="current-password"
                   class="max-w-lg sm:max-w-xs"
-                />
-
-                <MessageError
-                  :show="!!errors.values.currentPassword"
-                  :text="errors.values.currentPassword"
+                  :error="errors.values.currentPassword"
                 />
               </div>
             </div>
@@ -144,17 +143,14 @@ const update = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Nueva contraseña
+                {{ t("Nueva contraseña") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <PasswordField
                   v-model="form.newPassword"
                   id="new-password"
                   class="max-w-lg sm:max-w-xs"
-                />
-                <MessageError
-                  :show="!!errors.values.newPassword"
-                  :text="errors.values.newPassword"
+                  :error="errors.values.newPassword"
                 />
               </div>
             </div>
@@ -182,17 +178,14 @@ const update = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Repetir contraseña
+                {{ t("Repetir contraseña") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2 mb-5">
                 <PasswordField
                   v-model="form.confirmPassword"
                   id="confirm-password"
                   class="max-w-lg sm:max-w-xs"
-                />
-                <MessageError
-                  :show="!!errors.values.confirmPassword"
-                  :text="errors.values.confirmPassword"
+                  :error="errors.values.confirmPassword"
                 />
               </div>
             </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
@@ -13,6 +14,7 @@ import { UserGettersTypes } from "../../store/modules/user/userGetter";
 
 const router = useRouter();
 const store = useStore();
+const { t } = useI18n();
 
 const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
 
@@ -69,7 +71,7 @@ const changeFile = (ev: Event) => {
         if (res.readyState === XMLHttpRequest.DONE) {
           const status = res.status;
           if (status === 0 || (status >= 200 && status < 400)) {
-            messageUploadFile.value = "Archivo subido con éxito.";
+            messageUploadFile.value = "Archivo subido con éxito";
             const {
               filePath,
               fullPath,
@@ -101,10 +103,8 @@ const changeFile = (ev: Event) => {
       res.send(formData);
     } else {
       messageUploadFile.value = toolLarge
-        ? `La archivo es muy grande, el tamaño máximo permitido: ${Math.ceil(
-            maxSize / 1000
-          )}Kb`
-        : "El archivo no es una imagen.";
+        ? "La archivo es muy grande, el tamaño máximo permitido: 5MB"
+        : "El archivo no es una imagen";
       isError.value = true;
       percentaje.value = 0;
     }
@@ -121,7 +121,6 @@ const deleteFileUpload = async () => {
     messageUploadFile.value = data.message;
     isError.value = true;
     form.file = "";
-    console.log(form.file);
   } catch (error) {}
 };
 
@@ -164,10 +163,14 @@ const register = async () => {
                 dark:text-white
               "
             >
-              Información Personal
+              {{ t("Información Personal") }}
             </h3>
             <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-              Completa los campos requeridos para registrar tu queja o reclamo.
+              {{
+                t(
+                  "Completa los campos requeridos para registrar tu queja o reclamo"
+                )
+              }}.
             </p>
           </div>
           <div class="space-y-6 sm:space-y-5">
@@ -194,7 +197,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Nombre completo
+                {{ t("Nombre completo") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -225,7 +228,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.fullName"
-                  :text="errors.values.fullName"
+                  :text="t(errors.values.fullName)"
                 />
               </div>
             </div>
@@ -253,7 +256,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Correo electrónico
+                {{ t("Correo electrónico") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -283,7 +286,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.email"
-                  :text="errors.values.email"
+                  :text="t(errors.values.email)"
                 />
               </div>
             </div>
@@ -311,7 +314,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Número de celular
+                {{ t("Número de celular") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -342,7 +345,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.phone"
-                  :text="errors.values.phone"
+                  :text="t(errors.values.phone)"
                 />
               </div>
             </div>
@@ -368,10 +371,12 @@ const register = async () => {
                 dark:text-white
               "
             >
-              Tu dirección
+              {{ t("Tu dirección") }}
             </h3>
             <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-              Completa los campos requeridos, para comunicarnos contigo.
+              {{
+                t("Completa los campos requeridos, para comunicarnos contigo")
+              }}.
             </p>
           </div>
           <div
@@ -405,7 +410,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Dirección
+                {{ t("Dirección") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -436,7 +441,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.address"
-                  :text="errors.values.address"
+                  :text="t(errors.values.address)"
                 />
               </div>
             </div>
@@ -464,7 +469,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Referencia
+                {{ t("Referencia") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -495,7 +500,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.reference"
-                  :text="errors.values.reference"
+                  :text="t(errors.values.reference)"
                 />
               </div>
             </div>
@@ -523,7 +528,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Departamento
+                {{ t("Departamento") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -554,7 +559,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.department"
-                  :text="errors.values.department"
+                  :text="t(errors.values.department)"
                 />
               </div>
             </div>
@@ -582,7 +587,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Provincia
+                {{ t("Provincia") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -613,7 +618,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.province"
-                  :text="errors.values.province"
+                  :text="t(errors.values.province)"
                 />
               </div>
             </div>
@@ -641,7 +646,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Distrito
+                {{ t("Distrito") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -672,7 +677,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.district"
-                  :text="errors.values.district"
+                  :text="t(errors.values.district)"
                 />
               </div>
             </div>
@@ -698,10 +703,14 @@ const register = async () => {
                 dark:text-white
               "
             >
-              Detalles
+              {{ t("Detalles") }}
             </h3>
             <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-              Completa los campos requeridos, describe tu queja o reclamo.
+              {{
+                t(
+                  "Completa los campos requeridos, describe tu queja o reclamo"
+                )
+              }}.
             </p>
           </div>
           <div
@@ -728,7 +737,7 @@ const register = async () => {
                       "
                       id="label-type"
                     >
-                      Tipo
+                      {{ t("Tipo") }}
                     </div>
                   </div>
                   <div class="sm:col-span-2">
@@ -761,7 +770,7 @@ const register = async () => {
                               dark:text-gray-100
                             "
                           >
-                            Reclamo
+                            {{ t("Reclamo") }}
                           </label>
                         </div>
                         <div class="flex items-center">
@@ -790,7 +799,7 @@ const register = async () => {
                               dark:text-gray-100
                             "
                           >
-                            Queja
+                            {{ t("Queja") }}
                           </label>
                         </div>
                       </div>
@@ -823,7 +832,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Detalle
+                {{ t("Detalle") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -854,7 +863,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.detail"
-                  :text="errors.values.detail"
+                  :text="t(errors.values.detail)"
                 />
               </div>
             </div>
@@ -882,7 +891,7 @@ const register = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Orden
+                {{ t("Orden") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <input
@@ -912,7 +921,7 @@ const register = async () => {
                 />
                 <MessageError
                   :show="!!errors.values.order"
-                  :text="errors.values.order"
+                  :text="t(errors.values.order)"
                 />
               </div>
             </div>
@@ -940,12 +949,12 @@ const register = async () => {
                     sm:mt-px sm:pt-2
                   "
                 >
-                  Archivo adjunto
+                  {{ t("Archivo adjunto") }}
                 </h6>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">
-                  Si desea subir un archivo, no debe exceder los 5MB.
-                  <span class="font-bold">Archivos permitidos:</span> imagenes y
-                  doc.pdf
+                  {{ t("Si desea subir un archivo, no debe exceder los 5MB") }}.
+                  <span class="font-bold">{{ t("Archivos permitidos") }}:</span>
+                  {{ t("una imagen (png, jpg, jpeg) o un documento (pdf)") }}
                 </p>
               </div>
               <div class="mt-4 sm:mt-0 sm:col-span-2">
@@ -956,8 +965,8 @@ const register = async () => {
                   id="file"
                   class="
                     max-w-lg
-                    hidden
                     w-full
+                    hidden
                     shadow-sm
                     focus:ring-indigo-500 focus:border-indigo-500
                     sm:max-w-xs sm:text-sm
@@ -993,9 +1002,12 @@ const register = async () => {
                       d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                     ></path>
                   </svg>
-                  <span class="ml-2">Subir archivo</span>
+                  <span class="ml-2">{{ t("Subir archivo") }}</span>
                 </Button>
-                <MessageError :show="isError" :text="messageUploadFile.value" />
+                <MessageError
+                  :show="isError"
+                  :text="t(messageUploadFile.value)"
+                />
                 <template
                   v-if="!isError && !!file?.files && file?.files?.length > 0"
                 >
@@ -1066,7 +1078,7 @@ const register = async () => {
 
       <div class="pt-5">
         <div class="flex justify-end space-x-4">
-          <Button type="submit" color="primary">Registrar</Button>
+          <Button type="submit" color="primary">{{ t("Registrar") }}</Button>
         </div>
       </div>
     </form>

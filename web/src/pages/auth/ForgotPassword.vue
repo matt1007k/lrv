@@ -8,6 +8,9 @@ import Alert from "../../components/message/Alert.vue";
 
 import { post } from "../../utils/request";
 
+import { useI18n } from "vue3-i18n";
+const { t } = useI18n();
+
 const state = reactive({
   email: "",
 });
@@ -30,11 +33,13 @@ async function onSubmit() {
     } else if (status === 422) {
       errors.values = data.errors;
       isSend.value = false;
-    } else {
+    } else if (status == 200) {
       message.value =
         "¡Te hemos enviado por correo el enlace para restablecer tu contraseña!";
       message.type = "success";
       isSend.value = false;
+      state.email = "";
+      errors.values = {};
     }
   } catch (error) {
     console.log(error);
@@ -73,32 +78,28 @@ async function onSubmit() {
           md:w-4/12
         "
       >
-        <h4 class="text-center mb-6">Recuperar contraseña</h4>
+        <h4 class="text-center mb-6">{{ t("Recuperar contraseña") }}</h4>
         <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
           <Alert
             v-if="message.value != '' && message.type != ''"
             :color="message.type"
             class="mb-3"
-            >{{ message.value }}</Alert
+            >{{ t(message.value) }}</Alert
           >
           <TextField
             v-model="state.email"
             type="email"
             name="email"
-            placeholder="Correo electrónico"
+            :placeholder="t('Correo electrónico')"
             icon="email"
             inline
             required
-            :class="{ 'border-red-500': !!errors.values.email }"
-          />
-          <MessageError
-            :show="!!errors.values.email"
-            :text="errors.values.email"
+            :error="errors.values.email"
           />
 
           <Button color="primary" class="w-full mt-8" :disabled="isSend">
-            <span v-if="isSend">Enviando...</span>
-            <span v-else>Recuperar contraseña</span>
+            <span v-if="isSend">{{ t("Enviando") }}...</span>
+            <span v-else>{{ t("Recuperar contraseña") }}</span>
           </Button>
         </form>
       </div>

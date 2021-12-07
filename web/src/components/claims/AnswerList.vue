@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import AnswerForm from "./AnswerForm.vue";
 
@@ -16,13 +17,14 @@ import { UserGettersTypes } from "../../store/modules/user/userGetter";
 
 const store = useStore();
 const route = useRoute();
+const { t } = useI18n();
 
-const claimId = route.params.id;
+const trackingCode = route.params.trackingCode;
 
 const getAll = async () => {
   store.commit(AnswerMutationType.SET_ANSWERS, []);
   try {
-    const url = `/answers/${claimId}`;
+    const url = `/answers/${trackingCode}`;
     const { data, status } = await get(url);
     if (status === 200) {
       store.dispatch(AnswerActionType.GET_ANSWERS, data);
@@ -55,7 +57,7 @@ const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
       <AnswerForm @onNewAnswer="onNewAnswer" />
     </template>
     <div class="mt-5">
-      <h5>Respuestas</h5>
+      <h5>{{ t("Respuestas") }}</h5>
       <div class="mt-5 flex flex-col gap-2">
         <template v-if="!!answers && answers.length > 0">
           <div
@@ -78,7 +80,9 @@ const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
           </div>
         </template>
         <template v-else>
-          <p class="text-gray-500 text-base">Sin respuestas registrados</p>
+          <p class="text-gray-500 text-base">
+            {{ t("Sin respuestas registrados") }}
+          </p>
         </template>
       </div>
     </div>

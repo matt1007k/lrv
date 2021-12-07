@@ -1,9 +1,14 @@
 <script lang="ts" setup>
+import { useI18n } from "vue3-i18n";
+
 import AdminLayout from "../../components/layouts/AdminLayout.vue";
 import FormPassword from "../../components/profile/FormPassword.vue";
 import FormInfoUser from "../../components/profile/FormInfoUser.vue";
+
 const title = "Perfil";
 const description = "Administrar los datos de mi perfil";
+
+const { t } = useI18n();
 </script>
 <template>
   <AdminLayout :title="title" :description="description">
@@ -40,7 +45,7 @@ const description = "Administrar los datos de mi perfil";
             </svg>
           </router-link>
           <div>
-            <h4>{{ title }}</h4>
+            <h4>{{ t(title) }}</h4>
           </div>
         </div>
       </div>

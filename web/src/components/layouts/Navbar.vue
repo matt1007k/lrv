@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import ToggleDark from "../theme/ToggleDark.vue";
 import Dropdown from "../overlays/Dropdown.vue";
@@ -15,8 +16,10 @@ import { UserActionTypes } from "../../store/modules/user/userAction";
 import { get } from "../../utils/request";
 import { getFirstName } from "../../utils/user";
 import ButtonLink from "../navigations/ButtonLink.vue";
+import LocaleDropdown from "../locales/LocaleDropdown.vue";
 
 const router = useRouter();
+const { t } = useI18n();
 const store = useStore();
 const isAuthenticated = computed(
   () => store.getters[UserGettersTypes.IS_AUTHENTICATED]
@@ -84,7 +87,7 @@ const logOut = () => {
                 d="M11 5.882V19.24a1.76 1.76 0 0 1-3.417.592l-2.147-6.15M18 13a3 3 0 1 0 0-6M5.436 13.683A4.001 4.001 0 0 1 7 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 0 1-1.564-.317z"
               />
             </svg>
-            <span>Libro</span>
+            <span>{{ t("Libro") }}</span>
           </router-link>
           <!-- <router-link
             to="/other"
@@ -127,10 +130,11 @@ const logOut = () => {
     </div>
     <div class="hidden md:flex items-center space-x-4">
       <template v-if="isAuthenticated">
-        <ButtonLink href="/claims/create" color="primary"
-          >Nuevo reclamo</ButtonLink
-        >
+        <ButtonLink href="/claims/create" color="primary">{{
+          t("Nuevo reclamo")
+        }}</ButtonLink>
         <ToggleDark />
+        <LocaleDropdown />
         <Dropdown>
           <template v-slot:trigger>
             <div
@@ -184,7 +188,7 @@ const logOut = () => {
                 ease-out
               "
             >
-              Perfil
+              {{ t("Perfil") }}
             </DropdownItemLink>
             <DropdownItem
               class="
@@ -202,7 +206,7 @@ const logOut = () => {
               "
               @click="logOut"
             >
-              Salir
+              {{ t("Salir") }}
             </DropdownItem>
           </template>
         </Dropdown>

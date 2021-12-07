@@ -107,15 +107,15 @@ export const changePassword = async (req: MyRequest, res: Response) => {
     });
     !userExists && res.status(404).send({ message: userErrors.notFound });
 
-    const checkPassword = await verify(
+    const validated = await verify(
       userExists?.password as string,
       currentPassword
     );
-    if (!checkPassword) {
-      return res.status(422).send({
-        errors: { currentPassword: "La contraseña actual no es correcta." },
+
+    !validated &&
+      res.status(422).send({
+        errors: { currentPassword: userErrors.password.notCurrentPassword },
       });
-    }
 
     const passwordHash = await hash(newPassword);
 
@@ -163,9 +163,7 @@ export const changeInfo = async (req: MyRequest, res: Response) => {
 
 export const forgotPassword = async (req: Request, res: Response) => {
   const email = req.body.email;
-  if (!email) return res.status(422).json({ email: userErrors.email.required });
-  if (!validateEmail(email))
-    return res.status(422).json({ email: userErrors.email.isEmail });
+
   try {
     const user = await prisma.user.findFirst({
       where: { email },
@@ -212,7 +210,7 @@ export const changeResetPassword = async (req: Request, res: Response) => {
     const userId = await redis.get(key);
 
     if (!userId)
-      return res.status(400).json({ message: "El token ha expirado." });
+      return res.status(400).json({ message: userErrors.tokenExpired });
 
     const user = await prisma.user.update({
       where: { id: parseInt(userId) },

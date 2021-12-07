@@ -2,18 +2,20 @@
 import { reactive, ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
+import { useI18n } from "vue3-i18n";
+const { t } = useI18n();
+
 import SafeLayout from "../../components/layouts/SafeLayout.vue";
 import PasswordField from "../../components/forms/PasswordField.vue";
 import TextField from "../../components/forms/TextField.vue";
-
 import Button from "../../components/forms/Button.vue";
+import Alert from "../../components/message/Alert.vue";
 
 import { post } from "../../utils/request";
 
 import { useStore } from "../../store";
 import { UserActionTypes } from "../../store/modules/user/userAction";
 import { RootGetterType } from "../../store/modules/root/getters";
-import Alert from "../../components/message/Alert.vue";
 import { RootMutationType } from "../../store/modules/root/mutations";
 
 const router = useRouter();
@@ -97,9 +99,9 @@ onMounted(() => {
           </router-link>
           <div>
             <p class="text-gray-500 dark:text-gray-400 text-base">
-              Regresar al
+              {{ t("Regresar al") }}
             </p>
-            <h4>Inicio</h4>
+            <h4>{{ t("Inicio") }}</h4>
           </div>
         </div>
         <div
@@ -115,11 +117,14 @@ onMounted(() => {
               />
             </div>
             <h3 class="text-4xl font-bold mb-6 mt-16">
-              Ingresa y revisa todos tus reclamos y quejas
+              {{ t("Ingresa y revisa todos tus reclamos y quejas") }}
             </h3>
             <p class="text-xl font-light">
-              Ingresa tus datos, para ver todos tus reclamos y quejas que
-              realizaste.
+              {{
+                t(
+                  "Ingresa tus datos, para ver todos tus reclamos y quejas que realizaste"
+                )
+              }}.
             </p>
           </div>
         </div>
@@ -173,30 +178,34 @@ onMounted(() => {
         </div>
         <div class="flex justify-center mt-5 md:pt-40">
           <div class="px-0 md:px-10 py-5 md:py-12 w-full md:w-1/2">
-            <h4 class="text-center mb-10">Ingresar para continuar</h4>
+            <h4 class="text-center mb-10">
+              {{ t("Ingresar para continuar") }}
+            </h4>
             <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
               <Alert v-if="globalMessage != ''" class="mb-3">{{
-                globalMessage
+                t(globalMessage)
               }}</Alert>
               <div
                 v-if="message"
                 class="p-4 mb-3 bg-red-500 text-white rounded-md text-sm"
-                v-text="message"
+                v-text="t(message)"
               ></div>
-              <TextField
-                v-model="state.email"
-                type="email"
-                name="email"
-                placeholder="Correo electrónico"
-                icon="email"
-                inline
-                required
-              />
-              <PasswordField
-                v-model="state.password"
-                placeholder="Contraseña"
-                class="mb-3"
-              />
+              <div class="grid gap-5">
+                <TextField
+                  v-model="state.email"
+                  type="email"
+                  name="email"
+                  :placeholder="t('Correo electrónico')"
+                  icon="email"
+                  inline
+                  required
+                />
+                <PasswordField
+                  v-model="state.password"
+                  :placeholder="t('Contraseña')"
+                  class="mb-3"
+                />
+              </div>
               <router-link
                 to="/forgot-password"
                 class="
@@ -206,17 +215,19 @@ onMounted(() => {
                   underline
                   -mt-8
                 "
-                >¿Has olvidado tu contraseña?</router-link
+                >{{ t("¿Has olvidado tu contraseña?") }}</router-link
               >
 
-              <Button color="primary" class="w-full mt-8">Ingresar</Button>
+              <Button color="primary" class="w-full mt-8">{{
+                t("Ingresar")
+              }}</Button>
             </form>
             <div class="mt-2 flex items-center justify-center">
-              <p class="mr-2 text-gray-800">¿No tengo una cuenta?</p>
+              <p class="mr-2 text-gray-800">{{ t("¿No tengo una cuenta?") }}</p>
               <router-link
                 to="/register"
                 class="uppercase text-blue-500 font-medium"
-                >Registrarse</router-link
+                >{{ t("Registrarse") }}</router-link
               >
             </div>
           </div>

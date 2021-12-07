@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import SafeLayout from "../../components/layouts/SafeLayout.vue";
 import MessageError from "../../components/forms/MessageError.vue";
@@ -15,6 +16,7 @@ import { useStore } from "../../store";
 import { RootMutationType } from "../../store/modules/root/mutations";
 
 const router = useRouter();
+const { t } = useI18n();
 
 const store = useStore();
 const state = reactive({
@@ -105,68 +107,67 @@ async function onSubmit() {
           </router-link>
           <div>
             <p class="text-gray-500 dark:text-gray-400 text-base">
-              Regresar al
+              {{ t("Regresar al") }}
             </p>
-            <h4>Inicio</h4>
+            <h4>{{ t("Inicio") }}</h4>
           </div>
         </div>
         <div class="flex justify-center mt-5 md:pt-40">
           <div class="px-0 md:px-8 py-5 md:py-8 w-full md:w-1/2">
-            <h4 class="text-center mb-8">Crear una cuenta</h4>
+            <h4 class="text-center mb-8">{{ t("Crear una cuenta") }}</h4>
             <form class="w-full md:w-4/5 mx-auto" @submit.prevent="onSubmit">
               <Alert
                 v-if="message.text != ''"
                 :color="message.type"
                 class="mb-3"
-                >{{ message.text }}</Alert
+                >{{ t(message.text) }}</Alert
               >
-              <TextField
-                v-model="state.name"
-                type="text"
-                name="name"
-                placeholder="Nombre"
-                icon="user"
-                inline
-                required
-              />
-              <TextField
-                v-model="state.email"
-                type="email"
-                name="email"
-                placeholder="Correo electrónico"
-                icon="email"
-                inline
-                required
-                :class="{ 'border-red-500': !!errors.values.email }"
-              />
-              <MessageError
-                :show="!!errors.values.email"
-                :text="errors.values.email"
-              />
-              <PasswordField
-                v-model="state.password"
-                placeholder="Contraseña"
-                class="mb-3"
-              />
-              <PasswordField
-                v-model="state.confirmPassword"
-                placeholder="Repetir contraseña"
-                :class="{ 'border-red-500': !!errors.values.confirmPassword }"
-              />
-              <MessageError
-                :show="!!errors.values.confirmPassword"
-                :text="errors.values.confirmPassword"
-              />
+              <div class="grid gap-5">
+                <TextField
+                  v-model="state.name"
+                  type="text"
+                  name="name"
+                  :placeholder="t('Nombre')"
+                  icon="user"
+                  inline
+                  :error="errors.values.name"
+                  required
+                />
+                <TextField
+                  v-model="state.email"
+                  type="email"
+                  name="email"
+                  :placeholder="t('Correo electrónico')"
+                  icon="email"
+                  inline
+                  :error="errors.values.name"
+                  required
+                />
+
+                <PasswordField
+                  v-model="state.password"
+                  :placeholder="t('Contraseña')"
+                  :error="errors.values.password"
+                />
+
+                <PasswordField
+                  v-model="state.confirmPassword"
+                  :placeholder="t('Repetir contraseña')"
+                  :error="errors.values.confirmPassword"
+                />
+              </div>
               <div class="mb-3"></div>
 
-              <Button color="primary" class="w-full mt-8">Registrarse</Button>
+              <Button color="primary" class="w-full mt-8">{{
+                t("Registrarse")
+              }}</Button>
             </form>
             <div class="mt-2 flex items-center justify-center">
-              <p class="mr-2 text-gray-800">¿Ya tengo una cuenta?</p>
+              <p class="mr-2 text-gray-800">{{ t("¿Ya tengo una cuenta?") }}</p>
               <router-link
                 to="/login"
                 class="uppercase text-blue-500 font-medium"
-                >Ingresar</router-link
+                >{{ t("Ingresar") }}</router-link
               >
             </div>
           </div>
@@ -198,11 +199,14 @@ async function onSubmit() {
               />
             </div>
             <h3 class="text-4xl font-bold mb-6 mt-16">
-              Revisa todas tus quejas y reclamos
+              {{ t("Revisa todas tus quejas y reclamos") }}
             </h3>
             <p class="text-xl font-light">
-              Ingresa los datos para crear una cuenta, podrás tener ver todas
-              los quejas y reclamos que vas ha realizar.
+              {{
+                t(
+                  "Ingresa los datos para crear una cuenta, podrás tener ver todas los quejas y reclamos que vas ha realizar"
+                )
+              }}.
             </p>
           </div>
         </div>

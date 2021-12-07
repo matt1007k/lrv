@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import BaseLayout from "../components/layouts/BaseLayout.vue";
 import ClaimItem from "../components/claims/ClaimItem.vue";
@@ -9,6 +10,7 @@ import { Claim } from "../store/modules/claim/state";
 import { get } from "../utils/request";
 
 const route = useRoute();
+const { t } = useI18n();
 
 const claim = ref<Claim>({
   fullName: "",
@@ -84,9 +86,9 @@ onMounted(() => getDetail());
             </svg>
           </router-link>
           <div>
-            <h4>Detalle</h4>
+            <h4>{{ t("Detalle") }}</h4>
             <p class="text-gray-500 dark:text-gray-400 text-base">
-              del registro
+              {{ t("del registro") }}
             </p>
           </div>
         </div>
@@ -109,7 +111,7 @@ onMounted(() => getDetail());
         </template>
         <template v-else>
           <p class="text-xl font-semibold text-gray-600 p-5">
-            El reclamo o queja no existe
+            {{ t("El reclamo o queja no existe") }}
           </p>
         </template>
       </div>

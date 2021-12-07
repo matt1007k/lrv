@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import Button from "../forms/Button.vue";
 import ClaimSuccess from "./ClaimSuccess.vue";
@@ -10,6 +11,7 @@ import Alert from "../message/Alert.vue";
 import { post } from "../../utils/request";
 
 const route = useRoute();
+const { t } = useI18n();
 
 const trackingCode = route.params.trackingCode;
 
@@ -65,11 +67,11 @@ const handleSubmit = async () => {
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="flex items-center justify-between">
-      <h5>Registrar respuesta</h5>
+      <h5>{{ t("Registrar respuesta") }}</h5>
       <ClaimSuccess />
     </div>
     <Alert v-if="message.text != ''" :color="message.type">{{
-      message.text
+      t(message.text)
     }}</Alert>
     <div class="mt-5 mb-2">
       <textarea
@@ -88,7 +90,7 @@ const handleSubmit = async () => {
           dark:placeholder-gray-300
         "
         :class="{ 'border-red-500': !!errors.values.text }"
-        placeholder="Ingresar la respuesta"
+        :placeholder="t('Ingresar la respuesta')"
         required
       ></textarea>
       <MessageError :show="!!errors.values.text" :text="errors.values.text" />
@@ -113,12 +115,14 @@ const handleSubmit = async () => {
           />
         </div>
         <div class="ml-3 text-sm">
-          <label for="send" class="font-medium text-gray-700 dark:text-gray-300"
-            >Enviar correo</label
+          <label
+            for="send"
+            class="font-medium text-gray-700 dark:text-gray-300"
+            >{{ t("Enviar correo") }}</label
           >
         </div>
       </div>
-      <Button type="submit" color="primary">Registrar</Button>
+      <Button type="submit" color="primary">{{ t("Registrar") }}</Button>
     </div>
   </form>
 </template>

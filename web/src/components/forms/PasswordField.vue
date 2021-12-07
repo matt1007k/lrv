@@ -7,20 +7,20 @@
         py-3
         pl-4
         pr-10
-        border-2 border-gray-400
+        border-2 border-gray-300
         bg-white
         placeholder-gray-500
         text-black
+        dark:border-opacity-30
         dark:bg-gray-custom
         dark:bg-opacity-60
-        dark:border-gray-custom
-        dark:border-opacity-80
         dark:placeholder-gray-300
         dark:text-white
         rounded-lg
         focus:outline-none focus:border-blue-500
         w-full
       "
+      :class="{ 'border-red-500 dark:border-opacity-100': !!error }"
       ref="passwordInput"
       :value="modelValue"
       @input="updatePassword"
@@ -88,18 +88,23 @@
         />
       </svg>
     </template>
+    <MessageError :show="!!error" :text="error && t(error)" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, useAttrs } from "vue";
+import { useI18n } from "vue3-i18n";
 
-defineProps<{ modelValue: string }>();
+import MessageError from "./MessageError.vue";
+
+defineProps<{ modelValue: string; error?: string }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: string): void;
 }>();
 
 const attrs = useAttrs();
+const { t } = useI18n();
 
 const updatePassword = (e: Event) => {
   emit("update:modelValue", (e.target as HTMLInputElement).value);

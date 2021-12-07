@@ -15,7 +15,7 @@ export const create = async (req: Request, res: Response) => {
     if (trackingCode === "" || trackingCode === undefined)
       return res
         .status(400)
-        .json({ message: "El código de seguimiento es necesario" });
+        .json({ message: answerErrors.trackingCode.required });
     const claim = await prisma.claim.findFirst({
       where: { trackingCode },
     });
@@ -65,7 +65,7 @@ export const getAllByClaim = async (req: Request, res: Response) => {
     if (trackingCode === "" || trackingCode === undefined)
       return res
         .status(400)
-        .json({ message: "El código de seguimiento es necesario" });
+        .json({ message: answerErrors.trackingCode.required });
     const claim = await prisma.claim.findFirst({
       where: { trackingCode },
     });

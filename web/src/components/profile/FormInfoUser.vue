@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import Button from "../forms/Button.vue";
 import MessageError from "../forms/MessageError.vue";
@@ -14,6 +15,7 @@ import { UserGettersTypes } from "../../store/modules/user/userGetter";
 
 const router = useRouter();
 const store = useStore();
+const { t } = useI18n();
 
 const getUserAuth = async () => {
   const url = "/users/detail";
@@ -50,14 +52,14 @@ const update = async () => {
       errors.values = data.errors;
     } else if (status === 200) {
       errors.values = {};
-      message.value = "Tu datos se cambiaron correctamente.";
+      message.value = "Tu datos se cambiaron correctamente";
     }
   } catch (error) {}
 };
 </script>
 <template>
   <div class="bg-white dark:bg-gray-secondary mt-6 mb-4 p-6 rounded-lg shadow">
-    <Alert v-if="message" color="success">{{ message }}</Alert>
+    <Alert v-if="message" color="success">{{ t(message) }}</Alert>
     <form
       class="space-y-0 divide-y divide-gray-200 dark:divide-gray-custom"
       @submit.prevent="update"
@@ -81,11 +83,14 @@ const update = async () => {
                 dark:text-white
               "
             >
-              Información del Perfil
+              {{ t("Información del Perfil") }}
             </h3>
             <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-              Actualice la información de perfil y la dirección de correo
-              electrónico de su cuenta.
+              {{
+                t(
+                  "Actualice la información de perfil y la dirección de correo electrónico de su cuenta"
+                )
+              }}.
             </p>
           </div>
           <div class="space-y-6 sm:space-y-5">
@@ -112,7 +117,7 @@ const update = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Nombre
+                {{ t("Nombre") }}
               </label>
               <div class="mt-1 sm:mt-0 sm:col-span-2">
                 <TextField
@@ -122,11 +127,7 @@ const update = async () => {
                   v-model="form.name"
                   id="name"
                   class="max-w-lg sm:max-w-xs"
-                />
-
-                <MessageError
-                  :show="!!errors.values.name"
-                  :text="errors.values.name"
+                  :error="errors.values.name"
                 />
               </div>
             </div>
@@ -154,18 +155,15 @@ const update = async () => {
                   sm:mt-px sm:pt-2
                 "
               >
-                Correo electrónico
+                {{ t("Correo electrónico") }}
               </label>
-              <div class="mt-1 sm:mt-0 sm:col-span-2">
+              <div class="mt-1 sm:mt-0 sm:col-span-2 mb-5">
                 <TextField
                   v-model="form.email"
                   icon="email"
                   id="email"
                   class="max-w-lg sm:max-w-xs"
-                />
-                <MessageError
-                  :show="!!errors.values.email"
-                  :text="errors.values.email"
+                  :error="errors.values.email"
                 />
               </div>
             </div>
@@ -175,7 +173,7 @@ const update = async () => {
 
       <div class="pt-5">
         <div class="flex justify-end space-x-4">
-          <Button type="submit" color="primary">Guardar</Button>
+          <Button type="submit" color="primary">{{ t("Guardar") }}</Button>
         </div>
       </div>
     </form>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import { useI18n } from "vue3-i18n";
 
 import BaseLayout from "../components/layouts/BaseLayout.vue";
 
 const route = useRoute();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -51,11 +53,14 @@ const route = useRoute();
           </svg>
         </div>
         <h4 class="text-center text-base md:text-lg font-medium">
-          Registro completado con éxito
+          {{ t(`Registro completado con éxito`) }}
         </h4>
         <p class="mt-3 mb-10 text-center px-0 md:px-10">
-          Estaremos revisando tu queja o reclamos, y te comunicaremos mediante
-          un correo.
+          {{
+            t(
+              "Estaremos revisando tu queja o reclamos, y te comunicaremos mediante un correo"
+            )
+          }}.
         </p>
         <div class="flex items-center gap-1">
           <router-link
@@ -73,7 +78,7 @@ const route = useRoute();
               rounded
               w-full
             "
-            >Registrar otro
+            >{{ t("Registrar otro") }}
           </router-link>
           <router-link
             :to="`/detail/${route.params.trackingCode}`"
@@ -90,7 +95,7 @@ const route = useRoute();
               rounded
               w-full
             "
-            >Ver detalle
+            >{{ t("Ver detalle") }}
           </router-link>
         </div>
       </div>

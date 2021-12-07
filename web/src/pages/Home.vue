@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import BaseLayout from "../components/layouts/BaseLayout.vue";
 import ButtonLink from "../components/navigations/ButtonLink.vue";
+
+import { useI18n } from "vue3-i18n";
+const { t } = useI18n();
 </script>
 <template>
   <BaseLayout
@@ -9,8 +12,7 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
   >
     <div class="wrapper mt-8 mb-6 px-5 md:px-10 flex flex-col items-center">
       <h1 class="font-bold text-2xl md:text-5xl text-center">
-        ¿Dinos que te
-        <span class="text-blue-500"> molesta</span>?
+        {{ t("Cuentanos ¿Qué te molesta?") }}
       </h1>
       <p
         class="
@@ -24,13 +26,16 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
         "
         style="font-weight: 400"
       >
-        Te evitamos a registrar tu queja o reclamo y nosotros nos encargaremos
-        de atender tu pedido.
+        {{
+          t(
+            "Te invitamos a registrar tu queja o reclamo y nosotros nos encargaremos de atender tu pedido"
+          )
+        }}.
       </p>
       <div class="my-8 flex flex-col md:flex-row gap-3 w-full md:w-auto">
-        <ButtonLink href="/claims/create" color="primary" class="px-8"
-          >Registrar reclamo</ButtonLink
-        >
+        <ButtonLink href="/claims/create" color="primary" class="px-8">
+          {{ t("Registrar reclamo") }}
+        </ButtonLink>
         <router-link
           to="/consult"
           class="
@@ -46,7 +51,9 @@ import ButtonLink from "../components/navigations/ButtonLink.vue";
             hover:bg-gray-50
           "
         >
-          <span class="flex-shrink-0 mr-3">Consultar mi reclamo</span>
+          <span class="flex-shrink-0 mr-3">
+            {{ t("Consultar mi reclamo") }}
+          </span>
           <svg
             class="w-6 h-6"
             fill="none"

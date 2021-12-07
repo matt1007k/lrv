@@ -3,7 +3,11 @@ import { computed } from "vue";
 import { useStore } from "../../store";
 import { UserGettersTypes } from "../../store/modules/user/userGetter";
 
+import { useI18n } from "vue3-i18n";
+const { t } = useI18n();
+
 import Link from "../navigations/Link.vue";
+import LocaleDropdown from "../locales/LocaleDropdown.vue";
 
 const store = useStore();
 const isAuthenticated = computed(
@@ -38,13 +42,14 @@ const isAuthenticated = computed(
                 d="M11 5.882V19.24a1.76 1.76 0 0 1-3.417.592l-2.147-6.15M18 13a3 3 0 1 0 0-6M5.436 13.683A4.001 4.001 0 0 1 7 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 0 1-1.564-.317z"
               />
             </svg>
-            <span>Libro</span>
+            <span>{{ t("Libro") }}</span>
           </Link>
         </template>
         <template v-else> </template>
       </div>
     </div>
     <div class="flex items-center space-x-8">
+      <LocaleDropdown />
       <template v-if="!isAuthenticated">
         <router-link
           to="/login"
@@ -54,7 +59,7 @@ const isAuthenticated = computed(
             hover:text-gray-800
             dark:text-gray-300 dark:hover:text-white
           "
-          >Ingresar</router-link
+          >{{ t("Ingresar") }}</router-link
         >
         <router-link
           to="/register"
@@ -71,7 +76,7 @@ const isAuthenticated = computed(
             duration-150
             ease-in
           "
-          >Registrarse</router-link
+          >{{ t("Registrarse") }}</router-link
         >
       </template>
     </div>

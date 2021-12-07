@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from "vue3-i18n";
+
 import BaseLayout from "../../components/layouts/BaseLayout.vue";
 import Form from "../../components/claims/Form.vue";
+
+const { t } = useI18n();
 </script>
 <template>
   <BaseLayout
@@ -27,11 +31,11 @@ import Form from "../../components/claims/Form.vue";
         </div>
         <div class="ml-3 flex-1 md:flex md:justify-between">
           <p class="text-sm">
-            Estimado usuario: Ponemos a su disposición el presente formato, a
-            través del cual podrá expresar su INSATISFACCIÓN O DISCONFORMIDAD
-            RESPECTO DE LA ATENCIÓN RECIBIDA EN LA DRE AYACUCHO en el ejercicio
-            de su función administrativa (regulada por el Decreto Supremo N°
-            042-2011-PCM). Por favor llenar debidamente los campos solicitados.
+            {{
+              t(
+                "Estimado usuario: Ponemos a su disposición el presente formato, a través del cual podrá expresar su INSATISFACCIÓN O DISCONFORMIDAD RESPECTO DE LA ATENCIÓN RECIBIDA EN LA DRE AYACUCHO en el ejercicio de su función administrativa (regulada por el Decreto Supremo N° 042-2011-PCM)"
+              )
+            }}.
           </p>
         </div>
       </div>
