@@ -2,11 +2,18 @@
 import { ref, onMounted } from "vue";
 import { useI18n } from "vue3-i18n";
 const { t, getLocale, setLocale } = useI18n();
+
+const open = ref<boolean>(false);
+
 const toggleLocales = (locale: string) => {
   setLocale(locale);
   localStorage.setItem("locale", locale);
 };
-const open = ref<boolean>(false);
+
+const getLanguage = () => {
+  if (getLocale() === "es") return "Castellano";
+  if (getLocale() === "qu") return "Quechua";
+};
 onMounted(() => {
   if (localStorage.getItem("locale")) {
     //@ts-ignore
@@ -27,10 +34,28 @@ onMounted(() => {
         shadow-md
         rounded-full
         font-semibold
+        flex
+        items-center
       "
       @click="open = !open"
     >
-      {{ t("Lenguaje") }}: {{ getLocale() }}
+      <span class="mr-2">
+        {{ getLanguage() }}
+      </span>
+      <svg
+        class="w-6 h-6 text-gray-500 dark:text-gray-300"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m19 9-7 7-7-7"
+        />
+      </svg>
     </button>
     <transition
       enter-active-class="transition ease-out duration-200"
@@ -46,12 +71,13 @@ onMounted(() => {
           absolute
           z-50
           rounded-md
-          min-w-40
+          w-auto
           right-0
           bg-white
           text-black
           dark:bg-gray-secondary dark:text-white
           shadow-lg
+          overflow-hidden
         "
         @click="open = false"
       >
