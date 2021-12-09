@@ -44,7 +44,7 @@ const handleSubmit = () => {
       </p>
       <form
         @submit.prevent="handleSubmit"
-        class="my-8 flex flex-col w-full md:w-2/6"
+        class="my-8 flex flex-col w-full md:w-2/6 gap-5"
       >
         <TextField
           v-model="trackingCode"
