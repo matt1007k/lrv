@@ -8,24 +8,7 @@
     <div class="relative">
       <input
         v-bind="attrs"
-        class="
-          relative
-          py-3
-          pl-4
-          pr-10
-          border-2 border-gray-300
-          bg-white
-          placeholder-gray-500
-          text-black
-          dark:border-opacity-30
-          dark:bg-gray-custom
-          dark:bg-opacity-60
-          dark:placeholder-gray-300
-          dark:text-white
-          rounded-lg
-          focus:outline-none focus:border-blue-500
-          w-full
-        "
+        class="relative py-3 pl-4 pr-10 border-2 border-gray-300 bg-white placeholder-gray-500 text-black dark:border-opacity-30 dark:bg-gray-custom dark:bg-opacity-60 dark:placeholder-gray-300 dark:text-white rounded-lg focus:outline-none focus:border-blue-500 w-full"
         :class="`${!!error ? 'border-red-500 dark:border-opacity-100' : ''}`"
         :value="modelValue"
         @input="updateText"
@@ -33,15 +16,7 @@
       <template v-if="inline || icon">
         <template v-if="icon === 'email'">
           <svg
-            class="
-              w-6
-              h-6
-              absolute
-              top-3
-              right-3
-              text-gray-400
-              dark:text-gray-300
-            "
+            class="w-6 h-6 absolute top-3 right-3 text-gray-400 dark:text-gray-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -57,15 +32,7 @@
         </template>
         <template v-if="icon === 'user'">
           <svg
-            class="
-              w-6
-              h-6
-              absolute
-              top-3
-              right-3
-              text-gray-400
-              dark:text-gray-300
-            "
+            class="w-6 h-6 absolute top-3 right-3 text-gray-400 dark:text-gray-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -81,15 +48,7 @@
         </template>
         <template v-if="icon === 'hash'">
           <svg
-            class="
-              w-6
-              h-6
-              absolute
-              top-3
-              right-3
-              text-gray-400
-              dark:text-gray-300
-            "
+            class="w-6 h-6 absolute top-3 right-3 text-gray-400 dark:text-gray-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -142,6 +101,6 @@ const updateText = (e: Event) => {
   emit("update:modelValue", (e.target as HTMLInputElement).value);
 };
 const attrs = useAttrs();
-const iconText = null;
+// const iconText = null;
 const forId = attrs.id as string;
 </script>

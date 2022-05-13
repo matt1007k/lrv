@@ -27,3 +27,15 @@ body {
     @apply text-base md:text-lg font-bold text-black dark:text-white;
   }
 }
+
+@media print {
+  .print-none {
+    display: none;
+  }
+  .print-m-none {
+    margin: 0;
+  }
+  .print-shadow-none {
+    box-shadow: none;`
+  }
+}

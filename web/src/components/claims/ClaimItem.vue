@@ -18,36 +18,22 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="wrapper mt-8 mb-10 px-0 md:px-40">
+  <div class="wrapper mt-8 mb-10 px-0 md:px-40 print-m-none">
     <div
-      class="
-        bg-white
-        dark:bg-gray-secondary dark:border-gray-secondary dark:border-opacity-50
-        shadow
-        overflow-hidden
-        sm:rounded-lg
-      "
+      class="bg-white dark:bg-gray-secondary dark:border-gray-secondary dark:border-opacity-50 shadow overflow-hidden sm:rounded-lg print-shadow-none"
     >
       <div
-        class="
-          border-t border-gray-200
-          dark:border-gray-custom dark:border-opacity-50
-          px-6
-          py-5
-          mb-20
-          md:mb-0
-        "
+        class="border-t border-gray-200 dark:border-gray-custom dark:border-opacity-50 px-6 py-5 mb-20 md:mb-0 print-m-none"
       >
+        <img
+          src="https://proyectos.dreayacucho.gob.pe/dist/images/headers/cabecera_general.png"
+          alt="Header drea"
+          class="mb-4"
+        />
         <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <dt
-              class="
-                text-xs
-                font-medium
-                text-gray-500
-                dark:text-gray-400
-                uppercase
-              "
+              class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase"
             >
               {{ t("Código de seguimiento") }}
             </dt>
@@ -137,24 +123,10 @@ const { t } = useI18n();
             <dd class="mt-1 text-sm text-gray-900 dark:text-white">
               <ul
                 role="list"
-                class="
-                  border border-gray-200
-                  dark:border-gray-custom dark:border-opacity-50
-                  rounded-md
-                  divide-y divide-gray-200
-                  dark:divide-gray-custom dark:divide-opacity-50
-                "
+                class="border border-gray-200 dark:border-gray-custom dark:border-opacity-50 rounded-md divide-y divide-gray-200 dark:divide-gray-custom dark:divide-opacity-50"
               >
                 <li
-                  class="
-                    pl-3
-                    pr-4
-                    py-3
-                    flex
-                    items-center
-                    justify-between
-                    text-sm
-                  "
+                  class="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
                 >
                   <div class="w-0 flex-1 flex items-center">
                     <svg
@@ -174,16 +146,10 @@ const { t } = useI18n();
                       {{ getFileName(claim) }}
                     </span>
                   </div>
-                  <div class="ml-4 flex-shrink-0">
+                  <div class="ml-4 flex-shrink-0 print-none">
                     <a
                       :href="claim.file"
-                      class="
-                        font-medium
-                        text-blue-600
-                        hover:text-blue-500
-                        dark:text-white dark:hover:text-gray-100
-                        hover:underline
-                      "
+                      class="font-medium text-blue-600 hover:text-blue-500 dark:text-white dark:hover:text-gray-100 hover:underline"
                       target="_blank"
                     >
                       {{ t("Ver archivo") }}

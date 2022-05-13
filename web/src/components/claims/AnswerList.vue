@@ -52,7 +52,7 @@ const isAuthenticated = computed(
 const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
 </script>
 <template>
-  <div class="w-full mt-5 px-5 mb-16">
+  <div class="w-full mt-5 px-5 mb-16 print-none">
     <template v-if="isAuthenticated && auth.role === 'ADMIN'">
       <AnswerForm @onNewAnswer="onNewAnswer" />
     </template>
@@ -63,13 +63,7 @@ const auth = computed(() => store.getters[UserGettersTypes.GET_USER]);
           <div
             v-for="answer of answersDesc"
             :key="answer.id"
-            class="
-              border-2 border-gray-300
-              dark:border-gray-secondary
-              px-5
-              py-4
-              rounded-lg
-            "
+            class="border-2 border-gray-300 dark:border-gray-secondary px-5 py-4 rounded-lg"
           >
             <h6 class="font-semibold text-black dark:text-white">
               {{ answer.text }}

@@ -45,7 +45,7 @@ const logOut = () => {
 </script>
 
 <template>
-  <nav class="py-6 flex justify-between items-center wrapper">
+  <nav class="py-6 flex justify-between items-center wrapper print-none">
     <div class="flex items-center">
       <img
         src="../../assets/logo.png"
@@ -56,21 +56,7 @@ const logOut = () => {
         <template v-if="isAuthenticated">
           <router-link
             to="/admin"
-            class="
-              text-gray-400
-              dark:text-gray-100 dark:hover:text-white
-              font-semibold
-              flex
-              items-center
-              space-x-2
-              h-14
-              transition
-              duration-200
-              ease-linear
-              py-3
-              px-4
-              rounded-lg
-            "
+            class="text-gray-400 dark:text-gray-100 dark:hover:text-white font-semibold flex items-center space-x-2 h-14 transition duration-200 ease-linear py-3 px-4 rounded-lg"
             active-class="text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-secondary dark:hover:text-gray-100"
           >
             <svg
@@ -138,21 +124,7 @@ const logOut = () => {
         <Dropdown>
           <template v-slot:trigger>
             <div
-              class="
-                bg-white
-                text-black
-                hover:bg-gray-100
-                dark:bg-gray-secondary dark:text-white dark:hover:bg-opacity-80
-                px-6
-                py-3
-                rounded-full
-                shadow-lg
-                hidden
-                md:flex
-                items-center
-                space-x-3
-                cursor-pointer
-              "
+              class="bg-white text-black hover:bg-gray-100 dark:bg-gray-secondary dark:text-white dark:hover:bg-opacity-80 px-6 py-3 rounded-full shadow-lg hidden md:flex items-center space-x-3 cursor-pointer"
             >
               <span>{{ getFirstName(user.name) }}</span>
               <svg
@@ -174,36 +146,12 @@ const logOut = () => {
           <template v-slot:content>
             <DropdownItemLink
               href="/profile"
-              class="
-                py-3
-                px-3
-                flex
-                hover:bg-gray-100
-                dark:hover:bg-gray-light
-                text-black
-                dark:text-white
-                cursor-pointer
-                transition
-                duration-200
-                ease-out
-              "
+              class="py-3 px-3 flex hover:bg-gray-100 dark:hover:bg-gray-light text-black dark:text-white cursor-pointer transition duration-200 ease-out"
             >
               {{ t("Perfil") }}
             </DropdownItemLink>
             <DropdownItem
-              class="
-                py-3
-                px-3
-                flex
-                hover:bg-gray-100
-                dark:hover:bg-gray-light
-                text-black
-                dark:text-white
-                cursor-pointer
-                transition
-                duration-200
-                ease-out
-              "
+              class="py-3 px-3 flex hover:bg-gray-100 dark:hover:bg-gray-light text-black dark:text-white cursor-pointer transition duration-200 ease-out"
               @click="logOut"
             >
               {{ t("Salir") }}
@@ -214,12 +162,7 @@ const logOut = () => {
       <template v-else>
         <router-link
           to="/login"
-          class="
-            font-semibold
-            text-gray-500
-            hover:text-gray-800
-            dark:text-gray-300 dark:hover:text-white
-          "
+          class="font-semibold text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
           >Ingresar</router-link
         >
       </template>

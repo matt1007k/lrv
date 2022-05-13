@@ -15,36 +15,12 @@ const onClose = () => {
 
 <template>
   <div
-    class="
-      block
-      md:hidden
-      fixed
-      z-50
-      bottom-5
-      right-5
-      left-5
-      bg-black bg-opacity-5
-      dark:bg-gray-secondary dark:bg-opacity-50
-      backdrop-filter backdrop-blur-md
-      p-3
-      rounded-full
-    "
+    class="block md:hidden fixed z-50 bottom-5 right-5 left-5 bg-black bg-opacity-5 dark:bg-gray-secondary dark:bg-opacity-50 backdrop-filter backdrop-blur-md p-3 rounded-full print-none"
   >
     <div class="flex items-center justify-between w-full">
       <router-link
         to="/admin"
-        class="
-          py-3
-          px-4
-          flex
-          items-center
-          justify-center
-          rounded-full
-          cursor-pointer
-          space-x-2
-          text-black
-          dark:text-white
-        "
+        class="py-3 px-4 flex items-center justify-center rounded-full cursor-pointer space-x-2 text-black dark:text-white"
       >
         <!-- @if (Request::routeIs('dashboard')) -->
         <svg
@@ -77,17 +53,7 @@ const onClose = () => {
 
       <router-link
         to="/claims/create"
-        class="
-          p-3
-          flex
-          items-center
-          justify-center
-          bg-blue-500
-          rounded-full
-          cursor-pointer
-          space-x-2
-          text-white
-        "
+        class="p-3 flex items-center justify-center bg-blue-500 rounded-full cursor-pointer space-x-2 text-white"
       >
         <svg
           class="w-6 h-6"
@@ -104,17 +70,7 @@ const onClose = () => {
       </router-link>
 
       <button
-        class="
-          flex
-          items-center
-          justify-center
-          rounded-full
-          cursor-pointer
-          space-x-2
-          p-3
-          text-gray-400
-          dark:text-gray-300
-        "
+        class="flex items-center justify-center rounded-full cursor-pointer space-x-2 p-3 text-gray-400 dark:text-gray-300"
         @click="openModal"
       >
         <svg

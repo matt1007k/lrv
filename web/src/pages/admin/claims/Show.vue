@@ -17,6 +17,7 @@ import {
 } from "../../../utils/claim";
 import { getDateAndTimeInline } from "../../../utils/dateFormat";
 import emitter from "../../../utils/timy-emitter";
+import Button from "../../../components/forms/Button.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -59,6 +60,9 @@ const getDetail = async () => {
   }
 };
 onMounted(() => getDetail());
+const print = () => {
+  window.print();
+};
 </script>
 <template>
   <AdminLayout
@@ -66,21 +70,11 @@ onMounted(() => getDetail());
     :description="`Mira los detalle ${subtitle}`"
   >
     <template v-slot:header>
-      <div class="wrapper mt-0 md:mt-6">
+      <div class="wrapper mt-0 md:mt-6 flex items-center justify-between">
         <div class="flex items-center">
           <router-link
             to="/admin"
-            class="
-              p-0
-              md:p-2
-              rounded-lg
-              text-black
-              hover:bg-gray-100
-              dark:text-white dark:hover:bg-gray-secondary
-              mr-1
-              md:mr-2
-              cursor-pointer
-            "
+            class="p-0 md:p-2 rounded-lg text-black hover:bg-gray-100 dark:text-white dark:hover:bg-gray-secondary mr-1 md:mr-2 cursor-pointer"
           >
             <svg
               class="w-6 h-6"
@@ -103,6 +97,25 @@ onMounted(() => getDetail());
               {{ t(title) }}
             </p>
           </div>
+        </div>
+        <div>
+          <Button @click="print()">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+              ></path>
+            </svg>
+            <span class="ml-2 hidden sm:flex">Imprimir</span>
+          </Button>
         </div>
       </div>
     </template>

@@ -42,7 +42,7 @@ withDefaults(defineProps<{ title: string; description: string }>(), {
     <Navbar />
     <BottomNav />
     <div>
-      <header>
+      <header class="print-none">
         <slot name="header"></slot>
       </header>
       <main class="bg-white dark:bg-gray-custom pb-10 md:mb-8">
