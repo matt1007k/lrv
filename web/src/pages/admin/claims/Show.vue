@@ -4,20 +4,13 @@ import { useRoute } from "vue-router";
 import { useI18n } from "vue3-i18n";
 
 import AdminLayout from "../../../components/layouts/AdminLayout.vue";
-import AnswerList from "../../../components/claims/AnswerList.vue";
 import ClaimItem from "../../../components/claims/ClaimItem.vue";
 
 import { Claim } from "../../../store/modules/claim/state";
 
 import { get } from "../../../utils/request";
-import {
-  getAddressInline,
-  getFileName,
-  getStatusHumanize,
-} from "../../../utils/claim";
-import { getDateAndTimeInline } from "../../../utils/dateFormat";
 import emitter from "../../../utils/timy-emitter";
-import Button from "../../../components/forms/Button.vue";
+import ButtonPrint from "../../../components/claims/ButtonPrint.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -60,9 +53,6 @@ const getDetail = async () => {
   }
 };
 onMounted(() => getDetail());
-const print = () => {
-  window.print();
-};
 </script>
 <template>
   <AdminLayout
@@ -99,23 +89,7 @@ const print = () => {
           </div>
         </div>
         <div>
-          <Button @click="print()">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-              ></path>
-            </svg>
-            <span class="ml-2 hidden sm:flex">Imprimir</span>
-          </Button>
+          <ButtonPrint />
         </div>
       </div>
     </template>
